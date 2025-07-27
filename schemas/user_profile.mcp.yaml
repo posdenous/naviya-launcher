@@ -1,0 +1,163 @@
+name: "User Profile Schema"
+version: "1.0.0"
+description: "MCP schema for user profile data structure"
+
+schema:
+  type: "object"
+  properties:
+    user_id:
+      type: "string"
+      description: "Unique identifier for the user"
+      format: "uuid"
+      
+    personal_info:
+      type: "object"
+      properties:
+        first_name:
+          type: "string"
+          maxLength: 50
+        last_name:
+          type: "string"
+          maxLength: 50
+        date_of_birth:
+          type: "string"
+          format: "date"
+        profile_photo:
+          type: "string"
+          format: "uri"
+          
+    preferences:
+      type: "object"
+      properties:
+        language:
+          type: "string"
+          enum: ["de", "en", "tr", "ar", "ua"]
+          default: "en"
+        theme:
+          type: "string"
+          enum: ["light", "dark", "high_contrast"]
+          default: "light"
+        font_size:
+          type: "string"
+          enum: ["small", "medium", "large", "extra_large"]
+          default: "medium"
+        voice_assistance:
+          type: "boolean"
+          default: false
+        notifications_enabled:
+          type: "boolean"
+          default: true
+          
+    accessibility:
+      type: "object"
+      properties:
+        screen_reader:
+          type: "boolean"
+          default: false
+        high_contrast:
+          type: "boolean"
+          default: false
+        large_text:
+          type: "boolean"
+          default: false
+        voice_control:
+          type: "boolean"
+          default: false
+        touch_sensitivity:
+          type: "string"
+          enum: ["low", "medium", "high"]
+          default: "medium"
+          
+    emergency_contacts:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          contact_id:
+            type: "string"
+            format: "uuid"
+          name:
+            type: "string"
+            maxLength: 100
+          relationship:
+            type: "string"
+            maxLength: 50
+          phone_number:
+            type: "string"
+            pattern: "^[+]?[0-9\\s\\-\\(\\)]+$"
+          email:
+            type: "string"
+            format: "email"
+          is_primary:
+            type: "boolean"
+            default: false
+        required: ["contact_id", "name", "phone_number"]
+      minItems: 1
+      
+    caregiver_connections:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          caregiver_id:
+            type: "string"
+            format: "uuid"
+          connection_date:
+            type: "string"
+            format: "date-time"
+          permissions:
+            type: "array"
+            items:
+              type: "string"
+              enum: [
+                "view_status",
+                "emergency_notifications",
+                "send_messages",
+                "view_activity",
+                "remote_assistance",
+                "location_sharing",
+                "schedule_reminders"
+              ]
+          is_active:
+            type: "boolean"
+            default: true
+            
+    app_preferences:
+      type: "object"
+      properties:
+        favorite_apps:
+          type: "array"
+          items:
+            type: "string"
+        recent_apps:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              app_id:
+                type: "string"
+              last_used:
+                type: "string"
+                format: "date-time"
+        app_layout:
+          type: "string"
+          enum: ["grid", "list", "large_icons"]
+          default: "grid"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+    last_active:
+      type: "string"
+      format: "date-time"
+      
+  required: ["user_id", "preferences", "emergency_contacts", "created_at"]
+  
+validation_rules:
+  - At least one emergency contact must be marked as primary
+  - Phone numbers must be valid international format
+  - Language preference must match available translations
+  - Caregiver permissions must be from allowed list

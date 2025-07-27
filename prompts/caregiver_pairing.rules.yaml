@@ -1,0 +1,256 @@
+name: "Caregiver Pairing Rules"
+version: "2.0.0"
+description: "Android caregiver pairing with QR/invite system, consent management, and remote assistance"
+
+pairing_process:
+  android_methods:
+    qr_code_pairing:
+      generation: "caregiver_app_generates_qr"
+      scanning: "user_device_camera_scan"
+      expiration: "24_hours"
+      security: "encrypted_payload_with_timestamp"
+      
+    invite_link_pairing:
+      generation: "caregiver_sends_secure_link"
+      delivery: "sms_email_messaging_app"
+      click_to_pair: "deep_link_to_naviya_app"
+      verification: "mutual_confirmation_required"
+      
+    legacy_code_pairing:
+      fallback_method: "6_digit_alphanumeric"
+      voice_readable: "phonetic_alphabet_support"
+      accessibility: "large_text_voice_input"
+      
+  verification_process:
+    mutual_confirmation:
+      user_sees: "caregiver_name_photo_organization"
+      caregiver_sees: "user_name_device_info"
+      both_must_approve: true
+      timeout: "10_minutes"
+      
+    identity_verification:
+      optional_video_call: "in_app_verification"
+      photo_verification: "compare_profile_photos"
+      security_questions: "user_defined_challenge"
+      
+  security_framework:
+    encryption: "end_to_end_where_possible"
+    key_exchange: "secure_during_pairing_handshake"
+    data_minimization: "only_necessary_info_shared"
+    revocation: "immediate_disconnect_capability"
+
+caregiver_permissions:
+  default_permissions:
+    basic_monitoring:
+      - "view_online_offline_status"
+      - "receive_emergency_notifications"
+      - "send_check_in_messages"
+      - "view_basic_activity_summary"
+      
+  optional_permissions:
+    communication:
+      - "initiate_video_calls"
+      - "send_voice_messages"
+      - "schedule_reminders"
+      - "medication_alerts"
+      
+    assistance:
+      - "remote_app_launching_guidance"
+      - "app_whitelist_management"
+      - "custom_tile_creation"
+      - "icon_label_customization"
+      
+    monitoring:
+      - "location_sharing_emergency_only"
+      - "location_sharing_always"
+      - "device_health_monitoring"
+      - "usage_pattern_insights"
+      
+  restricted_actions:
+    permanent_restrictions:
+      - "cannot_access_personal_files"
+      - "cannot_disable_sos_permanently"
+      - "cannot_change_pin_settings"
+      - "cannot_view_private_communications"
+      - "cannot_uninstall_naviya_launcher"
+      
+    consent_required_actions:
+      - "settings_changes_require_user_approval"
+      - "app_installations_require_confirmation"
+      - "location_sharing_changes_need_consent"
+      - "emergency_contact_modifications_need_approval"
+
+user_controls:
+  pin_protected_settings:
+    access_control:
+      settings_pin: "4_to_6_digit_user_defined"
+      pin_required_for:
+        - "caregiver_permission_changes"
+        - "emergency_contact_modifications"
+        - "app_whitelist_changes"
+        - "launcher_uninstall_prevention"
+        - "factory_reset_protection"
+        
+    pin_security:
+      failed_attempts: "3_attempts_then_lockout"
+      lockout_duration: "15_minutes_escalating"
+      recovery_method: "emergency_contact_verification"
+      
+  privacy_settings:
+    granular_control:
+      permission_toggles: "individual_on_off_switches"
+      temporary_suspension: "1_hour_to_7_days"
+      activity_visibility: "detailed_summary_basic_none"
+      location_precision: "exact_approximate_city_only"
+      
+  connection_management:
+    multiple_caregivers:
+      max_connections: "5_caregivers_simultaneously"
+      hierarchy: "primary_secondary_backup_roles"
+      role_permissions: "different_access_levels"
+      
+    connection_lifecycle:
+      add_caregiver: "qr_invite_code_methods"
+      remove_caregiver: "immediate_disconnect_with_notification"
+      pause_connection: "temporary_disable_with_reason"
+      emergency_override: "caregivers_notified_during_emergencies_even_if_paused"
+      
+  notification_preferences:
+    event_filtering:
+      emergency_events: "always_notify_all_caregivers"
+      daily_activity: "configurable_summary_timing"
+      app_usage: "optional_detailed_reporting"
+      health_reminders: "medication_appointment_alerts"
+      
+    communication_timing:
+      quiet_hours: "user_defined_time_ranges"
+      emergency_override: "urgent_notifications_bypass_quiet_hours"
+      timezone_awareness: "caregiver_local_time_consideration"
+
+caregiver_features:
+  dashboard_interface:
+    status_overview:
+      - "real_time_online_offline_status"
+      - "last_activity_timestamp"
+      - "battery_level_network_status"
+      - "current_app_in_use"
+      
+    activity_summary:
+      - "daily_app_usage_patterns"
+      - "emergency_button_interactions"
+      - "missed_calls_unread_messages"
+      - "medication_reminder_compliance"
+      
+    emergency_history:
+      - "sos_event_timeline"
+      - "response_times_outcomes"
+      - "false_alarm_patterns"
+      - "emergency_contact_effectiveness"
+      
+  communication_tools:
+    messaging:
+      text_messages: "simple_large_text_interface"
+      voice_messages: "record_send_playback"
+      video_calls: "one_tap_initiation"
+      scheduled_checkins: "automated_reminder_system"
+      
+    emergency_communication:
+      priority_messaging: "bypass_quiet_hours"
+      location_sharing: "real_time_during_emergencies"
+      conference_calling: "multi_party_emergency_calls"
+      
+  remote_assistance:
+    app_management:
+      whitelist_control: "add_remove_apps_with_user_consent"
+      custom_labels: "rename_app_icons_for_clarity"
+      layout_assistance: "guide_tile_arrangement"
+      
+    troubleshooting:
+      screen_sharing: "view_only_user_screen"
+      guided_instructions: "step_by_step_voice_text_guidance"
+      remote_diagnostics: "identify_common_issues"
+      
+    health_monitoring:
+      medication_reminders: "custom_schedule_management"
+      appointment_alerts: "calendar_integration"
+      wellness_check_ins: "daily_mood_health_questions"
+
+android_integration:
+  app_whitelist_management:
+    user_control:
+      default_apps: ["Phone", "Messages", "Settings", "Camera"]
+      caregiver_suggestions: "require_user_approval"
+      installation_prevention: "block_unauthorized_app_installs"
+      
+    whitelist_features:
+      custom_categories: "communication_health_entertainment_utilities"
+      age_appropriate_filtering: "automatic_content_rating_check"
+      time_based_access: "schedule_app_availability"
+      
+  notification_integration:
+    unread_tile:
+      calls_sms_combined: "single_tile_with_count"
+      priority_contacts: "highlight_important_people"
+      emergency_bypass: "urgent_calls_always_through"
+      
+    system_integration:
+      notification_access: "read_notification_content_with_permission"
+      do_not_disturb_management: "caregiver_override_capabilities"
+      
+compliance_and_security:
+  data_protection:
+    gdpr_compliance:
+      user_consent: "explicit_opt_in_for_each_permission"
+      data_portability: "export_user_data_on_request"
+      right_to_deletion: "complete_data_removal_capability"
+      
+    hipaa_considerations:
+      health_data_encryption: "medical_info_special_protection"
+      access_logging: "detailed_audit_trail_for_health_data"
+      business_associate_agreements: "caregiver_organization_compliance"
+      
+  audit_trail:
+    comprehensive_logging:
+      caregiver_actions: "timestamp_action_type_user_consent_status"
+      permission_changes: "before_after_states_with_justification"
+      communication_history: "metadata_only_content_privacy_protected"
+      emergency_responses: "full_timeline_with_outcomes"
+      
+    data_retention:
+      audit_logs: "7_years_encrypted_storage"
+      communication_metadata: "1_year_user_configurable"
+      emergency_events: "permanent_with_anonymization_option"
+      
+  consent_management:
+    dynamic_consent:
+      permission_granularity: "individual_feature_level_control"
+      consent_withdrawal: "immediate_effect_with_notification"
+      consent_renewal: "annual_review_and_reconfirmation"
+      
+    transparency:
+      data_usage_dashboard: "show_what_data_shared_when"
+      caregiver_activity_log: "user_visible_action_history"
+      privacy_impact_explanations: "clear_language_descriptions"
+
+recovery_and_safety:
+  crash_recovery_integration:
+    caregiver_notification:
+      crash_detection: "automatic_alert_to_primary_caregiver"
+      recovery_mode_status: "inform_about_safe_mode_activation"
+      assistance_availability: "offer_remote_help_during_recovery"
+      
+  emergency_escalation:
+    unresponsive_user:
+      escalation_timeline: "15_min_30_min_1_hour_intervals"
+      contact_sequence: "caregiver_emergency_contact_services"
+      location_sharing: "automatic_during_escalation"
+      
+    caregiver_unavailable:
+      backup_caregivers: "automatic_notification_to_secondary"
+      emergency_services: "direct_contact_if_all_caregivers_unreachable"
+      
+  privacy_emergency_balance:
+    emergency_override:
+      privacy_suspension: "temporary_during_verified_emergencies"
+      data_sharing_expansion: "location_health_status_during_crisis"
+      post_emergency_reset: "return_to_normal_privacy_settings_after_resolution"

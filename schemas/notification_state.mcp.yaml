@@ -1,0 +1,439 @@
+name: "Notification State Schema"
+version: "1.0.0"
+description: "MCP schema for unread notifications tile state (missed calls + SMS)"
+
+schema:
+  type: "object"
+  properties:
+    notification_id:
+      type: "string"
+      description: "Unique identifier for this notification state"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "Associated user profile ID"
+      format: "uuid"
+      
+    # Unread counts and aggregation
+    unread_summary:
+      type: "object"
+      properties:
+        total_unread_count:
+          type: "integer"
+          minimum: 0
+          description: "Combined count of missed calls + unread SMS"
+        
+        missed_calls_count:
+          type: "integer"
+          minimum: 0
+          description: "Number of missed calls"
+          
+        unread_sms_count:
+          type: "integer"
+          minimum: 0
+          description: "Number of unread SMS messages"
+          
+        priority_unread_count:
+          type: "integer"
+          minimum: 0
+          description: "Unread items from emergency contacts/caregivers"
+          
+        last_updated:
+          type: "string"
+          format: "date-time"
+          description: "When counts were last calculated"
+          
+        calculation_method:
+          type: "string"
+          enum: ["device_local", "server_sync", "hybrid"]
+          default: "device_local"
+          
+    # Missed calls details
+    missed_calls:
+      type: "array"
+      description: "Recent missed calls for tile display"
+      items:
+        type: "object"
+        properties:
+          call_id:
+            type: "string"
+            description: "Unique call identifier"
+          caller_number:
+            type: "string"
+            description: "Phone number of caller"
+          caller_name:
+            type: "string"
+            description: "Contact name if available"
+          call_timestamp:
+            type: "string"
+            format: "date-time"
+          call_duration:
+            type: "integer"
+            description: "Call duration in seconds (0 for missed)"
+            default: 0
+          is_priority_contact:
+            type: "boolean"
+            description: "Whether caller is emergency contact or caregiver"
+            default: false
+          contact_type:
+            type: "string"
+            enum: ["emergency_contact", "caregiver", "known_contact", "unknown"]
+          read_status:
+            type: "boolean"
+            description: "Whether user has seen this missed call"
+            default: false
+          urgency_level:
+            type: "string"
+            enum: ["low", "normal", "high", "urgent"]
+            default: "normal"
+        required: ["call_id", "caller_number", "call_timestamp"]
+      maxItems: 50  # Limit for performance
+      
+    # Unread SMS details  
+    unread_sms:
+      type: "array"
+      description: "Recent unread SMS messages for tile display"
+      items:
+        type: "object"
+        properties:
+          sms_id:
+            type: "string"
+            description: "Unique SMS identifier"
+          sender_number:
+            type: "string"
+            description: "Phone number of sender"
+          sender_name:
+            type: "string"
+            description: "Contact name if available"
+          message_preview:
+            type: "string"
+            description: "First 50 characters of message"
+            maxLength: 50
+          message_timestamp:
+            type: "string"
+            format: "date-time"
+          is_priority_contact:
+            type: "boolean"
+            description: "Whether sender is emergency contact or caregiver"
+            default: false
+          contact_type:
+            type: "string"
+            enum: ["emergency_contact", "caregiver", "known_contact", "unknown"]
+          read_status:
+            type: "boolean"
+            description: "Whether user has read this message"
+            default: false
+          urgency_level:
+            type: "string"
+            enum: ["low", "normal", "high", "urgent"]
+            default: "normal"
+          message_type:
+            type: "string"
+            enum: ["text", "mms", "group", "automated"]
+            default: "text"
+        required: ["sms_id", "sender_number", "message_timestamp"]
+      maxItems: 50  # Limit for performance
+      
+    # Priority contacts configuration
+    priority_contacts:
+      type: "object"
+      properties:
+        emergency_contacts:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              contact_id:
+                type: "string"
+                format: "uuid"
+              phone_number:
+                type: "string"
+              contact_name:
+                type: "string"
+              weight_multiplier:
+                type: "integer"
+                minimum: 1
+                maximum: 10
+                default: 3
+            required: ["contact_id", "phone_number"]
+            
+        caregivers:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              caregiver_id:
+                type: "string"
+                format: "uuid"
+              phone_number:
+                type: "string"
+              contact_name:
+                type: "string"
+              weight_multiplier:
+                type: "integer"
+                minimum: 1
+                maximum: 10
+                default: 2
+            required: ["caregiver_id", "phone_number"]
+            
+    # Tile display configuration
+    tile_display:
+      type: "object"
+      properties:
+        current_state:
+          type: "string"
+          enum: ["no_unread", "has_unread", "urgent_unread"]
+          default: "no_unread"
+          
+        badge_count:
+          type: "integer"
+          minimum: 0
+          maximum: 99
+          description: "Count to display on tile badge"
+          
+        display_overflow:
+          type: "boolean"
+          description: "Whether to show 99+ indicator"
+          default: false
+          
+        last_interaction:
+          type: "string"
+          format: "date-time"
+          description: "When user last tapped the tile"
+          
+        animation_state:
+          type: "string"
+          enum: ["none", "subtle_pulse", "stronger_pulse"]
+          default: "none"
+          
+        background_color:
+          type: "string"
+          description: "Current tile background color"
+          default: "#F5F5F5"
+          
+        icon_color:
+          type: "string"
+          description: "Current tile icon color"
+          default: "#757575"
+          
+    # Offline functionality
+    offline_state:
+      type: "object"
+      properties:
+        offline_mode_active:
+          type: "boolean"
+          default: false
+          
+        last_sync_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When data was last synced with server"
+          
+        cached_data_valid:
+          type: "boolean"
+          description: "Whether cached counts are still valid"
+          default: true
+          
+        cache_expiry:
+          type: "string"
+          format: "date-time"
+          description: "When cached data expires"
+          
+        local_data_sources:
+          type: "object"
+          properties:
+            call_log_accessible:
+              type: "boolean"
+              description: "Whether READ_CALL_LOG permission is granted"
+              default: false
+            sms_accessible:
+              type: "boolean"
+              description: "Whether READ_SMS permission is granted"
+              default: false
+            contacts_accessible:
+              type: "boolean"
+              description: "Whether READ_CONTACTS permission is granted"
+              default: false
+              
+    # Caregiver integration
+    caregiver_integration:
+      type: "object"
+      properties:
+        caregiver_online_status:
+          type: "boolean"
+          description: "Whether primary caregiver is online"
+          default: false
+          
+        caregiver_notification_sent:
+          type: "boolean"
+          description: "Whether caregiver was notified of high unread count"
+          default: false
+          
+        caregiver_alert_threshold:
+          type: "integer"
+          minimum: 1
+          maximum: 50
+          default: 10
+          description: "Unread count that triggers caregiver alert"
+          
+        last_caregiver_sync:
+          type: "string"
+          format: "date-time"
+          description: "When caregiver was last updated about unread status"
+          
+        caregiver_permissions:
+          type: "object"
+          properties:
+            can_see_unread_count:
+              type: "boolean"
+              default: true
+            can_see_caller_ids:
+              type: "boolean"
+              default: false
+            can_see_message_previews:
+              type: "boolean"
+              default: false
+            can_mark_as_read:
+              type: "boolean"
+              default: false
+              
+    # Privacy and security
+    privacy_settings:
+      type: "object"
+      properties:
+        message_content_cached:
+          type: "boolean"
+          description: "Whether message content is stored in cache"
+          default: false
+          
+        caller_id_cached:
+          type: "boolean"
+          description: "Whether caller names are stored in cache"
+          default: true
+          
+        data_encryption_enabled:
+          type: "boolean"
+          description: "Whether cached data is encrypted"
+          default: true
+          
+        auto_cleanup_enabled:
+          type: "boolean"
+          description: "Whether old data is automatically cleaned up"
+          default: true
+          
+        cleanup_after_days:
+          type: "integer"
+          minimum: 1
+          maximum: 90
+          default: 30
+          description: "Days after which old data is cleaned up"
+          
+    # Performance and caching
+    performance_metrics:
+      type: "object"
+      properties:
+        last_calculation_duration_ms:
+          type: "integer"
+          minimum: 0
+          description: "Time taken for last count calculation"
+          
+        cache_hit_rate:
+          type: "number"
+          minimum: 0
+          maximum: 1
+          description: "Percentage of requests served from cache"
+          
+        average_response_time_ms:
+          type: "integer"
+          minimum: 0
+          description: "Average time to update tile display"
+          
+        error_count:
+          type: "integer"
+          minimum: 0
+          description: "Number of errors in recent operations"
+          default: 0
+          
+        last_error_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When last error occurred"
+          
+        last_error_message:
+          type: "string"
+          description: "Description of last error"
+          
+    # State metadata
+    state_metadata:
+      type: "object"
+      properties:
+        schema_version:
+          type: "string"
+          description: "Version of this schema"
+          default: "1.0.0"
+          
+        android_version:
+          type: "string"
+          description: "Android version when state was created"
+          
+        app_version:
+          type: "string"
+          description: "Launcher version when state was created"
+          
+        device_model:
+          type: "string"
+          description: "Device model for compatibility"
+          
+        last_backup_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When state was last backed up"
+          
+        sync_status:
+          type: "string"
+          enum: ["synced", "pending", "failed", "offline"]
+          default: "pending"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+      
+  required: [
+    "notification_id",
+    "user_id", 
+    "unread_summary",
+    "tile_display",
+    "offline_state",
+    "created_at"
+  ]
+  
+# Validation rules for notification state
+validation_rules:
+  - "Total unread count must equal missed calls + unread SMS"
+  - "Badge count cannot exceed 99 (use overflow indicator)"
+  - "Priority contacts must have valid phone numbers"
+  - "Cache expiry must be in the future if cache is valid"
+  - "Tile animation state must match unread count thresholds"
+  - "Privacy settings must comply with user consent"
+  - "Performance metrics must be non-negative"
+
+# Android-specific constraints
+android_constraints:
+  permissions_required:
+    - "android.permission.READ_CALL_LOG"
+    - "android.permission.READ_SMS"
+    - "android.permission.READ_CONTACTS"
+    
+  performance_requirements:
+    max_calculation_time_ms: 5000
+    max_cache_size_mb: 10
+    max_stored_items: 100
+    
+  privacy_compliance:
+    gdpr_compliant: true
+    data_minimization: true
+    user_consent_required: true

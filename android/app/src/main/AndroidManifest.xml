@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Essential permissions for elderly launcher functionality -->
+    
+    <!-- Communication permissions for unread tile and emergency features -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
+    <!-- Location for emergency SOS functionality -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    
+    <!-- Audio recording for emergency voice messages -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- Camera for QR code caregiver pairing -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <!-- Vibration for accessibility feedback -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
+    <!-- Network access for caregiver sync and Firebase -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
+    <!-- App management permissions for whitelist enforcement -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    
+    <!-- System permissions for launcher functionality -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <uses-permission android:name="android.permission.BIND_APPWIDGET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    
+    <!-- Accessibility services integration -->
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    
+    <!-- Wake lock for emergency situations -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Foreground service for crash monitoring -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    
+    <!-- Biometric authentication (optional) -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    
+    <!-- Firebase Cloud Messaging for caregiver notifications -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    <!-- Hardware features (optional for better device compatibility) -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.fingerprint"
+        android:required="false" />
+
+    <application
+        android:name=".NaviyaLauncherApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.NaviyaLauncher"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        tools:targetApi="31">
+
+        <!-- Main Launcher Activity -->
+        <activity
+            android:name=".ui.launcher.LauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NaviyaLauncher.Launcher"
+            android:launchMode="singleTask"
+            android:clearTaskOnLaunch="true"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+            
+            <intent-filter android:priority="1">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+            <!-- Handle app launch intents -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Onboarding Activity -->
+        <activity
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Onboarding"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Settings Activity -->
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Settings"
+            android:parentActivityName=".ui.launcher.LauncherActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- PIN Security Activity -->
+        <activity
+            android:name=".ui.security.PinSecurityActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Security"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- Caregiver Pairing Activity -->
+        <activity
+            android:name=".ui.caregiver.CaregiverPairingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Caregiver"
+            android:screenOrientation="portrait" />
+
+        <!-- Emergency SOS Activity -->
+        <activity
+            android:name=".ui.emergency.EmergencyActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NaviyaLauncher.Emergency"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true">
+            
+            <!-- Emergency shortcut intent -->
+            <intent-filter>
+                <action android:name="com.naviya.launcher.EMERGENCY_SOS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Crash Recovery Activity -->
+        <activity
+            android:name=".ui.recovery.CrashRecoveryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Recovery"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- App Whitelist Management Activity -->
+        <activity
+            android:name=".ui.apps.AppWhitelistActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaviyaLauncher.Apps"
+            android:screenOrientation="portrait" />
+
+        <!-- Services -->
+        
+        <!-- Crash Monitoring Service -->
+        <service
+            android:name=".services.CrashMonitoringService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="systemExempted" />
+
+        <!-- Notification Monitoring Service -->
+        <service
+            android:name=".services.NotificationMonitoringService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Caregiver Sync Service -->
+        <service
+            android:name=".services.CaregiverSyncService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Firebase Messaging Service -->
+        <service
+            android:name=".services.NaviyaFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Broadcast Receivers -->
+        
+        <!-- Boot Receiver for startup initialization -->
+        <receiver
+            android:name=".receivers.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Call State Receiver for missed call detection -->
+        <receiver
+            android:name=".receivers.CallStateReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- SMS Receiver for unread message detection -->
+        <receiver
+            android:name=".receivers.SmsReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Package Install/Uninstall Receiver for app whitelist -->
+        <receiver
+            android:name=".receivers.PackageChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Emergency Shortcut Receiver -->
+        <receiver
+            android:name=".receivers.EmergencyShortcutReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.naviya.launcher.EMERGENCY_SHORTCUT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Content Providers -->
+        
+        <!-- Secure data provider for caregiver access -->
+        <provider
+            android:name=".providers.NaviyaDataProvider"
+            android:authorities="com.naviya.launcher.provider"
+            android:enabled="true"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <!-- Work Manager initialization -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <!-- Accessibility Service (optional) -->
+        <service
+            android:name=".accessibility.NaviyaAccessibilityService"
+            android:enabled="false"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- App Shortcuts for emergency access -->
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
+
+        <!-- Firebase configuration -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_color" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <!-- Disable automatic backup for security -->
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="false" />
+
+    </application>
+
+</manifest>

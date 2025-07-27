@@ -1,0 +1,193 @@
+name: "Unread Tile Rules"
+version: "1.0.0"
+description: "Rules for unread notifications tile combining missed calls and unread SMS"
+
+# Based on user memory: Show total count of missed calls + unread SMS in a large tile
+# Works offline using local call log and SMS inbox access
+
+tile_configuration:
+  tile_type: "unread_notifications"
+  display_name: "Unread"
+  icon: "envelope"
+  position_preference: "top_row_prominent"
+  always_visible: true
+  
+visual_design:
+  badge_display:
+    show_count: true
+    max_display_count: 99
+    overflow_indicator: "99+"
+    badge_color: "#D32F2F"  # Emergency red for attention
+    badge_position: "top_right"
+    
+  tile_states:
+    no_unread:
+      background_color: "#F5F5F5"  # Light gray
+      icon_color: "#757575"        # Medium gray
+      text_color: "#424242"        # Dark gray
+      badge_visible: false
+      
+    has_unread:
+      background_color: "#FFEBEE"  # Light red background
+      icon_color: "#D32F2F"        # Red icon
+      text_color: "#000000"        # Black text
+      badge_visible: true
+      animation: "subtle_pulse"
+      
+    urgent_unread:
+      background_color: "#FFCDD2"  # Stronger red background
+      icon_color: "#B71C1C"        # Dark red icon
+      text_color: "#000000"        # Black text
+      badge_visible: true
+      animation: "stronger_pulse"
+      priority_contacts_threshold: 1
+
+data_sources:
+  missed_calls:
+    android_permission: "READ_CALL_LOG"
+    data_source: "android.provider.CallLog.Calls"
+    query_filter: "type = MISSED_TYPE AND new = 1"
+    offline_capability: true
+    local_storage: "encrypted_call_log_cache"
+    
+  unread_sms:
+    android_permission: "READ_SMS"
+    data_source: "android.provider.Telephony.Sms.Inbox"
+    query_filter: "read = 0"
+    offline_capability: true
+    local_storage: "encrypted_sms_cache"
+    
+  priority_contacts:
+    source: "emergency_contacts_and_caregivers"
+    weight_multiplier: 2
+    urgent_threshold: "any_priority_contact_unread"
+
+counting_logic:
+  calculation_method: "call_count + sms_count"
+  deduplication: "count_unique_contacts_not_messages"
+  priority_weighting:
+    emergency_contacts: "multiply_by_3"
+    caregivers: "multiply_by_2"
+    regular_contacts: "multiply_by_1"
+    unknown_numbers: "multiply_by_0.5"
+    
+  refresh_triggers:
+    - "launcher_home_opened"
+    - "app_resume"
+    - "notification_received"
+    - "call_state_changed"
+    - "sms_received"
+    
+  cache_duration: "5_minutes"
+  background_refresh: "every_15_minutes"
+
+offline_functionality:
+  local_data_access:
+    call_log: "read_device_call_log_directly"
+    sms_inbox: "read_device_sms_directly"
+    contact_names: "cached_contact_resolution"
+    
+  sync_behavior:
+    when_online: "validate_against_server_if_available"
+    conflict_resolution: "prefer_device_data_for_unread_counts"
+    
+  limitations:
+    - "cannot_mark_as_read_remotely"
+    - "caregiver_cannot_see_message_content"
+    - "no_real_time_sync_when_offline"
+
+user_interactions:
+  tap_behavior:
+    no_unread: "show_recent_calls_and_messages"
+    has_unread: "open_unified_unread_view"
+    
+  unified_unread_view:
+    layout: "chronological_list_calls_and_sms"
+    display_format:
+      - "contact_name_or_number"
+      - "message_preview_or_call_type"
+      - "timestamp_relative"
+      - "priority_indicator"
+      
+    actions_available:
+      - "call_back"
+      - "reply_to_sms"
+      - "mark_as_read"
+      - "add_to_contacts"
+      
+  accessibility:
+    content_description: "unread_count_with_breakdown"
+    tts_announcement: "You have X missed calls and Y unread messages"
+    large_text_support: true
+    high_contrast_compatible: true
+
+caregiver_integration:
+  visibility_to_caregiver:
+    unread_count: "visible_if_permission_granted"
+    message_content: "never_visible"
+    call_details: "caller_id_only_if_permitted"
+    
+  caregiver_notifications:
+    threshold_alerts:
+      high_unread_count: "more_than_10_unread"
+      priority_contact_missed: "emergency_contact_or_caregiver_tried_to_reach"
+      prolonged_unread: "unread_items_older_than_24_hours"
+      
+    notification_content:
+      - "unread_count_summary"
+      - "priority_contact_indicators"
+      - "no_message_content_shared"
+      
+  caregiver_actions:
+    allowed:
+      - "see_unread_count_trends"
+      - "receive_alerts_about_missed_important_calls"
+      - "help_user_understand_how_to_check_messages"
+      
+    not_allowed:
+      - "read_message_content"
+      - "mark_messages_as_read"
+      - "delete_messages_or_call_logs"
+
+privacy_and_security:
+  data_protection:
+    message_content: "never_stored_in_tile_cache"
+    call_content: "duration_and_caller_id_only"
+    encryption: "local_cache_encrypted_with_device_key"
+    
+  user_control:
+    disable_tile: "user_can_disable_in_pin_protected_settings"
+    privacy_mode: "show_count_only_no_details"
+    contact_filtering: "exclude_specific_contacts_from_count"
+    
+  compliance:
+    gdpr: "user_consent_required_for_call_log_sms_access"
+    data_retention: "cache_cleared_after_30_days"
+    audit_trail: "log_access_patterns_for_security"
+
+error_handling:
+  permission_denied:
+    fallback_behavior: "show_generic_notification_tile"
+    user_message: "Grant permissions to see missed calls and messages"
+    recovery_action: "link_to_permission_settings"
+    
+  data_access_failure:
+    retry_logic: "exponential_backoff_up_to_5_attempts"
+    fallback_display: "show_last_known_count_with_warning"
+    user_notification: "Unable to check for new messages"
+    
+  performance_issues:
+    timeout_handling: "5_second_max_for_count_calculation"
+    memory_limits: "max_1000_recent_items_in_cache"
+    background_processing: "use_android_workmanager_for_updates"
+
+# Integration with user memory about caregiver offline status
+caregiver_status_integration:
+  when_caregiver_offline:
+    tile_behavior: "add_note_caregiver_not_available"
+    visual_indicator: "small_offline_icon_in_corner"
+    user_message: "Your caregiver is currently offline"
+    
+  when_caregiver_online:
+    tile_behavior: "normal_operation"
+    sync_opportunity: "update_caregiver_with_unread_summary"

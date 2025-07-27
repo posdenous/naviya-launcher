@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Naviya Launcher",
+    "tagline": "مساعدك المفيد"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "apps": "التطبيقات",
+    "contacts": "جهات الاتصال",
+    "settings": "الإعدادات"
+  },
+  "buttons": {
+    "get_started": "ابدأ",
+    "continue": "متابعة",
+    "skip": "تخطي",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "emergency": "طوارئ",
+    "help": "مساعدة"
+  },
+  "onboarding": {
+    "welcome": "مرحباً بك في Naviya",
+    "welcome_message": "دعنا نقوم بإعداد جهازك ليكون سهل الاستخدام وآمن.",
+    "language_selection": "اختر لغتك",
+    "accessibility_title": "إعدادات إمكانية الوصول",
+    "accessibility_message": "خصص تجربتك",
+    "caregiver_setup": "الاتصال بمقدم الرعاية",
+    "caregiver_optional": "هذه الخطوة اختيارية ويمكن القيام بها لاحقاً",
+    "emergency_contacts": "جهات اتصال الطوارئ",
+    "emergency_required": "مطلوب جهة اتصال طوارئ واحدة على الأقل"
+  },
+  "emergency": {
+    "sos_button": "SOS",
+    "emergency_alert": "تنبيه طوارئ",
+    "confirmation": "هل أنت متأكد؟ سيتم الاتصال بخدمات الطوارئ.",
+    "countdown": "سيتم إرسال التنبيه خلال {seconds} ثانية...",
+    "alert_sent": "تم إرسال تنبيه الطوارئ",
+    "contacting": "جاري الاتصال بجهات اتصال الطوارئ..."
+  },
+  "caregiver": {
+    "pairing_code": "رمز الاقتران",
+    "enter_code": "أدخل الرمز المكون من 6 أرقام المقدم من مقدم الرعاية",
+    "connection_pending": "الاتصال في انتظار الموافقة",
+    "connected": "متصل بمقدم الرعاية",
+    "permissions": "الأذونات",
+    "manage_connection": "إدارة الاتصال"
+  },
+  "settings": {
+    "language": "اللغة",
+    "theme": "المظهر",
+    "font_size": "حجم الخط",
+    "accessibility": "إمكانية الوصول",
+    "emergency_contacts": "جهات اتصال الطوارئ",
+    "caregiver_connections": "اتصالات مقدم الرعاية",
+    "privacy": "الخصوصية",
+    "about": "حول"
+  },
+  "errors": {
+    "network_error": "خطأ في اتصال الشبكة",
+    "invalid_code": "رمز اقتران غير صالح",
+    "contact_failed": "فشل في الاتصال بخدمات الطوارئ",
+    "permission_denied": "تم رفض الإذن",
+    "unknown_error": "حدث خطأ غير متوقع"
+  },
+  "offline": {
+    "status": "غير متصل",
+    "limited_functionality": "بعض الميزات غير متاحة في وضع عدم الاتصال",
+    "reconnecting": "جاري إعادة الاتصال...",
+    "back_online": "متصل مرة أخرى"
+  }
+}

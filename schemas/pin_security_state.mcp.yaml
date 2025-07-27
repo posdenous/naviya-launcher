@@ -1,0 +1,616 @@
+name: "PIN Security State Schema"
+version: "1.0.0"
+description: "MCP schema for PIN-protected settings, lockout management, and recovery methods"
+
+schema:
+  type: "object"
+  properties:
+    security_id:
+      type: "string"
+      description: "Unique identifier for this security state"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "Associated user profile ID"
+      format: "uuid"
+      
+    # PIN configuration and storage
+    pin_configuration:
+      type: "object"
+      properties:
+        pin_hash:
+          type: "string"
+          description: "Salted hash of PIN (never store plain text)"
+          minLength: 64
+          maxLength: 128
+          
+        salt:
+          type: "string"
+          description: "Salt used for PIN hashing"
+          minLength: 32
+          maxLength: 64
+          
+        hash_algorithm:
+          type: "string"
+          enum: ["SHA256", "PBKDF2", "Argon2"]
+          default: "PBKDF2"
+          
+        pin_length:
+          type: "integer"
+          minimum: 4
+          maximum: 6
+          description: "Length of user's PIN"
+          
+        pin_created_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When PIN was first created"
+          
+        pin_last_changed:
+          type: "string"
+          format: "date-time"
+          description: "When PIN was last changed"
+          
+        pin_change_required:
+          type: "boolean"
+          description: "Whether user must change PIN on next access"
+          default: false
+          
+        pin_expiry_enabled:
+          type: "boolean"
+          description: "Whether PIN expires after a period"
+          default: false
+          
+        pin_expiry_days:
+          type: "integer"
+          minimum: 30
+          maximum: 365
+          description: "Days after which PIN expires"
+          default: 90
+          
+    # Authentication attempts and lockout
+    authentication_state:
+      type: "object"
+      properties:
+        current_session_active:
+          type: "boolean"
+          description: "Whether user is currently authenticated"
+          default: false
+          
+        session_start_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When current session started"
+          
+        session_duration_minutes:
+          type: "integer"
+          minimum: 1
+          maximum: 60
+          description: "How long session remains active"
+          default: 5
+          
+        session_auto_extend:
+          type: "boolean"
+          description: "Whether session extends with user activity"
+          default: true
+          
+        consecutive_failed_attempts:
+          type: "integer"
+          minimum: 0
+          description: "Number of consecutive failed PIN attempts"
+          default: 0
+          
+        max_failed_attempts:
+          type: "integer"
+          minimum: 3
+          maximum: 10
+          description: "Maximum failed attempts before lockout"
+          default: 3
+          
+        lockout_active:
+          type: "boolean"
+          description: "Whether account is currently locked out"
+          default: false
+          
+        lockout_start_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When current lockout started"
+          
+        lockout_duration_minutes:
+          type: "integer"
+          minimum: 15
+          maximum: 1440  # 24 hours
+          description: "Duration of current lockout"
+          default: 15
+          
+        lockout_escalation_enabled:
+          type: "boolean"
+          description: "Whether lockout duration increases with repeated failures"
+          default: true
+          
+    # Failed attempt history
+    attempt_history:
+      type: "array"
+      description: "Recent authentication attempts for security analysis"
+      items:
+        type: "object"
+        properties:
+          attempt_id:
+            type: "string"
+            format: "uuid"
+          attempt_timestamp:
+            type: "string"
+            format: "date-time"
+          attempt_result:
+            type: "string"
+            enum: ["success", "failed_wrong_pin", "failed_lockout", "failed_expired"]
+          attempted_pin_length:
+            type: "integer"
+            minimum: 1
+            maximum: 10
+            description: "Length of attempted PIN (for pattern analysis)"
+          time_taken_seconds:
+            type: "number"
+            minimum: 0
+            description: "Time taken to enter PIN"
+          device_context:
+            type: "object"
+            properties:
+              battery_level:
+                type: "integer"
+                minimum: 0
+                maximum: 100
+              screen_brightness:
+                type: "integer"
+                minimum: 0
+                maximum: 100
+              accessibility_services_active:
+                type: "boolean"
+          suspicious_activity:
+            type: "boolean"
+            description: "Whether attempt shows signs of automated attack"
+            default: false
+          user_assistance_used:
+            type: "boolean"
+            description: "Whether user used accessibility features"
+            default: false
+        required: ["attempt_id", "attempt_timestamp", "attempt_result"]
+      maxItems: 50  # Keep last 50 attempts for analysis
+      
+    # Protected features and permissions
+    protected_features:
+      type: "object"
+      properties:
+        caregiver_management:
+          type: "object"
+          properties:
+            pin_required:
+              type: "boolean"
+              default: true
+            last_access_timestamp:
+              type: "string"
+              format: "date-time"
+            access_count:
+              type: "integer"
+              minimum: 0
+              default: 0
+              
+        emergency_settings:
+          type: "object"
+          properties:
+            pin_required:
+              type: "boolean"
+              default: true
+            emergency_bypass_enabled:
+              type: "boolean"
+              description: "Whether emergency contacts can bypass PIN"
+              default: false
+            last_access_timestamp:
+              type: "string"
+              format: "date-time"
+              
+        app_management:
+          type: "object"
+          properties:
+            pin_required:
+              type: "boolean"
+              default: true
+            installation_pin_required:
+              type: "boolean"
+              default: true
+            uninstall_pin_required:
+              type: "boolean"
+              default: true
+            last_access_timestamp:
+              type: "string"
+              format: "date-time"
+              
+        launcher_configuration:
+          type: "object"
+          properties:
+            pin_required:
+              type: "boolean"
+              default: true
+            layout_changes_pin_required:
+              type: "boolean"
+              default: true
+            accessibility_changes_pin_required:
+              type: "boolean"
+              default: false  # Accessibility should be easy to access
+            last_access_timestamp:
+              type: "string"
+              format: "date-time"
+              
+        security_settings:
+          type: "object"
+          properties:
+            pin_required:
+              type: "boolean"
+              default: true
+            pin_change_requires_old_pin:
+              type: "boolean"
+              default: true
+            factory_reset_pin_required:
+              type: "boolean"
+              default: true
+            last_access_timestamp:
+              type: "string"
+              format: "date-time"
+              
+    # Recovery methods and backup access
+    recovery_methods:
+      type: "object"
+      properties:
+        primary_recovery:
+          type: "object"
+          properties:
+            method_type:
+              type: "string"
+              enum: ["emergency_contact", "caregiver_verification", "security_questions"]
+              default: "emergency_contact"
+            method_enabled:
+              type: "boolean"
+              default: true
+            emergency_contact_phone:
+              type: "string"
+              description: "Phone number for emergency contact verification"
+            emergency_contact_name:
+              type: "string"
+              description: "Name of emergency contact"
+            verification_code_length:
+              type: "integer"
+              minimum: 4
+              maximum: 8
+              default: 6
+            last_used_timestamp:
+              type: "string"
+              format: "date-time"
+            success_count:
+              type: "integer"
+              minimum: 0
+              default: 0
+            failure_count:
+              type: "integer"
+              minimum: 0
+              default: 0
+              
+        secondary_recovery:
+          type: "object"
+          properties:
+            method_type:
+              type: "string"
+              enum: ["caregiver_remote", "backup_codes", "biometric_fallback"]
+              default: "caregiver_remote"
+            method_enabled:
+              type: "boolean"
+              default: true
+            caregiver_id:
+              type: "string"
+              format: "uuid"
+              description: "ID of caregiver who can authorize recovery"
+            backup_codes_generated:
+              type: "boolean"
+              description: "Whether backup codes have been generated"
+              default: false
+            backup_codes_used_count:
+              type: "integer"
+              minimum: 0
+              maximum: 10
+              default: 0
+            last_used_timestamp:
+              type: "string"
+              format: "date-time"
+              
+        emergency_recovery:
+          type: "object"
+          properties:
+            factory_reset_enabled:
+              type: "boolean"
+              description: "Whether factory reset is available as last resort"
+              default: true
+            data_preservation_enabled:
+              type: "boolean"
+              description: "Whether to preserve emergency data during reset"
+              default: true
+            confirmation_required:
+              type: "boolean"
+              description: "Whether multiple confirmations are required"
+              default: true
+            caregiver_notification_required:
+              type: "boolean"
+              description: "Whether caregiver must be notified"
+              default: true
+              
+    # Recovery attempt tracking
+    recovery_attempts:
+      type: "array"
+      description: "History of PIN recovery attempts"
+      items:
+        type: "object"
+        properties:
+          recovery_id:
+            type: "string"
+            format: "uuid"
+          attempt_timestamp:
+            type: "string"
+            format: "date-time"
+          recovery_method:
+            type: "string"
+            enum: ["emergency_contact", "caregiver_verification", "backup_code", "factory_reset"]
+          attempt_result:
+            type: "string"
+            enum: ["success", "failed_verification", "failed_timeout", "cancelled"]
+          verification_steps_completed:
+            type: "integer"
+            minimum: 0
+            description: "Number of verification steps completed"
+          total_verification_steps:
+            type: "integer"
+            minimum: 1
+            description: "Total verification steps required"
+          time_taken_minutes:
+            type: "integer"
+            minimum: 0
+            description: "Time taken for recovery attempt"
+          caregiver_involved:
+            type: "boolean"
+            description: "Whether caregiver was involved in recovery"
+            default: false
+          emergency_contact_reached:
+            type: "boolean"
+            description: "Whether emergency contact was successfully reached"
+            default: false
+        required: ["recovery_id", "attempt_timestamp", "recovery_method", "attempt_result"]
+      maxItems: 20  # Keep last 20 recovery attempts
+      
+    # Security monitoring and alerts
+    security_monitoring:
+      type: "object"
+      properties:
+        suspicious_activity_detection:
+          type: "boolean"
+          description: "Whether to monitor for suspicious PIN attempts"
+          default: true
+          
+        brute_force_protection:
+          type: "boolean"
+          description: "Whether brute force protection is active"
+          default: true
+          
+        rate_limiting_active:
+          type: "boolean"
+          description: "Whether rate limiting is enforced"
+          default: true
+          
+        minimum_attempt_interval_seconds:
+          type: "integer"
+          minimum: 1
+          maximum: 60
+          description: "Minimum time between PIN attempts"
+          default: 5
+          
+        caregiver_alert_threshold:
+          type: "integer"
+          minimum: 2
+          maximum: 10
+          description: "Failed attempts before alerting caregiver"
+          default: 3
+          
+        caregiver_alerts_enabled:
+          type: "boolean"
+          description: "Whether to alert caregiver of security events"
+          default: true
+          
+        last_caregiver_alert:
+          type: "string"
+          format: "date-time"
+          description: "When caregiver was last alerted"
+          
+        security_log_retention_days:
+          type: "integer"
+          minimum: 7
+          maximum: 90
+          description: "Days to retain security logs"
+          default: 30
+          
+    # User experience and accessibility
+    user_experience:
+      type: "object"
+      properties:
+        large_buttons_enabled:
+          type: "boolean"
+          description: "Whether to use extra large PIN buttons"
+          default: true
+          
+        haptic_feedback_enabled:
+          type: "boolean"
+          description: "Whether to provide haptic feedback"
+          default: true
+          
+        audio_feedback_enabled:
+          type: "boolean"
+          description: "Whether to provide audio feedback"
+          default: false
+          
+        high_contrast_enabled:
+          type: "boolean"
+          description: "Whether to use high contrast PIN interface"
+          default: true
+          
+        voice_input_enabled:
+          type: "boolean"
+          description: "Whether voice PIN input is available"
+          default: false
+          
+        tts_announcements_enabled:
+          type: "boolean"
+          description: "Whether to announce PIN interface elements"
+          default: true
+          
+        entry_timeout_seconds:
+          type: "integer"
+          minimum: 30
+          maximum: 300
+          description: "Seconds allowed for PIN entry"
+          default: 60
+          
+        confirmation_dialogs_enabled:
+          type: "boolean"
+          description: "Whether to show confirmation for critical actions"
+          default: true
+          
+    # Integration with other systems
+    system_integration:
+      type: "object"
+      properties:
+        android_keystore_integration:
+          type: "boolean"
+          description: "Whether using Android Keystore for PIN storage"
+          default: true
+          
+        biometric_fallback_enabled:
+          type: "boolean"
+          description: "Whether fingerprint can be used instead of PIN"
+          default: false
+          
+        emergency_bypass_enabled:
+          type: "boolean"
+          description: "Whether SOS button bypasses PIN protection"
+          default: true
+          
+        caregiver_remote_unlock_enabled:
+          type: "boolean"
+          description: "Whether caregiver can remotely unlock settings"
+          default: true
+          
+        crash_recovery_integration:
+          type: "boolean"
+          description: "Whether PIN system integrates with crash recovery"
+          default: true
+          
+    # Privacy and compliance
+    privacy_settings:
+      type: "object"
+      properties:
+        pin_attempt_logging_enabled:
+          type: "boolean"
+          description: "Whether to log PIN attempts (timing only, not PINs)"
+          default: true
+          
+        recovery_attempt_logging_enabled:
+          type: "boolean"
+          description: "Whether to log recovery attempts"
+          default: true
+          
+        caregiver_visibility_level:
+          type: "string"
+          enum: ["none", "alerts_only", "summary", "detailed"]
+          description: "What PIN security info caregiver can see"
+          default: "alerts_only"
+          
+        data_encryption_enabled:
+          type: "boolean"
+          description: "Whether PIN-related data is encrypted"
+          default: true
+          
+        gdpr_compliance_enabled:
+          type: "boolean"
+          description: "Whether GDPR compliance features are active"
+          default: true
+          
+        audit_trail_enabled:
+          type: "boolean"
+          description: "Whether to maintain audit trail"
+          default: true
+          
+    # State metadata
+    state_metadata:
+      type: "object"
+      properties:
+        schema_version:
+          type: "string"
+          default: "1.0.0"
+        android_version:
+          type: "string"
+        app_version:
+          type: "string"
+        device_model:
+          type: "string"
+        security_patch_level:
+          type: "string"
+          description: "Android security patch level"
+        last_backup_timestamp:
+          type: "string"
+          format: "date-time"
+        sync_status:
+          type: "string"
+          enum: ["synced", "pending", "failed", "offline"]
+          default: "pending"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+      
+  required: [
+    "security_id",
+    "user_id",
+    "pin_configuration",
+    "authentication_state",
+    "protected_features",
+    "recovery_methods",
+    "created_at"
+  ]
+  
+# Validation rules for PIN security state
+validation_rules:
+  - "PIN hash must never be empty if PIN is configured"
+  - "Salt must be unique and cryptographically secure"
+  - "Session duration must be reasonable (1-60 minutes)"
+  - "Lockout duration must escalate with repeated failures"
+  - "Recovery methods must have at least one enabled option"
+  - "Failed attempt count must reset after successful authentication"
+  - "Emergency contact must be valid phone number if method enabled"
+  - "Caregiver ID must exist if caregiver recovery is enabled"
+
+# Android-specific constraints
+android_constraints:
+  security_requirements:
+    keystore_hardware_backed: true
+    pin_storage_encrypted: true
+    secure_random_salt: true
+    
+  performance_requirements:
+    pin_verification_time_ms: 500
+    lockout_check_time_ms: 100
+    recovery_flow_load_time_ms: 2000
+    
+  accessibility_requirements:
+    min_touch_target_dp: 48
+    high_contrast_support: true
+    tts_integration: true
+    voice_input_support: true

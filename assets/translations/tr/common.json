@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Naviya Launcher",
+    "tagline": "Yardımcı asistanınız"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "apps": "Uygulamalar",
+    "contacts": "Kişiler",
+    "settings": "Ayarlar"
+  },
+  "buttons": {
+    "get_started": "Başlayın",
+    "continue": "Devam Et",
+    "skip": "Atla",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "emergency": "Acil Durum",
+    "help": "Yardım"
+  },
+  "onboarding": {
+    "welcome": "Naviya'ya Hoş Geldiniz",
+    "welcome_message": "Cihazınızı kolay ve güvenli kullanım için ayarlayalım.",
+    "language_selection": "Dilinizi seçin",
+    "accessibility_title": "Erişilebilirlik Ayarları",
+    "accessibility_message": "Deneyiminizi özelleştirin",
+    "caregiver_setup": "Bakıcı ile Bağlantı Kurun",
+    "caregiver_optional": "Bu adım isteğe bağlıdır ve daha sonra yapılabilir",
+    "emergency_contacts": "Acil Durum Kişileri",
+    "emergency_required": "En az bir acil durum kişisi gereklidir"
+  },
+  "emergency": {
+    "sos_button": "SOS",
+    "emergency_alert": "Acil Durum Alarmı",
+    "confirmation": "Emin misiniz? Bu acil servislerle iletişim kuracak.",
+    "countdown": "Alarm {seconds} saniye içinde gönderilecek...",
+    "alert_sent": "Acil durum alarmı gönderildi",
+    "contacting": "Acil durum kişileriyle iletişim kuruluyor..."
+  },
+  "caregiver": {
+    "pairing_code": "Eşleştirme Kodu",
+    "enter_code": "Bakıcınız tarafından sağlanan 6 haneli kodu girin",
+    "connection_pending": "Bağlantı onay bekliyor",
+    "connected": "Bakıcı ile bağlandı",
+    "permissions": "İzinler",
+    "manage_connection": "Bağlantıyı Yönet"
+  },
+  "settings": {
+    "language": "Dil",
+    "theme": "Tema",
+    "font_size": "Yazı Boyutu",
+    "accessibility": "Erişilebilirlik",
+    "emergency_contacts": "Acil Durum Kişileri",
+    "caregiver_connections": "Bakıcı Bağlantıları",
+    "privacy": "Gizlilik",
+    "about": "Hakkında"
+  },
+  "errors": {
+    "network_error": "Ağ bağlantısı hatası",
+    "invalid_code": "Geçersiz eşleştirme kodu",
+    "contact_failed": "Acil servislerle iletişim kurulamadı",
+    "permission_denied": "İzin reddedildi",
+    "unknown_error": "Beklenmeyen bir hata oluştu"
+  },
+  "offline": {
+    "status": "Çevrimdışı",
+    "limited_functionality": "Bazı özellikler çevrimdışıyken kullanılamaz",
+    "reconnecting": "Yeniden bağlanıyor...",
+    "back_online": "Tekrar çevrimiçi"
+  }
+}

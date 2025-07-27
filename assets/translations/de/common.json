@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Naviya Launcher",
+    "tagline": "Ihr hilfreicher Assistent"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "apps": "Apps",
+    "contacts": "Kontakte",
+    "settings": "Einstellungen"
+  },
+  "buttons": {
+    "get_started": "Loslegen",
+    "continue": "Weiter",
+    "skip": "Überspringen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "emergency": "Notfall",
+    "help": "Hilfe"
+  },
+  "onboarding": {
+    "welcome": "Willkommen bei Naviya",
+    "welcome_message": "Lassen Sie uns Ihr Gerät einrichten, damit es einfach und sicher zu verwenden ist.",
+    "language_selection": "Wählen Sie Ihre Sprache",
+    "accessibility_title": "Barrierefreiheit",
+    "accessibility_message": "Passen Sie Ihre Erfahrung an",
+    "caregiver_setup": "Mit einer Pflegekraft verbinden",
+    "caregiver_optional": "Dieser Schritt ist optional und kann später durchgeführt werden",
+    "emergency_contacts": "Notfallkontakte",
+    "emergency_required": "Mindestens ein Notfallkontakt ist erforderlich"
+  },
+  "emergency": {
+    "sos_button": "SOS",
+    "emergency_alert": "Notfallalarm",
+    "confirmation": "Sind Sie sicher? Dies wird die Rettungsdienste kontaktieren.",
+    "countdown": "Alarm wird in {seconds} Sekunden gesendet...",
+    "alert_sent": "Notfallalarm gesendet",
+    "contacting": "Kontaktiere Notfallkontakte..."
+  },
+  "caregiver": {
+    "pairing_code": "Kopplungscode",
+    "enter_code": "Geben Sie den 6-stelligen Code ein, den Ihre Pflegekraft bereitgestellt hat",
+    "connection_pending": "Verbindung wartet auf Genehmigung",
+    "connected": "Mit Pflegekraft verbunden",
+    "permissions": "Berechtigungen",
+    "manage_connection": "Verbindung verwalten"
+  },
+  "settings": {
+    "language": "Sprache",
+    "theme": "Design",
+    "font_size": "Schriftgröße",
+    "accessibility": "Barrierefreiheit",
+    "emergency_contacts": "Notfallkontakte",
+    "caregiver_connections": "Pflegekraft-Verbindungen",
+    "privacy": "Datenschutz",
+    "about": "Über"
+  },
+  "errors": {
+    "network_error": "Netzwerkverbindungsfehler",
+    "invalid_code": "Ungültiger Kopplungscode",
+    "contact_failed": "Kontakt zu Rettungsdiensten fehlgeschlagen",
+    "permission_denied": "Berechtigung verweigert",
+    "unknown_error": "Ein unerwarteter Fehler ist aufgetreten"
+  },
+  "offline": {
+    "status": "Offline",
+    "limited_functionality": "Einige Funktionen sind offline nicht verfügbar",
+    "reconnecting": "Verbindung wird wiederhergestellt...",
+    "back_online": "Wieder online"
+  }
+}

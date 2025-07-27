@@ -1,0 +1,116 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.9.21"
+    ext.hilt_version = "2.48.1"
+    ext.nav_version = "2.7.6"
+    ext.room_version = "2.6.1"
+    ext.work_version = "2.9.0"
+    ext.lifecycle_version = "2.7.0"
+    
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'com.google.gms:google-services:4.4.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+plugins {
+    id 'com.android.application' version '8.2.0' apply false
+    id 'com.android.library' version '8.2.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.21' apply false
+    id 'com.google.dagger.hilt.android' version '2.48.1' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+// Configuration for elderly user accessibility and performance
+ext {
+    // Minimum SDK versions for elderly device compatibility
+    minSdkVersion = 26  // Android 8.0 for better accessibility support
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+    
+    // Accessibility and elderly user optimizations
+    elderlyUserOptimizations = [
+        fontScale: 1.6f,
+        minTouchTarget: 48, // dp
+        animationDuration: 300, // ms - slower for elderly users
+        timeoutDuration: 10000, // ms - longer timeouts
+        crashThreshold: 3,
+        pinMaxAttempts: 3
+    ]
+    
+    // Supported languages for multilingual elderly users
+    supportedLanguages = ['en', 'de', 'tr', 'ar', 'uk']
+    
+    // Firebase and backend configuration
+    firebaseConfig = [
+        projectId: 'naviya-launcher',
+        databaseUrl: 'https://naviya-launcher-default-rtdb.firebaseio.com',
+        storageBucket: 'naviya-launcher.appspot.com'
+    ]
+}
+
+// Task to clean build directories
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+// Custom task for elderly user testing builds
+task buildElderlyTestVersion {
+    group = 'naviya'
+    description = 'Build version optimized for elderly user testing'
+    
+    doLast {
+        println "Building Naviya Launcher for elderly user testing..."
+        println "- Accessibility features: ENABLED"
+        println "- Large fonts: ${elderlyUserOptimizations.fontScale}x"
+        println "- Touch targets: ${elderlyUserOptimizations.minTouchTarget}dp minimum"
+        println "- Supported languages: ${supportedLanguages.join(', ')}"
+        println "- Crash recovery: ENABLED (threshold: ${elderlyUserOptimizations.crashThreshold})"
+    }
+}
+
+// Custom task for caregiver demo builds
+task buildCaregiverDemo {
+    group = 'naviya'
+    description = 'Build demo version for caregiver presentations'
+    
+    doLast {
+        println "Building Naviya Launcher caregiver demo..."
+        println "- Demo mode: ENABLED"
+        println "- Caregiver features: HIGHLIGHTED"
+        println "- Sample data: INCLUDED"
+    }
+}
+
+// Gradle configuration for consistent builds
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+}
+
+// Configuration for ProGuard/R8 optimization
+android {
+    buildTypes {
+        release {
+            // Elderly user safety: keep crash reporting and accessibility classes
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Keep accessibility and TTS classes for elderly users
+            consumerProguardFiles 'consumer-rules.pro'
+        }
+    }
+}

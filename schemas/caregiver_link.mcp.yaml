@@ -1,0 +1,222 @@
+name: "Caregiver Link Schema"
+version: "1.0.0"
+description: "MCP schema for caregiver-user connection data structure"
+
+schema:
+  type: "object"
+  properties:
+    link_id:
+      type: "string"
+      description: "Unique identifier for the caregiver-user link"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "ID of the user being cared for"
+      format: "uuid"
+      
+    caregiver_id:
+      type: "string"
+      description: "ID of the caregiver"
+      format: "uuid"
+      
+    caregiver_info:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          maxLength: 100
+        email:
+          type: "string"
+          format: "email"
+        phone_number:
+          type: "string"
+          pattern: "^[+]?[0-9\\s\\-\\(\\)]+$"
+        profile_photo:
+          type: "string"
+          format: "uri"
+        organization:
+          type: "string"
+          maxLength: 100
+        role:
+          type: "string"
+          enum: ["family_member", "professional_caregiver", "healthcare_provider", "friend", "other"]
+        certification:
+          type: "string"
+          maxLength: 200
+      required: ["name", "email"]
+      
+    connection_details:
+      type: "object"
+      properties:
+        pairing_code:
+          type: "string"
+          description: "6-digit alphanumeric pairing code"
+          pattern: "^[A-Z0-9]{6}$"
+        pairing_code_expires:
+          type: "string"
+          format: "date-time"
+        connection_status:
+          type: "string"
+          enum: ["pending", "active", "paused", "terminated"]
+          default: "pending"
+        connection_date:
+          type: "string"
+          format: "date-time"
+        last_activity:
+          type: "string"
+          format: "date-time"
+        verification_method:
+          type: "string"
+          enum: ["code_only", "video_call", "in_person", "phone_call"]
+          default: "code_only"
+        verification_completed:
+          type: "boolean"
+          default: false
+          
+    permissions:
+      type: "object"
+      properties:
+        granted_permissions:
+          type: "array"
+          items:
+            type: "string"
+            enum: [
+              "view_status",
+              "emergency_notifications",
+              "send_messages",
+              "view_activity_summary",
+              "remote_assistance",
+              "location_sharing_emergency",
+              "location_sharing_always",
+              "schedule_reminders",
+              "medication_alerts",
+              "video_call_initiation",
+              "app_launch_assistance"
+            ]
+          default: ["view_status", "emergency_notifications", "send_messages"]
+        permission_history:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              permission:
+                type: "string"
+              action:
+                type: "string"
+                enum: ["granted", "revoked"]
+              timestamp:
+                type: "string"
+                format: "date-time"
+              granted_by:
+                type: "string"
+                enum: ["user", "caregiver", "system"]
+        last_permission_update:
+          type: "string"
+          format: "date-time"
+          
+    communication_preferences:
+      type: "object"
+      properties:
+        notification_methods:
+          type: "array"
+          items:
+            type: "string"
+            enum: ["push_notification", "sms", "email", "phone_call"]
+          default: ["push_notification"]
+        quiet_hours:
+          type: "object"
+          properties:
+            enabled:
+              type: "boolean"
+              default: false
+            start_time:
+              type: "string"
+              pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+            end_time:
+              type: "string"
+              pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+            timezone:
+              type: "string"
+        emergency_override:
+          type: "boolean"
+          description: "Allow emergency notifications during quiet hours"
+          default: true
+        language_preference:
+          type: "string"
+          enum: ["de", "en", "tr", "ar", "ua"]
+          default: "en"
+          
+    activity_log:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          activity_id:
+            type: "string"
+            format: "uuid"
+          activity_type:
+            type: "string"
+            enum: [
+              "connection_established",
+              "permission_changed",
+              "message_sent",
+              "emergency_alert",
+              "status_check",
+              "remote_assistance",
+              "video_call",
+              "connection_paused",
+              "connection_resumed"
+            ]
+          timestamp:
+            type: "string"
+            format: "date-time"
+          details:
+            type: "object"
+          initiated_by:
+            type: "string"
+            enum: ["user", "caregiver", "system"]
+        required: ["activity_id", "activity_type", "timestamp"]
+        
+    security:
+      type: "object"
+      properties:
+        encryption_key:
+          type: "string"
+          description: "Encrypted communication key"
+        last_security_update:
+          type: "string"
+          format: "date-time"
+        failed_verification_attempts:
+          type: "integer"
+          minimum: 0
+          default: 0
+        security_alerts:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              alert_type:
+                type: "string"
+              timestamp:
+                type: "string"
+                format: "date-time"
+              resolved:
+                type: "boolean"
+                default: false
+                
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+    
+  required: ["link_id", "user_id", "caregiver_id", "caregiver_info", "connection_details", "created_at"]
+  
+validation_rules:
+  - Pairing code must be unique and not expired
+  - At least one notification method must be selected
+  - Quiet hours start time must be before end time
+  - Emergency override cannot be disabled for emergency notifications
+  - Connection must be verified before becoming active

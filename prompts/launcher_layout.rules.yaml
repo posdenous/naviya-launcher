@@ -1,0 +1,157 @@
+name: "Launcher Layout Rules"
+version: "2.0.0"
+description: "Android launcher UI layout and design rules for elderly users"
+
+target_users:
+  - Seniors 60+ with cognitive, visual, or motor limitations
+  - Non-tech-savvy adults needing simplified mobile access
+  - Caregivers remotely supporting elderly users
+  - Multilingual migrants in DE, EN, TR, AR, UA-speaking households
+
+layout_principles:
+  - Simplified 2x3 grid layout for reduced cognitive load
+  - Extra large, accessible touch targets (minimum 48dp)
+  - High contrast design for visual impairments
+  - Consistent spacing and clear visual hierarchy
+  - Android accessibility service integration
+
+launcher_grid:
+  layout:
+    columns: 2
+    rows: 3
+    total_tiles: 6
+  
+  tile_specifications:
+    icon_size_dp: 64
+    padding_dp: 16
+    minimum_touch_target_dp: 48
+    show_labels: true
+    label_override_support: true  # "Talk to Anna" instead of "WhatsApp"
+    
+  tile_types:
+    - app_shortcuts (user/caregiver controlled whitelist)
+    - unread_notifications (calls + SMS combined)
+    - sos_emergency_button
+    - settings_access (PIN-protected)
+    - phone_dialer (always available)
+    - custom_caregiver_tiles
+
+main_interface:
+  header:
+    height_dp: 56
+    elements:
+      - current_time (large, accessible font)
+      - battery_indicator
+      - network_status
+      - offline_mode_banner (when applicable)
+    
+  grid_area:
+    margin_dp: 16
+    tile_spacing_dp: 12
+    background_color: "high_contrast_compatible"
+    
+  footer:
+    height_dp: 48
+    elements:
+      - language_switcher (if multilingual setup)
+      - help_access
+      - caregiver_status_indicator
+
+android_specifications:
+  api_compatibility:
+    minimum_sdk: 29  # Android 10
+    target_sdk: 33   # Android 13
+    compile_sdk: 34
+    
+  design_specifications:
+    colors:
+      primary: "#2E7D32"      # Green (accessible)
+      secondary: "#1976D2"    # Blue
+      emergency: "#D32F2F"    # Red for SOS
+      warning: "#FF9800"      # Orange for alerts
+      background: "#FFFFFF"   # Pure white for high contrast
+      background_alt: "#F5F5F5"  # Light gray
+      text_primary: "#000000" # Pure black for maximum contrast
+      text_secondary: "#424242" # Dark gray
+      offline_overlay: "#9E9E9E" # Gray overlay for offline mode
+      
+    typography:
+      primary_font: "Roboto"
+      fallback_fonts: ["sans-serif"]
+      font_scale_default: 1.6  # 60% larger than standard
+      tile_label_size_sp: 18
+      header_text_size_sp: 20
+      button_text_size_sp: 16
+      
+    spacing:
+      base_unit_dp: 8
+      tile_padding_dp: 16
+      grid_margin_dp: 16
+      tile_spacing_dp: 12
+      
+    touch_targets:
+      minimum_size_dp: 48
+      recommended_size_dp: 64
+      tile_size_dp: 120  # Including padding
+      sos_button_size_dp: 80
+
+accessibility_defaults:
+  font_scale: 1.6
+  tap_target_min_dp: 48
+  contrast_mode: "high"
+  onboarding_tts: true
+  
+accessibility_features:
+  wcag_compliance: "2.1 AA"
+  contrast_ratio_minimum: 4.5
+  android_features:
+    - TalkBack screen reader support
+    - Switch Access compatibility
+    - Voice Access integration
+    - Large text support
+    - High contrast mode
+    - Color inversion support
+    - Magnification gestures
+    
+  navigation_assistance:
+    - Focus indicators for all interactive elements
+    - Logical tab order
+    - Content descriptions for all UI elements
+    - Haptic feedback for button presses
+    - Audio cues for important actions
+    
+  error_prevention:
+    - Double-tap confirmation for critical actions
+    - Clear error messages with suggested solutions
+    - Undo functionality where appropriate
+    - PIN protection for sensitive settings
+    
+android_navigation:
+  back_button_behavior: "disabled_on_home"
+  app_exit: "double_tap_to_confirm"
+  home_button_override: true
+  recent_apps_disabled: true
+  
+recovery_mode:
+  crash_threshold: 3
+  safe_tiles: ["Phone", "Settings"]
+  reset_trigger: "long_press_home_icon"
+  recovery_ui: "simplified_layout_with_help_contact"
+  
+offline_mode_ui:
+  visual_indicators:
+    - gray_overlay_on_unavailable_tiles
+    - offline_banner_in_header
+    - network_status_icon
+  
+  available_functions:
+    - local_apps_launching
+    - emergency_sos (with offline fallback)
+    - phone_dialer
+    - settings_access
+    
+  disabled_functions:
+    - caregiver_communication
+    - app_downloads
+    - cloud_sync
+    - remote_assistance

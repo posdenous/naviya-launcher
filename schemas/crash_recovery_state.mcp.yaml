@@ -1,0 +1,539 @@
+name: "Crash Recovery State Schema"
+version: "1.0.0"
+description: "MCP schema for crash detection, recovery mode, and safe tiles state management"
+
+schema:
+  type: "object"
+  properties:
+    recovery_id:
+      type: "string"
+      description: "Unique identifier for this recovery state"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "Associated user profile ID"
+      format: "uuid"
+      
+    # Crash tracking and thresholds
+    crash_tracking:
+      type: "object"
+      properties:
+        current_crash_count:
+          type: "integer"
+          minimum: 0
+          description: "Number of crashes in current tracking period"
+          default: 0
+          
+        crash_threshold:
+          type: "integer"
+          minimum: 1
+          maximum: 10
+          description: "Number of crashes before safe mode activation"
+          default: 3
+          
+        tracking_period_hours:
+          type: "integer"
+          minimum: 1
+          maximum: 168  # 1 week
+          description: "Time window for counting crashes"
+          default: 24
+          
+        tracking_period_start:
+          type: "string"
+          format: "date-time"
+          description: "When current tracking period started"
+          
+        last_crash_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When most recent crash occurred"
+          
+        crash_threshold_exceeded:
+          type: "boolean"
+          description: "Whether crash threshold has been exceeded"
+          default: false
+          
+    # Individual crash records
+    crash_history:
+      type: "array"
+      description: "Recent crash events for analysis"
+      items:
+        type: "object"
+        properties:
+          crash_id:
+            type: "string"
+            format: "uuid"
+          crash_timestamp:
+            type: "string"
+            format: "date-time"
+          crash_type:
+            type: "string"
+            enum: ["launcher_crash", "app_crash", "system_crash", "memory_crash", "anr"]
+          severity:
+            type: "string"
+            enum: ["low", "medium", "high", "critical"]
+          stack_trace:
+            type: "string"
+            description: "Crash stack trace (truncated for storage)"
+            maxLength: 2000
+          device_state:
+            type: "object"
+            properties:
+              battery_level:
+                type: "integer"
+                minimum: 0
+                maximum: 100
+              memory_usage_mb:
+                type: "integer"
+                minimum: 0
+              cpu_usage_percent:
+                type: "integer"
+                minimum: 0
+                maximum: 100
+              network_status:
+                type: "string"
+                enum: ["connected", "disconnected", "limited"]
+          user_actions_before_crash:
+            type: "array"
+            items:
+              type: "string"
+            maxItems: 10
+            description: "Last 10 user actions before crash"
+          recovery_successful:
+            type: "boolean"
+            description: "Whether recovery from this crash was successful"
+            default: false
+          caregiver_notified:
+            type: "boolean"
+            description: "Whether caregiver was notified of this crash"
+            default: false
+        required: ["crash_id", "crash_timestamp", "crash_type", "severity"]
+      maxItems: 20  # Keep last 20 crashes for analysis
+      
+    # Recovery mode state
+    recovery_mode:
+      type: "object"
+      properties:
+        is_active:
+          type: "boolean"
+          description: "Whether recovery mode is currently active"
+          default: false
+          
+        activation_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When recovery mode was activated"
+          
+        activation_trigger:
+          type: "string"
+          enum: [
+            "crash_threshold_exceeded",
+            "manual_long_press",
+            "caregiver_remote_activation",
+            "system_instability"
+          ]
+          
+        activation_reason:
+          type: "string"
+          description: "Human-readable reason for activation"
+          maxLength: 200
+          
+        expected_duration_minutes:
+          type: "integer"
+          minimum: 10
+          maximum: 1440  # 24 hours
+          description: "Expected duration of recovery mode"
+          default: 60
+          
+        auto_exit_enabled:
+          type: "boolean"
+          description: "Whether recovery mode will exit automatically"
+          default: true
+          
+        manual_exit_allowed:
+          type: "boolean"
+          description: "Whether user can manually exit recovery mode"
+          default: false
+          
+        caregiver_exit_allowed:
+          type: "boolean"
+          description: "Whether caregiver can remotely exit recovery mode"
+          default: true
+          
+    # Safe tiles configuration
+    safe_tiles:
+      type: "object"
+      properties:
+        mandatory_tiles:
+          type: "array"
+          description: "Tiles that must always be available in recovery mode"
+          items:
+            type: "object"
+            properties:
+              position:
+                type: "integer"
+                minimum: 0
+                maximum: 3  # 2x2 grid in recovery mode
+              tile_type:
+                type: "string"
+                enum: [
+                  "phone_dialer",
+                  "settings_access", 
+                  "sos_emergency_button",
+                  "recovery_help"
+                ]
+              package_name:
+                type: "string"
+                description: "Android package name if applicable"
+              label:
+                type: "string"
+                maxLength: 15
+              always_functional:
+                type: "boolean"
+                default: true
+              priority:
+                type: "string"
+                enum: ["lowest", "low", "medium", "high", "highest"]
+                default: "high"
+            required: ["position", "tile_type", "label"]
+          minItems: 3  # At least Phone, Settings, SOS
+          maxItems: 4  # Maximum 4 tiles in 2x2 recovery grid
+          default:
+            - position: 0
+              tile_type: "phone_dialer"
+              package_name: "com.android.dialer"
+              label: "Phone"
+              always_functional: true
+              priority: "highest"
+            - position: 1
+              tile_type: "settings_access"
+              package_name: "com.android.settings"
+              label: "Settings"
+              always_functional: true
+              priority: "high"
+            - position: 2
+              tile_type: "sos_emergency_button"
+              label: "Emergency"
+              always_functional: true
+              priority: "highest"
+            - position: 3
+              tile_type: "recovery_help"
+              label: "Get Help"
+              always_functional: true
+              priority: "medium"
+              
+        disabled_features:
+          type: "array"
+          items:
+            type: "string"
+            enum: [
+              "app_installation",
+              "tile_customization",
+              "caregiver_pairing",
+              "advanced_settings",
+              "non_essential_apps",
+              "launcher_customization",
+              "app_whitelist_changes"
+            ]
+          default: [
+            "app_installation",
+            "tile_customization", 
+            "caregiver_pairing",
+            "advanced_settings",
+            "non_essential_apps"
+          ]
+          
+    # Recovery assistance and guidance
+    recovery_assistance:
+      type: "object"
+      properties:
+        user_guidance_shown:
+          type: "boolean"
+          description: "Whether recovery explanation was shown to user"
+          default: false
+          
+        guidance_message:
+          type: "string"
+          description: "Current guidance message for user"
+          default: "Your device had some problems. We've switched to safe mode to keep you safe."
+          
+        help_actions_available:
+          type: "array"
+          items:
+            type: "string"
+            enum: [
+              "contact_caregiver",
+              "wait_for_auto_recovery",
+              "use_basic_functions",
+              "restart_device",
+              "factory_reset_warning"
+            ]
+          default: [
+            "contact_caregiver",
+            "wait_for_auto_recovery",
+            "use_basic_functions"
+          ]
+          
+        caregiver_contacted:
+          type: "boolean"
+          description: "Whether caregiver has been notified"
+          default: false
+          
+        caregiver_response_received:
+          type: "boolean"
+          description: "Whether caregiver has responded to notification"
+          default: false
+          
+        user_assistance_requested:
+          type: "boolean"
+          description: "Whether user has requested help"
+          default: false
+          
+    # Recovery exit conditions and monitoring
+    exit_conditions:
+      type: "object"
+      properties:
+        stability_monitoring:
+          type: "object"
+          properties:
+            monitoring_active:
+              type: "boolean"
+              description: "Whether system stability is being monitored"
+              default: true
+              
+            stability_period_hours:
+              type: "integer"
+              minimum: 1
+              maximum: 48
+              description: "Hours of stability required before exit"
+              default: 24
+              
+            stability_start_timestamp:
+              type: "string"
+              format: "date-time"
+              description: "When stability monitoring period started"
+              
+            crashes_during_monitoring:
+              type: "integer"
+              minimum: 0
+              description: "Number of crashes during monitoring period"
+              default: 0
+              
+            stability_confirmed:
+              type: "boolean"
+              description: "Whether system stability has been confirmed"
+              default: false
+              
+        exit_approval:
+          type: "object"
+          properties:
+            user_requested_exit:
+              type: "boolean"
+              description: "Whether user has requested to exit recovery mode"
+              default: false
+              
+            caregiver_approved_exit:
+              type: "boolean"
+              description: "Whether caregiver has approved exit"
+              default: false
+              
+            automatic_exit_scheduled:
+              type: "boolean"
+              description: "Whether automatic exit is scheduled"
+              default: false
+              
+            scheduled_exit_timestamp:
+              type: "string"
+              format: "date-time"
+              description: "When automatic exit is scheduled"
+              
+    # Post-recovery monitoring
+    post_recovery:
+      type: "object"
+      properties:
+        monitoring_period_hours:
+          type: "integer"
+          minimum: 24
+          maximum: 168  # 1 week
+          description: "Hours to monitor after exiting recovery mode"
+          default: 48
+          
+        monitoring_start_timestamp:
+          type: "string"
+          format: "date-time"
+          description: "When post-recovery monitoring started"
+          
+        crash_sensitivity_multiplier:
+          type: "number"
+          minimum: 0.1
+          maximum: 1.0
+          description: "Multiplier for crash threshold during monitoring"
+          default: 0.5  # Lower threshold for re-entering recovery
+          
+        crashes_during_monitoring:
+          type: "integer"
+          minimum: 0
+          description: "Crashes during post-recovery monitoring"
+          default: 0
+          
+        monitoring_completed:
+          type: "boolean"
+          description: "Whether post-recovery monitoring is complete"
+          default: false
+          
+        user_feedback_collected:
+          type: "boolean"
+          description: "Whether user feedback about recovery was collected"
+          default: false
+          
+        system_optimizations_applied:
+          type: "boolean"
+          description: "Whether system optimizations were applied"
+          default: false
+          
+    # Integration with other systems
+    system_integration:
+      type: "object"
+      properties:
+        caregiver_notifications:
+          type: "object"
+          properties:
+            crash_alerts_enabled:
+              type: "boolean"
+              default: true
+            recovery_mode_alerts_enabled:
+              type: "boolean"
+              default: true
+            exit_notifications_enabled:
+              type: "boolean"
+              default: true
+            last_notification_timestamp:
+              type: "string"
+              format: "date-time"
+              
+        emergency_system_integration:
+          type: "object"
+          properties:
+            sos_always_functional:
+              type: "boolean"
+              description: "SOS button works even in recovery mode"
+              default: true
+            emergency_contacts_accessible:
+              type: "boolean"
+              description: "Emergency contacts always available"
+              default: true
+            location_services_active:
+              type: "boolean"
+              description: "Location services for emergencies"
+              default: true
+              
+    # Analytics and improvement
+    analytics:
+      type: "object"
+      properties:
+        recovery_effectiveness:
+          type: "object"
+          properties:
+            successful_recoveries:
+              type: "integer"
+              minimum: 0
+              description: "Number of successful recovery mode exits"
+              default: 0
+            failed_recoveries:
+              type: "integer"
+              minimum: 0
+              description: "Number of failed recovery attempts"
+              default: 0
+            average_recovery_duration_hours:
+              type: "number"
+              minimum: 0
+              description: "Average time spent in recovery mode"
+            user_satisfaction_rating:
+              type: "integer"
+              minimum: 1
+              maximum: 5
+              description: "User rating of recovery experience"
+              
+        crash_patterns:
+          type: "object"
+          properties:
+            most_common_crash_type:
+              type: "string"
+              enum: ["launcher_crash", "app_crash", "system_crash", "memory_crash", "anr"]
+            crash_time_patterns:
+              type: "array"
+              items:
+                type: "integer"
+                minimum: 0
+                maximum: 23
+              description: "Hours when crashes occur most frequently"
+            problematic_apps:
+              type: "array"
+              items:
+                type: "string"
+              description: "Apps that frequently cause crashes"
+              
+    # State metadata
+    state_metadata:
+      type: "object"
+      properties:
+        schema_version:
+          type: "string"
+          default: "1.0.0"
+        android_version:
+          type: "string"
+        app_version:
+          type: "string"
+        device_model:
+          type: "string"
+        last_backup_timestamp:
+          type: "string"
+          format: "date-time"
+        sync_status:
+          type: "string"
+          enum: ["synced", "pending", "failed", "offline"]
+          default: "pending"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+      
+  required: [
+    "recovery_id",
+    "user_id",
+    "crash_tracking",
+    "recovery_mode",
+    "safe_tiles",
+    "created_at"
+  ]
+  
+# Validation rules for crash recovery state
+validation_rules:
+  - "Crash count must not exceed threshold without recovery mode activation"
+  - "Safe tiles must include at least Phone, Settings, and SOS"
+  - "Recovery mode duration must be reasonable (10 minutes to 24 hours)"
+  - "Post-recovery monitoring period must be at least 24 hours"
+  - "Crash threshold must be between 1 and 10"
+  - "Tracking period must be between 1 hour and 1 week"
+  - "Safe tiles positions must be unique (0-3 for 2x2 grid)"
+
+# Android-specific constraints
+android_constraints:
+  performance_requirements:
+    crash_detection_latency_ms: 1000
+    recovery_mode_activation_ms: 5000
+    safe_tiles_load_time_ms: 2000
+    
+  storage_requirements:
+    max_crash_history_mb: 5
+    max_stack_trace_length: 2000
+    max_user_actions_stored: 10
+    
+  system_integration:
+    android_crash_reporting: true
+    system_stability_monitoring: true
+    memory_management_integration: true

@@ -1,0 +1,257 @@
+name: "SOS Event Log Schema"
+version: "1.0.0"
+description: "MCP schema for emergency SOS event logging and tracking"
+
+schema:
+  type: "object"
+  properties:
+    event_id:
+      type: "string"
+      description: "Unique identifier for the SOS event"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "ID of the user who triggered the SOS"
+      format: "uuid"
+      
+    event_details:
+      type: "object"
+      properties:
+        trigger_method:
+          type: "string"
+          enum: ["single_tap", "long_press", "voice_command", "hardware_button", "automatic"]
+        trigger_timestamp:
+          type: "string"
+          format: "date-time"
+        confirmation_required:
+          type: "boolean"
+        confirmation_provided:
+          type: "boolean"
+        confirmation_timestamp:
+          type: "string"
+          format: "date-time"
+        cancelled_by_user:
+          type: "boolean"
+          default: false
+        cancellation_timestamp:
+          type: "string"
+          format: "date-time"
+          
+    location_data:
+      type: "object"
+      properties:
+        location_available:
+          type: "boolean"
+        coordinates:
+          type: "object"
+          properties:
+            latitude:
+              type: "number"
+              minimum: -90
+              maximum: 90
+            longitude:
+              type: "number"
+              minimum: -180
+              maximum: 180
+            accuracy:
+              type: "number"
+              description: "Location accuracy in meters"
+        address:
+          type: "object"
+          properties:
+            street:
+              type: "string"
+            city:
+              type: "string"
+            state:
+              type: "string"
+            postal_code:
+              type: "string"
+            country:
+              type: "string"
+        location_timestamp:
+          type: "string"
+          format: "date-time"
+        location_source:
+          type: "string"
+          enum: ["gps", "network", "passive", "cached"]
+          
+    device_context:
+      type: "object"
+      properties:
+        device_id:
+          type: "string"
+        app_version:
+          type: "string"
+        os_version:
+          type: "string"
+        battery_level:
+          type: "integer"
+          minimum: 0
+          maximum: 100
+        network_status:
+          type: "string"
+          enum: ["online", "offline", "limited"]
+        signal_strength:
+          type: "integer"
+          minimum: 0
+          maximum: 100
+        screenshot_captured:
+          type: "boolean"
+          default: false
+        screenshot_path:
+          type: "string"
+          
+    contact_attempts:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          attempt_id:
+            type: "string"
+            format: "uuid"
+          contact_type:
+            type: "string"
+            enum: ["emergency_contact", "caregiver", "emergency_services", "backup_contact"]
+          contact_id:
+            type: "string"
+          contact_method:
+            type: "string"
+            enum: ["phone_call", "sms", "push_notification", "email"]
+          attempt_timestamp:
+            type: "string"
+            format: "date-time"
+          status:
+            type: "string"
+            enum: ["initiated", "delivered", "failed", "acknowledged", "no_response"]
+          response_timestamp:
+            type: "string"
+            format: "date-time"
+          retry_count:
+            type: "integer"
+            minimum: 0
+            default: 0
+          error_message:
+            type: "string"
+        required: ["attempt_id", "contact_type", "contact_method", "attempt_timestamp", "status"]
+        
+    emergency_response:
+      type: "object"
+      properties:
+        response_received:
+          type: "boolean"
+          default: false
+        first_responder:
+          type: "string"
+          enum: ["emergency_contact", "caregiver", "emergency_services"]
+        response_timestamp:
+          type: "string"
+          format: "date-time"
+        response_method:
+          type: "string"
+          enum: ["phone_call", "text_message", "in_person", "video_call"]
+        incident_resolved:
+          type: "boolean"
+          default: false
+        resolution_timestamp:
+          type: "string"
+          format: "date-time"
+        resolution_notes:
+          type: "string"
+          maxLength: 1000
+        false_alarm:
+          type: "boolean"
+          default: false
+          
+    follow_up:
+      type: "object"
+      properties:
+        follow_up_required:
+          type: "boolean"
+          default: false
+        follow_up_scheduled:
+          type: "string"
+          format: "date-time"
+        follow_up_completed:
+          type: "boolean"
+          default: false
+        follow_up_notes:
+          type: "string"
+          maxLength: 1000
+        user_feedback:
+          type: "object"
+          properties:
+            satisfaction_rating:
+              type: "integer"
+              minimum: 1
+              maximum: 5
+            response_time_rating:
+              type: "integer"
+              minimum: 1
+              maximum: 5
+            improvement_suggestions:
+              type: "string"
+              maxLength: 500
+              
+    system_metrics:
+      type: "object"
+      properties:
+        total_response_time:
+          type: "integer"
+          description: "Total time from trigger to first response in seconds"
+        contact_success_rate:
+          type: "number"
+          minimum: 0
+          maximum: 1
+          description: "Percentage of successful contact attempts"
+        system_performance:
+          type: "object"
+          properties:
+            location_acquisition_time:
+              type: "integer"
+              description: "Time to acquire location in seconds"
+            contact_initiation_time:
+              type: "integer"
+              description: "Time to initiate first contact in seconds"
+            system_errors:
+              type: "array"
+              items:
+                type: "string"
+                
+    privacy_compliance:
+      type: "object"
+      properties:
+        data_retention_period:
+          type: "integer"
+          description: "Data retention period in days"
+          default: 90
+        anonymization_required:
+          type: "boolean"
+          default: false
+        user_consent_location:
+          type: "boolean"
+        user_consent_contacts:
+          type: "boolean"
+        gdpr_compliant:
+          type: "boolean"
+          default: true
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+    archived_at:
+      type: "string"
+      format: "date-time"
+      
+  required: ["event_id", "user_id", "event_details", "created_at"]
+  
+validation_rules:
+  - Event must have at least one contact attempt
+  - Location data required if location services enabled
+  - Response timestamp must be after trigger timestamp
+  - Resolution timestamp must be after response timestamp
+  - Privacy compliance flags must be set according to user preferences

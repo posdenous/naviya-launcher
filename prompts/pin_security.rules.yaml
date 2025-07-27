@@ -1,0 +1,242 @@
+name: "PIN Security Rules"
+version: "1.0.0"
+description: "Rules for PIN-protected settings and security management"
+
+# Based on Android functional spec: PIN-locked settings to prevent accidental changes
+pin_configuration:
+  pin_requirements:
+    length:
+      minimum: 4
+      maximum: 6
+      default: 4
+      user_choice: true
+      
+    complexity:
+      allow_sequential: false  # No 1234, 4321
+      allow_repeated: false    # No 1111, 2222
+      allow_birth_dates: false # No obvious dates
+      
+    character_types:
+      digits_only: true
+      letters_allowed: false
+      symbols_allowed: false
+      
+  pin_setup:
+    initial_setup:
+      required_during_onboarding: true
+      skip_option: false
+      explanation: "PIN protects your important settings from accidental changes"
+      
+    setup_process:
+      step_1: "enter_new_pin"
+      step_2: "confirm_pin_by_retyping"
+      step_3: "test_pin_immediately"
+      step_4: "setup_recovery_method"
+      
+    visual_design:
+      large_number_buttons: "64dp_minimum_touch_targets"
+      high_contrast: "black_numbers_on_white_background"
+      haptic_feedback: "vibrate_on_each_digit_press"
+      audio_feedback: "optional_beep_on_digit_press"
+
+# PIN-protected features
+protected_features:
+  settings_requiring_pin:
+    caregiver_management:
+      - "add_new_caregiver"
+      - "remove_caregiver"
+      - "change_caregiver_permissions"
+      - "disconnect_from_caregiver"
+      
+    emergency_settings:
+      - "modify_emergency_contacts"
+      - "change_emergency_message_template"
+      - "disable_sos_button" # temporary only
+      - "change_emergency_services_number"
+      
+    app_management:
+      - "modify_app_whitelist"
+      - "install_new_apps"
+      - "uninstall_apps"
+      - "change_app_labels"
+      
+    launcher_configuration:
+      - "change_tile_layout"
+      - "modify_accessibility_settings"
+      - "change_language"
+      - "factory_reset_launcher"
+      
+    security_settings:
+      - "change_pin"
+      - "disable_pin_protection"
+      - "modify_lockout_settings"
+      - "change_recovery_method"
+      
+  features_not_requiring_pin:
+    basic_usage:
+      - "launching_apps"
+      - "making_phone_calls"
+      - "sending_sms"
+      - "using_sos_button"
+      
+    viewing_settings:
+      - "view_current_settings"
+      - "view_emergency_contacts"
+      - "view_caregiver_connections"
+      - "view_app_list"
+
+# PIN entry interface
+pin_entry_ui:
+  layout:
+    grid_layout: "3x4_number_pad_plus_0"
+    button_size: "64dp_minimum"
+    spacing: "16dp_between_buttons"
+    
+  number_pad:
+    buttons: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#"]
+    active_buttons: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+    inactive_buttons: ["*", "#"]  # Grayed out
+    
+  display:
+    pin_dots: "show_filled_dots_for_entered_digits"
+    max_display: "6_dots_maximum"
+    clear_button: "backspace_to_remove_last_digit"
+    
+  accessibility:
+    tts_support: "announce_each_button_press"
+    large_text: "extra_large_numbers_on_buttons"
+    high_contrast: "maximum_contrast_for_visibility"
+    voice_input: "optional_voice_pin_entry"
+
+# Security measures
+security_enforcement:
+  failed_attempts:
+    attempt_tracking: "count_consecutive_failed_attempts"
+    max_attempts: 3
+    
+    lockout_progression:
+      attempt_1_2: "immediate_retry_allowed"
+      attempt_3: "15_minute_lockout"
+      attempt_4_5: "30_minute_lockout"
+      attempt_6_plus: "60_minute_lockout_escalating"
+      
+    lockout_behavior:
+      during_lockout: "show_countdown_timer"
+      emergency_override: "sos_button_still_functional"
+      caregiver_notification: "alert_caregiver_after_3_failed_attempts"
+      
+  brute_force_protection:
+    rate_limiting: "maximum_1_attempt_per_5_seconds"
+    pattern_detection: "detect_systematic_guessing_attempts"
+    temporary_disable: "disable_pin_entry_if_attack_detected"
+    
+  session_management:
+    session_duration: "5_minutes_after_successful_entry"
+    auto_lock: "require_pin_again_after_timeout"
+    activity_extension: "extend_session_if_user_active"
+
+# PIN recovery system
+recovery_methods:
+  primary_recovery:
+    method: "emergency_contact_verification"
+    process:
+      step_1: "user_requests_pin_reset"
+      step_2: "system_calls_primary_emergency_contact"
+      step_3: "emergency_contact_confirms_user_identity"
+      step_4: "system_allows_pin_reset"
+      
+  secondary_recovery:
+    method: "caregiver_verification"
+    process:
+      step_1: "caregiver_receives_pin_reset_request"
+      step_2: "caregiver_verifies_user_identity_in_person_or_video"
+      step_3: "caregiver_authorizes_pin_reset"
+      step_4: "user_can_set_new_pin"
+      
+  emergency_recovery:
+    method: "factory_reset_with_data_preservation"
+    conditions: "all_other_recovery_methods_failed"
+    process:
+      step_1: "preserve_emergency_contacts_and_caregiver_connections"
+      step_2: "reset_launcher_to_factory_defaults"
+      step_3: "restore_preserved_data"
+      step_4: "require_complete_onboarding_with_new_pin"
+      
+  recovery_security:
+    verification_required: "multiple_forms_of_identity_confirmation"
+    audit_trail: "log_all_recovery_attempts_and_outcomes"
+    caregiver_notification: "inform_all_caregivers_of_pin_reset"
+
+# User experience considerations
+user_experience:
+  elderly_user_adaptations:
+    larger_buttons: "extra_large_touch_targets_for_motor_difficulties"
+    slower_timeout: "longer_time_allowed_for_pin_entry"
+    clear_feedback: "obvious_visual_and_audio_confirmation"
+    
+  error_prevention:
+    confirmation_dialogs: "are_you_sure_for_critical_actions"
+    clear_explanations: "explain_why_pin_is_needed"
+    undo_options: "allow_reverting_recent_changes"
+    
+  help_and_guidance:
+    pin_hints: "remind_user_of_pin_purpose_not_actual_digits"
+    recovery_guidance: "clear_instructions_for_forgotten_pin"
+    caregiver_assistance: "easy_way_to_contact_caregiver_for_help"
+
+# Integration with other systems
+system_integration:
+  launcher_integration:
+    settings_protection: "intercept_access_to_protected_settings"
+    seamless_flow: "minimal_disruption_to_user_experience"
+    
+  caregiver_system:
+    notification_system: "alert_caregivers_of_security_events"
+    remote_assistance: "allow_caregiver_to_help_with_pin_issues"
+    
+  emergency_system:
+    emergency_override: "sos_functionality_never_blocked_by_pin"
+    emergency_contacts: "emergency_calling_bypasses_pin_protection"
+    
+  android_system:
+    keystore_integration: "use_android_keystore_for_pin_storage"
+    biometric_fallback: "optional_fingerprint_as_pin_alternative"
+
+# Privacy and data protection
+privacy_protection:
+  pin_storage:
+    hashing: "store_only_salted_hash_never_plain_text"
+    encryption: "encrypt_hash_with_device_specific_key"
+    location: "android_keystore_secure_storage"
+    
+  attempt_logging:
+    log_attempts: "record_failed_attempts_for_security"
+    privacy_balance: "log_timing_not_attempted_pins"
+    retention: "delete_logs_after_30_days"
+    
+  recovery_data:
+    minimal_data: "store_only_essential_recovery_information"
+    encryption: "encrypt_all_recovery_related_data"
+    access_control: "limit_access_to_recovery_functions"
+
+# Testing and validation
+security_testing:
+  penetration_testing: "test_against_common_attack_vectors"
+  usability_testing: "ensure_elderly_users_can_use_pin_system"
+  accessibility_testing: "verify_pin_system_works_with_assistive_technologies"
+  
+  recovery_testing:
+    recovery_flow_testing: "test_all_recovery_methods_thoroughly"
+    edge_case_testing: "test_unusual_scenarios_and_failures"
+    integration_testing: "ensure_recovery_works_with_all_other_systems"
+
+# Compliance and standards
+compliance:
+  accessibility_standards: "meet_wcag_2_1_aa_requirements"
+  security_standards: "follow_android_security_best_practices"
+  privacy_regulations: "comply_with_gdpr_and_local_privacy_laws"
+  
+  audit_requirements:
+    security_audits: "regular_security_review_of_pin_system"
+    accessibility_audits: "ensure_continued_accessibility_compliance"
+    user_feedback: "collect_and_act_on_user_experience_feedback"

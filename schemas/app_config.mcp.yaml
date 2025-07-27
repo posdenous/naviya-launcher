@@ -1,0 +1,212 @@
+name: "App Configuration Schema"
+version: "1.0.0"
+description: "MCP schema for application configuration and settings"
+
+schema:
+  type: "object"
+  properties:
+    app_id:
+      type: "string"
+      description: "Unique identifier for the application configuration"
+      format: "uuid"
+      
+    launcher_settings:
+      type: "object"
+      properties:
+        app_name:
+          type: "string"
+          default: "Naviya Launcher"
+        version:
+          type: "string"
+          pattern: "^\\d+\\.\\d+\\.\\d+$"
+        build_number:
+          type: "integer"
+        environment:
+          type: "string"
+          enum: ["development", "staging", "production"]
+          default: "production"
+          
+    ui_configuration:
+      type: "object"
+      properties:
+        default_theme:
+          type: "string"
+          enum: ["light", "dark", "high_contrast"]
+          default: "light"
+        grid_layout:
+          type: "object"
+          properties:
+            columns:
+              type: "integer"
+              minimum: 2
+              maximum: 6
+              default: 3
+            rows:
+              type: "integer"
+              minimum: 2
+              maximum: 8
+              default: 4
+        animation_enabled:
+          type: "boolean"
+          default: true
+        haptic_feedback:
+          type: "boolean"
+          default: true
+          
+    feature_flags:
+      type: "object"
+      properties:
+        voice_control_enabled:
+          type: "boolean"
+          default: true
+        caregiver_pairing_enabled:
+          type: "boolean"
+          default: true
+        offline_mode_enabled:
+          type: "boolean"
+          default: true
+        emergency_services_integration:
+          type: "boolean"
+          default: false
+        location_services_enabled:
+          type: "boolean"
+          default: true
+        analytics_enabled:
+          type: "boolean"
+          default: false
+          
+    security_settings:
+      type: "object"
+      properties:
+        encryption_enabled:
+          type: "boolean"
+          default: true
+        biometric_auth:
+          type: "boolean"
+          default: false
+        session_timeout:
+          type: "integer"
+          description: "Session timeout in minutes"
+          minimum: 5
+          maximum: 1440
+          default: 60
+        max_failed_attempts:
+          type: "integer"
+          minimum: 3
+          maximum: 10
+          default: 5
+          
+    emergency_configuration:
+      type: "object"
+      properties:
+        sos_button_enabled:
+          type: "boolean"
+          default: true
+        confirmation_required:
+          type: "boolean"
+          default: true
+        confirmation_timeout:
+          type: "integer"
+          description: "Confirmation timeout in seconds"
+          minimum: 3
+          maximum: 30
+          default: 5
+        auto_location_sharing:
+          type: "boolean"
+          default: false
+        emergency_services_number:
+          type: "string"
+          pattern: "^[+]?[0-9\\s\\-\\(\\)]+$"
+          
+    connectivity:
+      type: "object"
+      properties:
+        firebase_config:
+          type: "object"
+          properties:
+            project_id:
+              type: "string"
+            api_key:
+              type: "string"
+            auth_domain:
+              type: "string"
+            storage_bucket:
+              type: "string"
+        offline_cache_size:
+          type: "integer"
+          description: "Cache size in MB"
+          minimum: 10
+          maximum: 500
+          default: 100
+        sync_interval:
+          type: "integer"
+          description: "Sync interval in minutes"
+          minimum: 1
+          maximum: 60
+          default: 5
+          
+    supported_languages:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          code:
+            type: "string"
+            enum: ["de", "en", "tr", "ar", "ua"]
+          name:
+            type: "string"
+          native_name:
+            type: "string"
+          rtl:
+            type: "boolean"
+            default: false
+        required: ["code", "name", "native_name"]
+      default:
+        - code: "en"
+          name: "English"
+          native_name: "English"
+        - code: "de"
+          name: "German"
+          native_name: "Deutsch"
+        - code: "tr"
+          name: "Turkish"
+          native_name: "Türkçe"
+        - code: "ar"
+          name: "Arabic"
+          native_name: "العربية"
+          rtl: true
+        - code: "ua"
+          name: "Ukrainian"
+          native_name: "Українська"
+          
+    logging:
+      type: "object"
+      properties:
+        log_level:
+          type: "string"
+          enum: ["debug", "info", "warn", "error"]
+          default: "info"
+        crash_reporting:
+          type: "boolean"
+          default: true
+        performance_monitoring:
+          type: "boolean"
+          default: true
+        user_analytics:
+          type: "boolean"
+          default: false
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+      
+  required: ["app_id", "launcher_settings", "created_at"]
+  
+validation_rules:
+  - Firebase configuration must be provided if connectivity features are enabled
+  - Emergency services number required if emergency services integration is enabled
+  - At least one language must be configured
+  - Session timeout must be reasonable for target user base

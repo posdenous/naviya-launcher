@@ -1,0 +1,221 @@
+name: "Crash Recovery Rules"
+version: "1.0.0"
+description: "Rules for crash detection, recovery mode, and safe tiles system"
+
+# Based on Android functional spec: crash_threshold: 3, safe_tiles: [Phone, Settings]
+crash_detection:
+  crash_threshold: 3
+  detection_methods:
+    - "uncaught_exception_handler"
+    - "anr_detection" # Application Not Responding
+    - "force_close_detection"
+    - "launcher_restart_frequency"
+    
+  crash_types:
+    launcher_crash:
+      severity: "high"
+      recovery_action: "immediate_safe_mode"
+      
+    app_crash:
+      severity: "medium"
+      recovery_action: "remove_problematic_app_from_tiles"
+      
+    system_crash:
+      severity: "critical"
+      recovery_action: "full_recovery_mode"
+      
+    memory_crash:
+      severity: "high"
+      recovery_action: "clear_cache_and_restart"
+
+# Recovery mode activation
+recovery_mode:
+  activation_triggers:
+    crash_count_exceeded: "3_crashes_within_24_hours"
+    manual_activation: "long_press_home_icon_10_seconds"
+    caregiver_remote_activation: "emergency_remote_trigger"
+    system_instability: "multiple_app_failures"
+    
+  recovery_ui:
+    layout: "simplified_2x2_grid_instead_of_2x3"
+    background_color: "#FFF3E0" # Light orange to indicate recovery mode
+    header_message: "Safe Mode - Limited Functions Available"
+    
+  safe_tiles:
+    mandatory_tiles:
+      - tile_type: "phone_dialer"
+        package_name: "com.android.dialer"
+        position: 0
+        label: "Phone"
+        always_functional: true
+        
+      - tile_type: "settings_access"
+        package_name: "com.android.settings"
+        position: 1
+        label: "Settings"
+        always_functional: true
+        
+      - tile_type: "sos_emergency_button"
+        position: 2
+        label: "Emergency"
+        always_functional: true
+        priority: "highest"
+        
+      - tile_type: "recovery_help"
+        position: 3
+        label: "Get Help"
+        action: "contact_caregiver_or_support"
+        
+  disabled_features:
+    - "app_installation"
+    - "tile_customization"
+    - "caregiver_pairing"
+    - "advanced_settings"
+    - "non_essential_apps"
+
+# Safe mode functionality
+safe_mode_behavior:
+  duration:
+    minimum_time: "10_minutes"
+    maximum_time: "24_hours"
+    user_can_exit: false
+    caregiver_can_exit: true
+    automatic_exit: "after_stability_confirmed"
+    
+  functionality_available:
+    emergency_features:
+      - "sos_button_fully_functional"
+      - "emergency_calling"
+      - "emergency_sms"
+      - "location_sharing"
+      
+    basic_communication:
+      - "phone_calls_to_emergency_contacts"
+      - "sms_to_emergency_contacts"
+      - "caregiver_communication"
+      
+    system_access:
+      - "basic_settings_access"
+      - "wifi_connectivity"
+      - "battery_management"
+      - "accessibility_settings"
+      
+  functionality_disabled:
+    - "app_launching_except_safe_apps"
+    - "app_installation_or_removal"
+    - "launcher_customization"
+    - "advanced_system_settings"
+    - "file_management"
+
+# Crash logging and analysis
+crash_logging:
+  log_collection:
+    crash_reports: "detailed_stack_traces"
+    system_state: "memory_cpu_battery_at_crash_time"
+    user_actions: "last_10_actions_before_crash"
+    app_state: "running_apps_and_memory_usage"
+    
+  log_storage:
+    local_storage: "encrypted_crash_logs_max_10_reports"
+    cloud_backup: "anonymous_crash_data_if_user_consents"
+    retention_period: "30_days_local_90_days_cloud"
+    
+  analysis_triggers:
+    pattern_detection: "identify_common_crash_causes"
+    app_correlation: "which_apps_cause_most_crashes"
+    time_correlation: "when_crashes_occur_most_frequently"
+
+# Recovery assistance
+recovery_assistance:
+  automatic_recovery:
+    cache_clearing: "clear_app_caches_after_crash"
+    memory_optimization: "free_up_memory_before_restart"
+    problematic_app_removal: "temporarily_disable_crash_causing_apps"
+    
+  user_guidance:
+    recovery_explanation:
+      message: "Your device had some problems. We've switched to safe mode to keep you safe."
+      audio_support: "tts_explanation_in_user_language"
+      visual_indicators: "clear_safe_mode_banner"
+      
+    next_steps:
+      - "contact_caregiver_for_help"
+      - "wait_for_automatic_recovery"
+      - "use_basic_functions_only"
+      
+  caregiver_notification:
+    immediate_alert:
+      method: "push_notification_sms_call"
+      content: "User's device entered safe mode due to crashes"
+      urgency: "high"
+      
+    recovery_status:
+      updates: "real_time_recovery_progress"
+      actions_available: "remote_assistance_options"
+
+# Prevention and stability
+crash_prevention:
+  proactive_measures:
+    memory_monitoring: "alert_when_memory_usage_high"
+    app_health_checks: "periodic_app_stability_assessment"
+    system_maintenance: "scheduled_cache_clearing"
+    
+  stability_improvements:
+    app_timeout_handling: "prevent_anr_by_timeout_management"
+    resource_management: "limit_concurrent_app_operations"
+    error_boundaries: "graceful_degradation_instead_of_crashes"
+    
+  user_education:
+    crash_awareness: "explain_what_causes_crashes_in_simple_terms"
+    prevention_tips: "how_to_avoid_actions_that_cause_crashes"
+
+# Exit from recovery mode
+recovery_exit:
+  exit_conditions:
+    stability_confirmed: "24_hours_without_crashes"
+    manual_override: "caregiver_confirms_stability"
+    user_request_with_caregiver_approval: "user_wants_to_exit_caregiver_agrees"
+    
+  exit_process:
+    gradual_restoration:
+      step_1: "restore_essential_apps_first"
+      step_2: "restore_user_customizations"
+      step_3: "restore_full_functionality"
+      
+    monitoring_period:
+      duration: "48_hours_after_exit"
+      crash_sensitivity: "lower_threshold_for_re_entering_safe_mode"
+      
+  post_recovery:
+    user_feedback: "ask_about_experience_and_any_ongoing_issues"
+    system_optimization: "apply_lessons_learned_from_crash_analysis"
+    caregiver_report: "summary_of_what_happened_and_how_resolved"
+
+# Integration with other systems
+system_integration:
+  launcher_integration:
+    tile_management: "safe_tiles_override_normal_tile_configuration"
+    app_launching: "only_safe_apps_can_be_launched"
+    
+  android_system:
+    crash_reporting: "integrate_with_android_crash_reporting"
+    memory_management: "work_with_android_memory_manager"
+    
+  caregiver_system:
+    real_time_communication: "keep_caregiver_informed_of_recovery_status"
+    remote_assistance: "allow_caregiver_to_help_with_recovery"
+    
+  emergency_system:
+    sos_priority: "sos_functionality_never_disabled_even_in_recovery"
+    emergency_contacts: "emergency_calling_always_available"
+
+# Testing and validation
+recovery_testing:
+  crash_simulation: "test_recovery_mode_with_simulated_crashes"
+  safe_mode_validation: "ensure_all_safe_functions_work_properly"
+  exit_testing: "verify_smooth_transition_back_to_normal_mode"
+  
+  user_acceptance:
+    elderly_user_testing: "test_with_target_demographic"
+    caregiver_feedback: "ensure_caregivers_understand_recovery_process"
+    accessibility_validation: "recovery_mode_meets_accessibility_standards"

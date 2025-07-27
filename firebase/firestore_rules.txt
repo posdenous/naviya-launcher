@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profiles - users can only access their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow caregivers to read basic user status if they have permission
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + userId)) &&
+        get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + userId)).data.connection_details.connection_status == 'active' &&
+        'view_status' in get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + userId)).data.permissions.granted_permissions;
+    }
+    
+    // App configurations - read-only for authenticated users
+    match /app_configs/{configId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+    
+    // Caregiver links - users and caregivers can access their own links
+    match /caregiver_links/{linkId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.user_id || 
+         request.auth.uid == resource.data.caregiver_id);
+      
+      // Allow creation of new links
+      allow create: if request.auth != null && 
+        (request.auth.uid == request.resource.data.user_id || 
+         request.auth.uid == request.resource.data.caregiver_id);
+    }
+    
+    // SOS event logs - users can read/write their own events
+    match /sos_events/{eventId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.user_id;
+      
+      // Allow caregivers to read SOS events if they have emergency notification permission
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)) &&
+        get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)).data.connection_details.connection_status == 'active' &&
+        'emergency_notifications' in get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)).data.permissions.granted_permissions;
+      
+      // Allow emergency services to read events (with special token)
+      allow read: if request.auth != null && 
+        request.auth.token.emergency_services == true;
+    }
+    
+    // Messages between users and caregivers
+    match /messages/{messageId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.sender_id || 
+         request.auth.uid == resource.data.recipient_id);
+      
+      // Allow creation of new messages
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.sender_id;
+    }
+    
+    // Activity logs - users can read their own activity
+    match /activity_logs/{logId} {
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.user_id;
+      
+      // Allow caregivers to read activity if they have permission
+      allow read: if request.auth != null && 
+        exists(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)) &&
+        get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)).data.connection_details.connection_status == 'active' &&
+        'view_activity_summary' in get(/databases/$(database)/documents/caregiver_links/$(request.auth.uid + '_' + resource.data.user_id)).data.permissions.granted_permissions;
+      
+      // System can write activity logs
+      allow write: if request.auth != null && 
+        request.auth.token.system == true;
+    }
+    
+    // Emergency contacts - users can manage their own contacts
+    match /emergency_contacts/{contactId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.user_id;
+    }
+    
+    // Pairing codes - temporary documents for caregiver pairing
+    match /pairing_codes/{codeId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (request.auth.uid == resource.data.user_id || 
+         request.auth.uid == resource.data.caregiver_id);
+      
+      // Auto-delete expired codes
+      allow delete: if request.auth != null && 
+        request.time > resource.data.expires_at;
+    }
+    
+    // System notifications
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.recipient_id;
+      
+      // System can create notifications
+      allow create: if request.auth != null && 
+        request.auth.token.system == true;
+      
+      // Users can mark notifications as read
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.recipient_id &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'read_at']);
+    }
+    
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

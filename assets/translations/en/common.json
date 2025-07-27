@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Naviya Launcher",
+    "tagline": "Your helpful assistant"
+  },
+  "navigation": {
+    "home": "Home",
+    "apps": "Apps",
+    "contacts": "Contacts",
+    "settings": "Settings"
+  },
+  "buttons": {
+    "get_started": "Get Started",
+    "continue": "Continue",
+    "skip": "Skip",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "emergency": "Emergency",
+    "help": "Help"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Naviya",
+    "welcome_message": "Let's set up your device to make it easy and safe to use.",
+    "language_selection": "Choose your language",
+    "accessibility_title": "Accessibility Settings",
+    "accessibility_message": "Customize your experience",
+    "caregiver_setup": "Connect with a Caregiver",
+    "caregiver_optional": "This step is optional and can be done later",
+    "emergency_contacts": "Emergency Contacts",
+    "emergency_required": "At least one emergency contact is required"
+  },
+  "emergency": {
+    "sos_button": "SOS",
+    "emergency_alert": "Emergency Alert",
+    "confirmation": "Are you sure? This will contact emergency services.",
+    "countdown": "Sending alert in {seconds} seconds...",
+    "alert_sent": "Emergency alert sent",
+    "contacting": "Contacting emergency contacts..."
+  },
+  "caregiver": {
+    "pairing_code": "Pairing Code",
+    "enter_code": "Enter the 6-digit code provided by your caregiver",
+    "connection_pending": "Connection pending approval",
+    "connected": "Connected to caregiver",
+    "permissions": "Permissions",
+    "manage_connection": "Manage Connection"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "font_size": "Font Size",
+    "accessibility": "Accessibility",
+    "emergency_contacts": "Emergency Contacts",
+    "caregiver_connections": "Caregiver Connections",
+    "privacy": "Privacy",
+    "about": "About"
+  },
+  "errors": {
+    "network_error": "Network connection error",
+    "invalid_code": "Invalid pairing code",
+    "contact_failed": "Failed to contact emergency services",
+    "permission_denied": "Permission denied",
+    "unknown_error": "An unexpected error occurred"
+  },
+  "offline": {
+    "status": "Offline",
+    "limited_functionality": "Some features are not available offline",
+    "reconnecting": "Reconnecting...",
+    "back_online": "Back online"
+  }
+}

@@ -1,0 +1,307 @@
+name: "Launcher State Schema"
+version: "1.0.0"
+description: "MCP schema for Android launcher state persistence and configuration"
+
+schema:
+  type: "object"
+  properties:
+    launcher_id:
+      type: "string"
+      description: "Unique identifier for this launcher instance"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "Associated user profile ID"
+      format: "uuid"
+      
+    # Core launcher configuration matching Android functional spec
+    grid_configuration:
+      type: "object"
+      properties:
+        layout:
+          type: "object"
+          properties:
+            columns:
+              type: "integer"
+              enum: [2]  # Fixed 2x3 grid as per spec
+              default: 2
+            rows:
+              type: "integer"
+              enum: [3]  # Fixed 2x3 grid as per spec
+              default: 3
+            total_tiles:
+              type: "integer"
+              enum: [6]  # Always 6 tiles
+              default: 6
+              
+        tile_specifications:
+          type: "object"
+          properties:
+            icon_size_dp:
+              type: "integer"
+              enum: [64]  # Fixed as per spec
+              default: 64
+            padding_dp:
+              type: "integer"
+              enum: [16]  # Fixed as per spec
+              default: 16
+            minimum_touch_target_dp:
+              type: "integer"
+              minimum: 48  # Accessibility requirement
+              default: 48
+            show_labels:
+              type: "boolean"
+              default: true
+              
+    # Tile configuration for the 6 positions
+    tile_layout:
+      type: "array"
+      description: "Configuration for each of the 6 tile positions"
+      items:
+        type: "object"
+        properties:
+          position:
+            type: "integer"
+            minimum: 0
+            maximum: 5
+            description: "Tile position (0-5 for 2x3 grid)"
+          tile_type:
+            type: "string"
+            enum: [
+              "app_shortcut",
+              "unread_notifications", 
+              "sos_emergency_button",
+              "settings_access",
+              "phone_dialer",
+              "custom_caregiver_tile",
+              "empty"
+            ]
+          app_package_name:
+            type: "string"
+            description: "Android package name if tile_type is app_shortcut"
+          custom_label:
+            type: "string"
+            description: "User/caregiver defined label override"
+            maxLength: 20
+          icon_override:
+            type: "string"
+            description: "Custom icon resource or URI"
+          is_locked:
+            type: "boolean"
+            description: "Whether tile can be modified by user"
+            default: false
+          caregiver_managed:
+            type: "boolean"
+            description: "Whether tile is managed by caregiver"
+            default: false
+        required: ["position", "tile_type"]
+      minItems: 6
+      maxItems: 6
+      
+    # Accessibility and UI preferences
+    accessibility_settings:
+      type: "object"
+      properties:
+        font_scale:
+          type: "number"
+          minimum: 1.0
+          maximum: 3.0
+          default: 1.6  # 60% larger as per spec
+        contrast_mode:
+          type: "string"
+          enum: ["standard", "high", "maximum"]
+          default: "high"
+        touch_sensitivity:
+          type: "string"
+          enum: ["normal", "sensitive", "very_sensitive"]
+          default: "normal"
+        haptic_feedback_enabled:
+          type: "boolean"
+          default: true
+        audio_feedback_level:
+          type: "string"
+          enum: ["minimal", "standard", "verbose"]
+          default: "standard"
+        tts_enabled:
+          type: "boolean"
+          default: true
+        tts_speech_rate:
+          type: "number"
+          minimum: 0.5
+          maximum: 2.0
+          default: 0.8  # 20% slower than default
+          
+    # PIN protection settings
+    security_settings:
+      type: "object"
+      properties:
+        settings_pin_enabled:
+          type: "boolean"
+          default: true
+        pin_hash:
+          type: "string"
+          description: "Hashed PIN for settings access"
+        pin_length:
+          type: "integer"
+          minimum: 4
+          maximum: 6
+          default: 4
+        failed_attempts:
+          type: "integer"
+          minimum: 0
+          default: 0
+        lockout_until:
+          type: "string"
+          format: "date-time"
+          description: "Lockout expiration timestamp"
+        pin_recovery_method:
+          type: "string"
+          enum: ["emergency_contact", "caregiver", "factory_reset"]
+          default: "emergency_contact"
+          
+    # Crash recovery and safe mode
+    recovery_settings:
+      type: "object"
+      properties:
+        crash_count:
+          type: "integer"
+          minimum: 0
+          default: 0
+        crash_threshold:
+          type: "integer"
+          minimum: 1
+          maximum: 10
+          default: 3
+        safe_mode_active:
+          type: "boolean"
+          default: false
+        safe_tiles:
+          type: "array"
+          items:
+            type: "string"
+          default: ["Phone", "Settings"]
+        last_crash_timestamp:
+          type: "string"
+          format: "date-time"
+        recovery_mode_triggered:
+          type: "boolean"
+          default: false
+          
+    # Offline mode state
+    offline_settings:
+      type: "object"
+      properties:
+        offline_mode_active:
+          type: "boolean"
+          default: false
+        last_online_timestamp:
+          type: "string"
+          format: "date-time"
+        cached_data_size_mb:
+          type: "integer"
+          minimum: 0
+        offline_capabilities:
+          type: "array"
+          items:
+            type: "string"
+            enum: [
+              "local_apps_launching",
+              "emergency_sos",
+              "phone_dialer", 
+              "settings_access"
+            ]
+          default: [
+            "local_apps_launching",
+            "emergency_sos", 
+            "phone_dialer",
+            "settings_access"
+          ]
+          
+    # Language and localization
+    localization:
+      type: "object"
+      properties:
+        selected_language:
+          type: "string"
+          enum: ["de", "en", "tr", "ar", "ua"]
+          default: "en"
+        rtl_layout:
+          type: "boolean"
+          default: false
+        date_format:
+          type: "string"
+          enum: ["US", "EU", "ISO"]
+          default: "EU"
+        time_format:
+          type: "string"
+          enum: ["12h", "24h"]
+          default: "24h"
+          
+    # State tracking
+    state_metadata:
+      type: "object"
+      properties:
+        launcher_version:
+          type: "string"
+          description: "Version of launcher when state was saved"
+        android_version:
+          type: "string"
+          description: "Android version when state was saved"
+        device_model:
+          type: "string"
+          description: "Device model for compatibility"
+        last_backup_timestamp:
+          type: "string"
+          format: "date-time"
+        sync_status:
+          type: "string"
+          enum: ["synced", "pending", "failed", "offline"]
+          default: "pending"
+        configuration_source:
+          type: "string"
+          enum: ["user", "caregiver", "default", "imported"]
+          default: "default"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+    
+  required: [
+    "launcher_id", 
+    "user_id", 
+    "grid_configuration", 
+    "tile_layout", 
+    "accessibility_settings",
+    "created_at"
+  ]
+  
+# Validation rules specific to Android launcher requirements
+validation_rules:
+  - "Tile layout must have exactly 6 positions (0-5)"
+  - "SOS emergency button must be present in tile layout"
+  - "Phone dialer must be present in tile layout" 
+  - "At least one emergency contact must be configured in user profile"
+  - "PIN must be set if settings_pin_enabled is true"
+  - "Safe tiles must include Phone and Settings for crash recovery"
+  - "Font scale must be at least 1.6 for elderly user accessibility"
+  - "Touch targets must meet 48dp minimum for accessibility"
+
+# Android-specific constraints
+android_constraints:
+  api_compatibility:
+    minimum_sdk: 29  # Android 10
+    target_sdk: 33   # Android 13
+  
+  storage_requirements:
+    local_storage_mb: 50
+    cache_storage_mb: 100
+    backup_storage_mb: 10
+    
+  performance_requirements:
+    launcher_startup_ms: 2000
+    tile_response_ms: 100
+    settings_load_ms: 500

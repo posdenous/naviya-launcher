@@ -1,0 +1,228 @@
+name: "SOS Button Rules"
+version: "2.0.0"
+description: "Android emergency SOS button behavior, offline fallback, and safety protocols"
+
+sos_button:
+  android_integration:
+    tile_position: "dedicated_grid_position"  # One of the 6 main tiles
+    always_visible: true
+    crash_recovery_safe: true  # Available even in recovery mode
+    
+  appearance:
+    background_color: "#D32F2F"  # Emergency red
+    icon: "emergency_call"  # Material Design icon
+    size_dp: 80  # Larger than standard tiles
+    label: "Emergency" (localized)
+    animation: "subtle_pulse_when_idle"
+    pressed_state: "immediate_visual_feedback"
+    
+  placement:
+    grid_position: "bottom_right_preferred"
+    accessibility_priority: "highest"
+    touch_target_size_dp: 80
+    margin_from_edges_dp: 16
+
+activation:
+  trigger_methods:
+    - single_tap: "requires_confirmation"
+    - long_press: "3_seconds_immediate"
+    - voice_command: ["Emergency", "SOS", "Help"]
+    - hardware_volume_buttons: "volume_up_down_simultaneous_3s"
+    - accessibility_service: "switch_access_compatible"
+    
+  confirmation_dialog:
+    single_tap_behavior:
+      show_dialog: true
+      message_key: "emergency.confirmation"  # Localized
+      countdown_seconds: 5
+      cancel_button_size_dp: 64
+      confirm_button_size_dp: 64
+      haptic_feedback: true
+      
+  immediate_activation:
+    long_press: true
+    crash_recovery_mode: true
+    offline_mode: true
+    accessibility_emergency: true
+
+emergency_protocol:
+  immediate_actions:
+    - log_emergency_event: "timestamp_location_context"
+    - capture_device_state: "screenshot_battery_network"
+    - location_acquisition: "gps_network_last_known"
+    - audio_recording: "10_seconds_ambient" (if permitted)
+    - disable_screen_timeout: "keep_screen_active"
+    
+  android_permissions_required:
+    - CALL_PHONE: "emergency_dialing"
+    - SEND_SMS: "emergency_text_alerts"
+    - ACCESS_FINE_LOCATION: "location_sharing"
+    - RECORD_AUDIO: "ambient_sound_capture"
+    - CAMERA: "emergency_photo_evidence"
+    
+  contact_sequence:
+    priority_1: "primary_emergency_contact"
+    priority_2: "secondary_emergency_contact"
+    priority_3: "local_emergency_services" (if configured)
+    priority_4: "connected_caregiver"
+    priority_5: "backup_contacts_list"
+    
+  communication_methods:
+    sms_alert:
+      message_template: "emergency.sms_template"
+      include_location: true
+      include_timestamp: true
+      retry_attempts: 3
+      
+    phone_call:
+      auto_dial: true
+      speaker_phone: true
+      recorded_message: "emergency.voice_template"
+      call_duration_max: 60
+      
+    caregiver_notification:
+      firebase_push: "immediate_priority"
+      include_location: true
+      include_device_context: true
+      
+  offline_fallback:
+    sms_queue: "store_and_forward"
+    local_emergency_number: "use_device_default"
+    cached_contacts: "local_storage_backup"
+    retry_when_online: true
+
+safety_features:
+  false_activation_prevention:
+    confirmation_required: "single_tap_only"
+    disable_during:
+      - "phone_calls_active"
+      - "emergency_already_active"
+      - "device_locked_with_timeout"
+    user_education:
+      - "onboarding_tutorial"
+      - "practice_mode_available"
+      - "caregiver_demonstration"
+      
+  privacy_protection:
+    location_sharing:
+      opt_in_required: true
+      emergency_override: "ask_during_setup"
+      granular_permissions: "emergency_only_vs_always"
+      
+    data_encryption:
+      in_transit: "tls_1_3"
+      at_rest: "android_keystore"
+      firebase_security: "end_to_end_where_possible"
+      
+    data_retention:
+      emergency_events: "90_days_default"
+      location_data: "24_hours_emergency_only"
+      audio_recordings: "7_days_user_configurable"
+      automatic_cleanup: true
+      
+  offline_capability:
+    local_storage:
+      emergency_contacts: "encrypted_local_db"
+      sms_templates: "cached_translations"
+      emergency_procedures: "offline_help_content"
+      
+    queue_management:
+      store_attempts: true
+      retry_logic: "exponential_backoff"
+      max_retry_attempts: 10
+      sync_when_online: "immediate_priority"
+      
+    fallback_methods:
+      cellular_sms: "bypass_data_connection"
+      device_emergency_dialer: "android_system_integration"
+      local_emergency_services: "country_specific_numbers"
+
+customization:
+  user_settings:
+    confirmation_dialog:
+      enabled: "user_preference"
+      countdown_duration: "3_to_10_seconds"
+      
+    emergency_message:
+      custom_template: "user_editable"
+      include_medical_info: "optional_field"
+      language_specific: "auto_translate"
+      
+    contact_management:
+      priority_order: "drag_and_drop_interface"
+      contact_verification: "test_call_sms"
+      backup_contacts: "unlimited_list"
+      
+    emergency_services:
+      auto_contact: "user_choice"
+      local_number_override: "country_specific"
+      
+  caregiver_settings:
+    notification_preferences:
+      immediate_alert: "push_sms_call"
+      escalation_timeline: "configurable"
+      quiet_hours_override: "emergency_always_through"
+      
+    monitoring_capabilities:
+      event_history_access: "permission_based"
+      location_tracking: "emergency_only_default"
+      device_status_monitoring: "battery_network_health"
+      
+    remote_management:
+      temporary_disable: "24_hour_max_with_reason"
+      emergency_override: "caregiver_cannot_disable_permanently"
+      custom_protocols: "additional_contact_steps"
+      
+  accessibility_customization:
+    activation_methods:
+      voice_commands: "custom_phrases"
+      gesture_triggers: "accessibility_service_integration"
+      hardware_buttons: "volume_power_combinations"
+      
+    visual_indicators:
+      high_contrast_mode: "emergency_red_variants"
+      animation_preferences: "reduce_motion_support"
+      text_size_scaling: "follows_system_accessibility"
+
+android_integration:
+  system_permissions:
+    required_permissions:
+      - "android.permission.CALL_PHONE"
+      - "android.permission.SEND_SMS"
+      - "android.permission.ACCESS_FINE_LOCATION"
+      - "android.permission.RECORD_AUDIO"
+      - "android.permission.CAMERA"
+      - "android.permission.VIBRATE"
+      
+    optional_permissions:
+      - "android.permission.READ_CALL_LOG"
+      - "android.permission.READ_SMS"
+      - "android.permission.WRITE_EXTERNAL_STORAGE"
+      
+  crash_recovery_integration:
+    sos_always_available: true
+    recovery_mode_priority: "highest"
+    safe_mode_functionality: "basic_emergency_only"
+    
+  device_integration:
+    emergency_dialer: "android_system_integration"
+    accessibility_services: "talkback_switch_access"
+    do_not_disturb_override: "emergency_bypass"
+    battery_optimization_exempt: true
+    
+logging_and_analytics:
+  event_tracking:
+    sos_triggers: "timestamp_method_location"
+    false_activations: "pattern_analysis"
+    response_times: "contact_attempt_success_rates"
+    
+  local_storage:
+    encrypted_logs: true
+    retention_period: "90_days_configurable"
+    export_capability: "caregiver_access_with_permission"
+    
+  privacy_compliance:
+    gdpr_compliant: true
+    user_consent_tracking: true
+    data_anonymization: "analytics_only"
+    opt_out_available: true

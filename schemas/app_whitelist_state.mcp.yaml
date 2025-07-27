@@ -1,0 +1,655 @@
+name: "App Whitelist State Schema"
+version: "1.0.0"
+description: "MCP schema for user/caregiver controlled app whitelist management and custom labeling"
+
+schema:
+  type: "object"
+  properties:
+    whitelist_id:
+      type: "string"
+      description: "Unique identifier for this whitelist state"
+      format: "uuid"
+      
+    user_id:
+      type: "string"
+      description: "Associated user profile ID"
+      format: "uuid"
+      
+    # Whitelist configuration and enforcement
+    whitelist_configuration:
+      type: "object"
+      properties:
+        enforcement_level:
+          type: "string"
+          enum: ["disabled", "advisory", "strict", "lockdown"]
+          description: "How strictly to enforce app whitelist"
+          default: "strict"
+          
+        enforcement_enabled:
+          type: "boolean"
+          description: "Whether whitelist enforcement is active"
+          default: true
+          
+        default_action:
+          type: "string"
+          enum: ["allow", "block", "ask_user", "ask_caregiver"]
+          description: "Action for apps not on whitelist"
+          default: "block"
+          
+        user_can_approve:
+          type: "boolean"
+          description: "Whether user can approve new apps"
+          default: false
+          
+        caregiver_approval_required:
+          type: "boolean"
+          description: "Whether caregiver must approve new apps"
+          default: true
+          
+        system_apps_protected:
+          type: "boolean"
+          description: "Whether system apps are always allowed"
+          default: true
+          
+        launcher_apps_protected:
+          type: "boolean"
+          description: "Whether launcher essential apps are protected"
+          default: true
+          
+    # Default safe apps (always allowed)
+    default_safe_apps:
+      type: "array"
+      description: "Apps that are always allowed and cannot be removed"
+      items:
+        type: "object"
+        properties:
+          package_name:
+            type: "string"
+            description: "Android package name"
+          app_name:
+            type: "string"
+            description: "Display name of app"
+          custom_label:
+            type: "string"
+            description: "User-friendly custom label"
+            maxLength: 15
+          category:
+            type: "string"
+            enum: [
+              "communication",
+              "emergency", 
+              "system",
+              "accessibility",
+              "launcher_essential"
+            ]
+          always_visible:
+            type: "boolean"
+            description: "Whether app must always be visible on launcher"
+            default: true
+          removal_blocked:
+            type: "boolean"
+            description: "Whether app cannot be removed from whitelist"
+            default: true
+          position_preference:
+            type: "integer"
+            minimum: 0
+            maximum: 5
+            description: "Preferred position in launcher grid"
+        required: ["package_name", "app_name", "category"]
+      default:
+        - package_name: "com.android.dialer"
+          app_name: "Phone"
+          custom_label: "Phone"
+          category: "communication"
+          always_visible: true
+          removal_blocked: true
+          position_preference: 0
+        - package_name: "com.android.mms"
+          app_name: "Messages"
+          custom_label: "Messages"
+          category: "communication"
+          always_visible: true
+          removal_blocked: true
+          position_preference: 1
+        - package_name: "com.android.settings"
+          app_name: "Settings"
+          custom_label: "Settings"
+          category: "system"
+          always_visible: true
+          removal_blocked: true
+          position_preference: 2
+        - package_name: "com.android.camera2"
+          app_name: "Camera"
+          custom_label: "Camera"
+          category: "system"
+          always_visible: false
+          removal_blocked: false
+          position_preference: 3
+          
+    # User-approved apps
+    user_approved_apps:
+      type: "array"
+      description: "Apps approved by user or caregiver"
+      items:
+        type: "object"
+        properties:
+          package_name:
+            type: "string"
+            description: "Android package name"
+          app_name:
+            type: "string"
+            description: "Original app name"
+          custom_label:
+            type: "string"
+            description: "User-friendly custom label"
+            maxLength: 15
+          approval_method:
+            type: "string"
+            enum: ["user_approved", "caregiver_approved", "auto_approved", "pre_installed"]
+          approved_by:
+            type: "string"
+            description: "ID of user or caregiver who approved"
+          approval_timestamp:
+            type: "string"
+            format: "date-time"
+          approval_reason:
+            type: "string"
+            description: "Reason for approval"
+            maxLength: 200
+          category:
+            type: "string"
+            enum: [
+              "communication",
+              "health",
+              "entertainment",
+              "utilities",
+              "social",
+              "news",
+              "games",
+              "productivity",
+              "other"
+            ]
+          usage_restrictions:
+            type: "object"
+            properties:
+              time_limits_enabled:
+                type: "boolean"
+                default: false
+              daily_time_limit_minutes:
+                type: "integer"
+                minimum: 0
+                maximum: 1440
+              usage_schedule_enabled:
+                type: "boolean"
+                default: false
+              allowed_hours_start:
+                type: "string"
+                format: "time"
+              allowed_hours_end:
+                type: "string"
+                format: "time"
+          launcher_visibility:
+            type: "object"
+            properties:
+              visible_on_launcher:
+                type: "boolean"
+                default: true
+              position_preference:
+                type: "integer"
+                minimum: 0
+                maximum: 5
+              tile_size:
+                type: "string"
+                enum: ["small", "normal", "large"]
+                default: "normal"
+          monitoring_enabled:
+            type: "boolean"
+            description: "Whether to monitor usage of this app"
+            default: false
+          last_used_timestamp:
+            type: "string"
+            format: "date-time"
+          usage_count:
+            type: "integer"
+            minimum: 0
+            default: 0
+        required: ["package_name", "app_name", "approval_method", "approved_by", "approval_timestamp"]
+      maxItems: 50  # Reasonable limit for elderly users
+      
+    # Blocked or pending apps
+    blocked_apps:
+      type: "array"
+      description: "Apps that are blocked or pending approval"
+      items:
+        type: "object"
+        properties:
+          package_name:
+            type: "string"
+          app_name:
+            type: "string"
+          block_reason:
+            type: "string"
+            enum: [
+              "not_on_whitelist",
+              "user_blocked",
+              "caregiver_blocked",
+              "security_concern",
+              "inappropriate_content",
+              "installation_blocked"
+            ]
+          blocked_by:
+            type: "string"
+            description: "ID of user or caregiver who blocked"
+          blocked_timestamp:
+            type: "string"
+            format: "date-time"
+          block_permanent:
+            type: "boolean"
+            description: "Whether block is permanent or can be appealed"
+            default: false
+          appeal_count:
+            type: "integer"
+            minimum: 0
+            description: "Number of times user requested unblock"
+            default: 0
+          last_appeal_timestamp:
+            type: "string"
+            format: "date-time"
+          installation_attempts:
+            type: "integer"
+            minimum: 0
+            description: "Number of blocked installation attempts"
+            default: 0
+        required: ["package_name", "app_name", "block_reason", "blocked_timestamp"]
+      maxItems: 100  # Track blocked apps for analysis
+      
+    # Pending approval requests
+    pending_approvals:
+      type: "array"
+      description: "Apps waiting for user or caregiver approval"
+      items:
+        type: "object"
+        properties:
+          request_id:
+            type: "string"
+            format: "uuid"
+          package_name:
+            type: "string"
+          app_name:
+            type: "string"
+          requested_by:
+            type: "string"
+            enum: ["user", "auto_installer", "system"]
+          request_timestamp:
+            type: "string"
+            format: "date-time"
+          request_reason:
+            type: "string"
+            description: "Why user wants this app"
+            maxLength: 200
+          approval_required_from:
+            type: "string"
+            enum: ["user", "caregiver", "either", "both"]
+          priority_level:
+            type: "string"
+            enum: ["low", "normal", "high", "urgent"]
+            default: "normal"
+          app_category:
+            type: "string"
+            enum: [
+              "communication",
+              "health",
+              "entertainment", 
+              "utilities",
+              "social",
+              "news",
+              "games",
+              "productivity",
+              "other"
+            ]
+          app_description:
+            type: "string"
+            description: "Brief description of app functionality"
+            maxLength: 500
+          security_assessment:
+            type: "object"
+            properties:
+              risk_level:
+                type: "string"
+                enum: ["low", "medium", "high", "unknown"]
+              permissions_required:
+                type: "array"
+                items:
+                  type: "string"
+              data_collection_level:
+                type: "string"
+                enum: ["minimal", "moderate", "extensive", "unknown"]
+          caregiver_notified:
+            type: "boolean"
+            description: "Whether caregiver has been notified"
+            default: false
+          expires_at:
+            type: "string"
+            format: "date-time"
+            description: "When request expires if not approved"
+        required: ["request_id", "package_name", "app_name", "requested_by", "request_timestamp"]
+      maxItems: 20  # Limit pending requests
+      
+    # Custom app labeling
+    custom_labels:
+      type: "object"
+      description: "Custom labels for apps to make them more user-friendly"
+      properties:
+        labeling_enabled:
+          type: "boolean"
+          description: "Whether custom labeling is active"
+          default: true
+          
+        label_suggestions_enabled:
+          type: "boolean"
+          description: "Whether to suggest labels based on contacts"
+          default: true
+          
+        labels:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              package_name:
+                type: "string"
+              original_name:
+                type: "string"
+              custom_label:
+                type: "string"
+                maxLength: 15
+                description: "User-friendly label (e.g., 'Call Anna' for WhatsApp)"
+              label_type:
+                type: "string"
+                enum: ["contact_based", "function_based", "user_defined", "caregiver_defined"]
+              associated_contact:
+                type: "string"
+                description: "Contact name if label is contact-based"
+              created_by:
+                type: "string"
+                description: "ID of user or caregiver who created label"
+              created_timestamp:
+                type: "string"
+                format: "date-time"
+              usage_count:
+                type: "integer"
+                minimum: 0
+                description: "How often this labeled app is used"
+                default: 0
+            required: ["package_name", "original_name", "custom_label", "label_type"]
+          maxItems: 50
+          
+    # Installation management
+    installation_management:
+      type: "object"
+      properties:
+        installation_blocking_enabled:
+          type: "boolean"
+          description: "Whether to block unauthorized app installations"
+          default: true
+          
+        sideloading_blocked:
+          type: "boolean"
+          description: "Whether to block sideloading of APKs"
+          default: true
+          
+        play_store_restrictions:
+          type: "object"
+          properties:
+            play_store_access_enabled:
+              type: "boolean"
+              description: "Whether user can access Play Store"
+              default: false
+            caregiver_play_store_access:
+              type: "boolean"
+              description: "Whether caregiver can access Play Store"
+              default: true
+            content_filtering_enabled:
+              type: "boolean"
+              description: "Whether to filter inappropriate content"
+              default: true
+            age_restriction_level:
+              type: "string"
+              enum: ["everyone", "low_maturity", "medium_maturity", "high_maturity"]
+              default: "everyone"
+              
+        automatic_updates:
+          type: "object"
+          properties:
+            auto_update_enabled:
+              type: "boolean"
+              description: "Whether to automatically update approved apps"
+              default: true
+            update_approval_required:
+              type: "boolean"
+              description: "Whether updates need approval"
+              default: false
+            security_updates_forced:
+              type: "boolean"
+              description: "Whether security updates are forced"
+              default: true
+              
+    # Caregiver management features
+    caregiver_management:
+      type: "object"
+      properties:
+        caregiver_override_enabled:
+          type: "boolean"
+          description: "Whether caregiver can override user decisions"
+          default: true
+          
+        caregiver_suggestions_enabled:
+          type: "boolean"
+          description: "Whether caregiver can suggest apps"
+          default: true
+          
+        caregiver_remote_management:
+          type: "boolean"
+          description: "Whether caregiver can manage whitelist remotely"
+          default: true
+          
+        caregiver_notifications:
+          type: "object"
+          properties:
+            notify_on_app_requests:
+              type: "boolean"
+              default: true
+            notify_on_blocked_attempts:
+              type: "boolean"
+              default: true
+            notify_on_usage_patterns:
+              type: "boolean"
+              default: false
+            notification_frequency:
+              type: "string"
+              enum: ["immediate", "daily", "weekly"]
+              default: "immediate"
+              
+        suggested_apps:
+          type: "array"
+          description: "Apps suggested by caregiver"
+          items:
+            type: "object"
+            properties:
+              package_name:
+                type: "string"
+              app_name:
+                type: "string"
+              suggested_by:
+                type: "string"
+                description: "Caregiver ID"
+              suggestion_timestamp:
+                type: "string"
+                format: "date-time"
+              suggestion_reason:
+                type: "string"
+                maxLength: 200
+              user_response:
+                type: "string"
+                enum: ["pending", "accepted", "declined", "ignored"]
+                default: "pending"
+              response_timestamp:
+                type: "string"
+                format: "date-time"
+            required: ["package_name", "app_name", "suggested_by", "suggestion_timestamp"]
+          maxItems: 20
+          
+    # Usage monitoring and analytics
+    usage_monitoring:
+      type: "object"
+      properties:
+        monitoring_enabled:
+          type: "boolean"
+          description: "Whether to monitor app usage patterns"
+          default: true
+          
+        privacy_level:
+          type: "string"
+          enum: ["minimal", "basic", "detailed"]
+          description: "Level of usage data collected"
+          default: "basic"
+          
+        usage_statistics:
+          type: "object"
+          properties:
+            total_apps_approved:
+              type: "integer"
+              minimum: 0
+              default: 0
+            total_apps_blocked:
+              type: "integer"
+              minimum: 0
+              default: 0
+            average_apps_per_day:
+              type: "number"
+              minimum: 0
+            most_used_apps:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  package_name:
+                    type: "string"
+                  usage_count:
+                    type: "integer"
+                    minimum: 0
+                  last_used:
+                    type: "string"
+                    format: "date-time"
+              maxItems: 10
+            blocked_attempt_patterns:
+              type: "object"
+              properties:
+                most_blocked_category:
+                  type: "string"
+                peak_attempt_hours:
+                  type: "array"
+                  items:
+                    type: "integer"
+                    minimum: 0
+                    maximum: 23
+                  maxItems: 24
+                  
+    # Privacy and security
+    privacy_settings:
+      type: "object"
+      properties:
+        data_collection_consent:
+          type: "boolean"
+          description: "Whether user consented to usage data collection"
+          default: false
+          
+        caregiver_visibility_level:
+          type: "string"
+          enum: ["none", "summary", "detailed", "full"]
+          description: "What whitelist info caregiver can see"
+          default: "summary"
+          
+        usage_data_retention_days:
+          type: "integer"
+          minimum: 7
+          maximum: 365
+          description: "Days to retain usage data"
+          default: 90
+          
+        anonymized_analytics:
+          type: "boolean"
+          description: "Whether to contribute anonymized data for research"
+          default: false
+          
+        audit_trail_enabled:
+          type: "boolean"
+          description: "Whether to maintain audit trail of changes"
+          default: true
+          
+    # State metadata
+    state_metadata:
+      type: "object"
+      properties:
+        schema_version:
+          type: "string"
+          default: "1.0.0"
+        android_version:
+          type: "string"
+        app_version:
+          type: "string"
+        device_model:
+          type: "string"
+        last_backup_timestamp:
+          type: "string"
+          format: "date-time"
+        sync_status:
+          type: "string"
+          enum: ["synced", "pending", "failed", "offline"]
+          default: "pending"
+        last_whitelist_update:
+          type: "string"
+          format: "date-time"
+          
+    created_at:
+      type: "string"
+      format: "date-time"
+    updated_at:
+      type: "string"
+      format: "date-time"
+      
+  required: [
+    "whitelist_id",
+    "user_id",
+    "whitelist_configuration",
+    "default_safe_apps",
+    "installation_management",
+    "created_at"
+  ]
+  
+# Validation rules for app whitelist state
+validation_rules:
+  - "Default safe apps cannot be removed from whitelist"
+  - "Custom labels must be 15 characters or less"
+  - "Package names must be valid Android package format"
+  - "Pending approval requests must have expiry dates"
+  - "Usage restrictions must have valid time ranges"
+  - "Caregiver suggestions must reference valid caregiver IDs"
+  - "Privacy settings must comply with user consent"
+  - "Blocked apps cannot simultaneously be in approved list"
+
+# Android-specific constraints
+android_constraints:
+  permissions_required:
+    - "android.permission.QUERY_ALL_PACKAGES"
+    - "android.permission.REQUEST_INSTALL_PACKAGES"
+    - "android.permission.REQUEST_DELETE_PACKAGES"
+    
+  performance_requirements:
+    whitelist_check_time_ms: 100
+    app_launch_delay_ms: 500
+    installation_block_time_ms: 1000
+    
+  storage_requirements:
+    max_whitelist_size_mb: 2
+    max_blocked_apps_tracked: 100
+    max_pending_requests: 20

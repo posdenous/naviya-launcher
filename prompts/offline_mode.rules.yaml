@@ -1,0 +1,93 @@
+name: "Offline Mode Rules"
+version: "1.0.0"
+description: "Behavior and functionality rules when device is offline"
+
+offline_detection:
+  triggers:
+    - Network connectivity loss
+    - Airplane mode activation
+    - Poor signal strength below threshold
+    - User manual offline mode toggle
+    
+  indicators:
+    - Clear offline status in UI
+    - Distinctive visual indicator (icon/color)
+    - Notification of limited functionality
+    - Estimated reconnection time
+
+core_functionality:
+  always_available:
+    - Basic app launching (local apps)
+    - Emergency SOS functionality
+    - Local contacts access
+    - Cached content viewing
+    - Basic settings access
+    
+  limited_functionality:
+    - No real-time caregiver communication
+    - No cloud app downloads
+    - No online content updates
+    - No remote assistance
+    - No location services (GPS still works)
+
+emergency_handling:
+  sos_behavior:
+    - Queue emergency alerts for transmission
+    - Use local emergency contacts
+    - Store emergency event locally
+    - Attempt SMS if cellular available
+    - Show clear status of alert attempts
+    
+  fallback_methods:
+    - Local emergency contact calls
+    - SMS emergency messages
+    - Cached emergency protocols
+    - Offline emergency information
+
+data_management:
+  caching_strategy:
+    - Cache frequently used apps
+    - Store recent caregiver messages
+    - Keep emergency contact information
+    - Cache user preferences
+    - Store offline help content
+    
+  sync_on_reconnect:
+    - Upload queued emergency events
+    - Sync missed caregiver messages
+    - Update app information
+    - Backup user data changes
+    - Download pending updates
+
+user_experience:
+  notifications:
+    - Clear offline mode indication
+    - Explain limited functionality
+    - Show reconnection attempts
+    - Notify when back online
+    
+  graceful_degradation:
+    - Disable unavailable features
+    - Provide offline alternatives
+    - Clear error messages
+    - Maintain core usability
+    
+  reconnection:
+    - Automatic reconnection attempts
+    - Manual reconnect option
+    - Progress indicators
+    - Successful reconnection confirmation
+
+offline_content:
+  essential_data:
+    - Emergency contact information
+    - Basic user profile
+    - Installed app list
+    - Accessibility settings
+    - Language preferences
+    
+  help_content:
+    - Offline troubleshooting guide
+    - Emergency procedures
+    - Basic usage instructions
+    - Contact information for support

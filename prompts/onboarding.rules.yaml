@@ -1,0 +1,294 @@
+name: "Onboarding Rules"
+version: "2.0.0"
+description: "Android multilingual onboarding with TTS, accessibility defaults, and elderly-focused flow"
+
+onboarding_flow:
+  android_specific_steps:
+    - welcome_screen_with_tts
+    - language_selection_with_audio
+    - accessibility_defaults_setup
+    - permission_requests_simplified
+    - emergency_contacts_required
+    - caregiver_pairing_optional
+    - launcher_customization
+    - practice_mode_tutorial
+    - completion_confirmation
+    
+  flow_characteristics:
+    total_duration: "10_to_15_minutes"
+    skip_options: "minimal_for_safety"
+    back_navigation: "always_available"
+    progress_indicator: "large_visual_progress_bar"
+    audio_support: "tts_for_all_text"
+    
+  elderly_user_adaptations:
+    pacing: "slower_with_confirmation_steps"
+    text_size: "1.6x_default_scaling"
+    button_size: "minimum_64dp_touch_targets"
+    color_contrast: "high_contrast_default"
+    timeout_handling: "no_automatic_timeouts"
+
+android_onboarding_rules:
+  welcome_screen_with_tts:
+    visual_elements:
+      - "large_naviya_logo_with_tagline"
+      - "friendly_welcome_message_in_simple_language"
+      - "prominent_get_started_button_64dp"
+      - "accessibility_quick_setup_shortcut"
+      
+    audio_features:
+      - "automatic_tts_welcome_message"
+      - "voice_activation_hey_naviya"
+      - "audio_instructions_for_next_steps"
+      
+    android_integration:
+      - "check_talkback_enabled_status"
+      - "detect_large_text_system_setting"
+      - "identify_accessibility_services_active"
+      
+  language_selection_with_audio:
+    supported_languages:
+      - code: "en"
+        name: "English"
+        native: "English"
+        flag_emoji: "🇺🇸"
+        tts_available: true
+      - code: "de"
+        name: "German"
+        native: "Deutsch"
+        flag_emoji: "🇩🇪"
+        tts_available: true
+      - code: "tr"
+        name: "Turkish"
+        native: "Türkçe"
+        flag_emoji: "🇹🇷"
+        tts_available: true
+      - code: "ar"
+        name: "Arabic"
+        native: "العربية"
+        flag_emoji: "🇸🇦"
+        tts_available: true
+        rtl_support: true
+      - code: "ua"
+        name: "Ukrainian"
+        native: "Українська"
+        flag_emoji: "🇺🇦"
+        tts_available: true
+        
+    selection_interface:
+      layout: "large_buttons_with_flags_and_audio_preview"
+      audio_preview: "tap_to_hear_language_sample"
+      confirmation: "are_you_sure_dialog_in_selected_language"
+      later_change: "always_available_in_settings"
+      
+  accessibility_defaults_setup:
+    automatic_detection:
+      system_font_scale: "inherit_and_apply_1.6x_minimum"
+      high_contrast: "enable_if_system_setting_active"
+      talkback_integration: "configure_content_descriptions"
+      
+    user_preferences:
+      font_size_options: ["large", "extra_large", "huge"]
+      contrast_options: ["standard", "high", "maximum"]
+      touch_sensitivity: ["normal", "sensitive", "very_sensitive"]
+      audio_feedback: ["minimal", "standard", "verbose"]
+      
+    accessibility_shortcuts:
+      volume_key_shortcut: "configure_accessibility_service_toggle"
+      gesture_navigation: "enable_simplified_gestures"
+      voice_commands: "setup_basic_voice_recognition"
+      
+  permission_requests_simplified:
+    essential_permissions:
+      - permission: "CALL_PHONE"
+        explanation: "Make emergency calls when you need help"
+        icon: "phone"
+        required: true
+        
+      - permission: "SEND_SMS"
+        explanation: "Send emergency text messages"
+        icon: "message"
+        required: true
+        
+      - permission: "ACCESS_FINE_LOCATION"
+        explanation: "Share your location during emergencies"
+        icon: "location_on"
+        required: false
+        benefits: "Helps emergency contacts find you faster"
+        
+      - permission: "RECORD_AUDIO"
+        explanation: "Record voice messages for caregivers"
+        icon: "mic"
+        required: false
+        
+    permission_flow:
+      explanation_first: "explain_benefit_before_requesting"
+      group_related: "request_emergency_permissions_together"
+      allow_skip: "optional_permissions_can_be_skipped"
+      later_enable: "all_permissions_available_in_settings"
+      
+  emergency_contacts_required:
+    minimum_contacts: 1
+    recommended_contacts: 2
+    
+    contact_setup:
+      input_methods:
+        - "manual_entry_with_large_text_fields"
+        - "import_from_phone_contacts"
+        - "voice_dictation_with_confirmation"
+        
+      contact_verification:
+        test_call: "optional_test_call_to_verify_number"
+        test_sms: "send_test_message_with_user_approval"
+        relationship_clarification: "ask_how_they_know_you"
+        
+      contact_types:
+        - "family_member"
+        - "friend"
+        - "neighbor"
+        - "healthcare_provider"
+        - "caregiver"
+        - "other"
+        
+  caregiver_pairing_optional:
+    presentation:
+      benefits_explanation: "clear_simple_language_about_remote_help"
+      privacy_assurance: "emphasize_user_control_and_consent"
+      skip_option: "prominent_skip_for_now_button"
+      
+    pairing_methods:
+      qr_code: "caregiver_shows_qr_on_their_device"
+      invite_link: "caregiver_sends_link_via_sms_email"
+      pairing_code: "6_digit_code_with_voice_support"
+      
+    safety_features:
+      approval_required: "user_must_explicitly_approve_connection"
+      revocable: "can_disconnect_anytime_in_settings"
+      transparent: "show_what_caregiver_can_see_and_do"
+      
+  launcher_customization:
+    app_selection:
+      default_apps: ["Phone", "Messages", "Camera", "Settings"]
+      suggested_apps: "show_commonly_used_elderly_friendly_apps"
+      custom_labels: "allow_renaming_apps_for_clarity"
+      
+    layout_preferences:
+      tile_size: "confirm_64dp_icons_are_visible"
+      grid_arrangement: "2x3_with_option_to_see_preview"
+      emergency_button_placement: "confirm_sos_button_location"
+      
+  practice_mode_tutorial:
+    interactive_elements:
+      - "practice_tapping_tiles_with_feedback"
+      - "practice_sos_button_without_calling"
+      - "practice_voice_commands_if_enabled"
+      - "practice_accessing_settings_with_pin"
+      
+    safety_practice:
+      emergency_simulation: "walk_through_emergency_scenario"
+      false_alarm_recovery: "how_to_cancel_accidental_sos"
+      caregiver_communication: "if_caregiver_connected_practice_messaging"
+      
+  completion_confirmation:
+    summary_review:
+      - "language_selected"
+      - "emergency_contacts_configured"
+      - "accessibility_settings_applied"
+      - "caregiver_connection_status"
+      - "app_layout_customized"
+      
+    final_steps:
+      backup_settings: "offer_to_backup_configuration"
+      help_resources: "show_how_to_get_help_later"
+      completion_celebration: "positive_reinforcement_message"
+
+validation_and_safety:
+  required_completion:
+    essential_fields:
+      - "language_preference_selected"
+      - "at_least_one_emergency_contact"
+      - "accessibility_defaults_applied"
+      - "essential_permissions_granted"
+      
+    safety_checks:
+      - "emergency_contact_phone_number_valid"
+      - "sos_button_accessible_and_tested"
+      - "user_understands_basic_navigation"
+      
+  optional_completion:
+    recommended_fields:
+      - "caregiver_connection_established"
+      - "location_permission_granted"
+      - "voice_commands_configured"
+      - "app_whitelist_customized"
+      
+  error_handling:
+    validation_failures:
+      invalid_phone_number: "show_format_example_and_retry"
+      permission_denied: "explain_impact_and_offer_alternatives"
+      accessibility_issues: "provide_alternative_setup_methods"
+      
+    recovery_options:
+      start_over: "option_to_restart_onboarding"
+      skip_problematic_step: "continue_with_warnings"
+      get_help: "contact_support_or_caregiver_for_assistance"
+      
+  post_onboarding:
+    immediate_actions:
+      - "set_launcher_as_default"
+      - "disable_other_launchers_if_permitted"
+      - "create_initial_backup_of_settings"
+      - "schedule_first_caregiver_check_in_if_connected"
+      
+    monitoring:
+      first_week_usage: "track_for_onboarding_effectiveness"
+      common_issues: "identify_patterns_for_improvement"
+      user_satisfaction: "simple_feedback_collection"
+      
+android_specific_features:
+  system_integration:
+    default_launcher: "request_to_set_as_default_with_explanation"
+    accessibility_services: "integrate_with_android_accessibility_framework"
+    notification_access: "request_permission_to_read_notifications_for_unread_tile"
+    
+  device_optimization:
+    battery_optimization: "request_exemption_for_reliable_emergency_function"
+    do_not_disturb: "configure_emergency_bypass_settings"
+    app_permissions: "batch_request_related_permissions_together"
+    
+  backup_and_restore:
+    settings_backup: "offer_google_drive_backup_of_configuration"
+    device_transfer: "prepare_for_easy_setup_on_new_device"
+    factory_reset_protection: "warn_about_reconfiguration_needed_after_reset"
+
+tts_and_audio_support:
+  text_to_speech:
+    languages_supported: ["en", "de", "tr", "ar", "ua"]
+    voice_selection: "prefer_clear_slower_voices_for_elderly"
+    speech_rate: "20_percent_slower_than_default"
+    
+  audio_cues:
+    button_feedback: "subtle_sound_on_tap"
+    navigation_assistance: "audio_description_of_current_screen"
+    error_notifications: "clear_audio_error_messages"
+    
+  voice_input:
+    wake_word: "hey_naviya_for_voice_commands"
+    command_recognition: "simple_phrases_in_user_language"
+    confirmation_required: "repeat_back_understood_command"
+    
+usability_testing_integration:
+  feedback_collection:
+    onboarding_completion_time: "track_duration_per_step"
+    user_confusion_points: "identify_where_users_get_stuck"
+    accessibility_effectiveness: "measure_success_with_different_abilities"
+    
+  continuous_improvement:
+    a_b_testing: "test_different_onboarding_flows"
+    language_effectiveness: "measure_comprehension_across_languages"
+    caregiver_feedback: "collect_input_from_connected_caregivers"
+    
+  ngo_partnership_data:
+    elderly_user_groups: "collect_feedback_from_partner_organizations"
+    cultural_adaptation: "adjust_flow_for_different_cultural_contexts"
+    accessibility_validation: "test_with_users_having_various_disabilities"

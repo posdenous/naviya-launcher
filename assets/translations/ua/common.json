@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Naviya Launcher",
+    "tagline": "Ваш корисний помічник"
+  },
+  "navigation": {
+    "home": "Головна",
+    "apps": "Додатки",
+    "contacts": "Контакти",
+    "settings": "Налаштування"
+  },
+  "buttons": {
+    "get_started": "Почати",
+    "continue": "Продовжити",
+    "skip": "Пропустити",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "confirm": "Підтвердити",
+    "emergency": "Екстрена ситуація",
+    "help": "Допомога"
+  },
+  "onboarding": {
+    "welcome": "Ласкаво просимо до Naviya",
+    "welcome_message": "Давайте налаштуємо ваш пристрій для зручного та безпечного використання.",
+    "language_selection": "Оберіть вашу мову",
+    "accessibility_title": "Налаштування доступності",
+    "accessibility_message": "Налаштуйте ваш досвід",
+    "caregiver_setup": "Підключення до опікуна",
+    "caregiver_optional": "Цей крок необов'язковий і може бути виконаний пізніше",
+    "emergency_contacts": "Контакти екстрених служб",
+    "emergency_required": "Потрібен принаймні один контакт екстрених служб"
+  },
+  "emergency": {
+    "sos_button": "SOS",
+    "emergency_alert": "Сигнал тривоги",
+    "confirmation": "Ви впевнені? Це зв'яжеться з екстреними службами.",
+    "countdown": "Сигнал буде надіслано через {seconds} секунд...",
+    "alert_sent": "Сигнал тривоги надіслано",
+    "contacting": "Зв'язок з контактами екстрених служб..."
+  },
+  "caregiver": {
+    "pairing_code": "Код з'єднання",
+    "enter_code": "Введіть 6-значний код, наданий вашим опікуном",
+    "connection_pending": "З'єднання очікує схвалення",
+    "connected": "Підключено до опікуна",
+    "permissions": "Дозволи",
+    "manage_connection": "Керувати з'єднанням"
+  },
+  "settings": {
+    "language": "Мова",
+    "theme": "Тема",
+    "font_size": "Розмір шрифту",
+    "accessibility": "Доступність",
+    "emergency_contacts": "Контакти екстрених служб",
+    "caregiver_connections": "З'єднання з опікунами",
+    "privacy": "Конфіденційність",
+    "about": "Про додаток"
+  },
+  "errors": {
+    "network_error": "Помилка мережевого з'єднання",
+    "invalid_code": "Недійсний код з'єднання",
+    "contact_failed": "Не вдалося зв'язатися з екстреними службами",
+    "permission_denied": "Доступ заборонено",
+    "unknown_error": "Сталася неочікувана помилка"
+  },
+  "offline": {
+    "status": "Офлайн",
+    "limited_functionality": "Деякі функції недоступні в офлайн режимі",
+    "reconnecting": "Повторне підключення...",
+    "back_online": "Знову онлайн"
+  }
+}

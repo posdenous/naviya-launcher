@@ -1,0 +1,259 @@
+name: "App Whitelist Rules"
+version: "1.0.0"
+description: "Rules for user/caregiver controlled app whitelist and installation management"
+
+# Core whitelist management based on Android functional spec
+whitelist_enforcement:
+  default_behavior: "block_unauthorized_apps"
+  installation_blocking: true
+  uninstall_protection: true
+  system_app_protection: true
+  
+  enforcement_levels:
+    strict: "only_whitelisted_apps_allowed"
+    moderate: "ask_permission_for_new_apps"
+    permissive: "allow_with_notification"
+    disabled: "no_restrictions"
+  
+  default_level: "strict"
+
+# Always-allowed system apps (cannot be removed from whitelist)
+system_apps_required:
+  essential_apps:
+    - package_name: "com.android.dialer"
+      display_name: "Phone"
+      category: "emergency"
+      removable: false
+      reason: "Required for emergency calls and SOS functionality"
+      
+    - package_name: "com.android.mms"
+      display_name: "Messages"
+      category: "communication"
+      removable: false
+      reason: "Required for emergency SMS and caregiver communication"
+      
+    - package_name: "com.android.settings"
+      display_name: "Settings"
+      category: "system"
+      removable: false
+      reason: "Required for device configuration and PIN management"
+      
+    - package_name: "com.android.camera2"
+      display_name: "Camera"
+      category: "utility"
+      removable: false
+      reason: "Useful for emergency documentation and caregiver communication"
+
+# User-controlled app management
+user_app_management:
+  approval_process:
+    user_initiated:
+      method: "tap_to_request_app"
+      confirmation_required: true
+      pin_protection: false
+      
+    caregiver_suggested:
+      method: "caregiver_sends_app_suggestion"
+      user_approval_required: true
+      pin_protection: true
+      explanation_required: true
+      
+  custom_labeling:
+    enabled: true
+    max_label_length: 20
+    examples:
+      - original: "WhatsApp"
+        custom: "Talk to Anna"
+      - original: "Spotify"
+        custom: "Music"
+      - original: "Google Maps"
+        custom: "Directions"
+        
+  app_categories:
+    communication:
+      priority: "high"
+      examples: ["WhatsApp", "Telegram", "Skype", "Zoom"]
+      
+    health:
+      priority: "high"
+      examples: ["MyChart", "Pill Reminder", "Blood Pressure Monitor"]
+      
+    entertainment:
+      priority: "medium"
+      examples: ["YouTube", "Netflix", "Spotify", "Kindle"]
+      
+    utilities:
+      priority: "medium"
+      examples: ["Calculator", "Flashlight", "Weather", "Calendar"]
+      
+    social:
+      priority: "low"
+      examples: ["Facebook", "Instagram", "Twitter"]
+      caregiver_approval_recommended: true
+      
+    shopping:
+      priority: "low"
+      examples: ["Amazon", "eBay", "Online Banking"]
+      caregiver_approval_required: true
+      financial_risk_warning: true
+
+# Caregiver management capabilities
+caregiver_management:
+  permissions:
+    suggest_apps: true
+    remove_apps: false  # User must approve removal
+    modify_labels: true
+    set_restrictions: true
+    view_usage_stats: true
+    
+  suggestion_process:
+    suggestion_method:
+      - "send_app_link_via_caregiver_app"
+      - "show_in_user_pending_approvals"
+      - "include_explanation_and_benefits"
+      
+    approval_flow:
+      user_sees:
+        - "app_name_and_icon"
+        - "caregiver_explanation"
+        - "what_app_does"
+        - "why_caregiver_suggests_it"
+        - "privacy_implications"
+        
+      user_actions:
+        - "approve_and_install"
+        - "approve_but_dont_install_yet"
+        - "ask_caregiver_questions"
+        - "decline_with_reason"
+        - "defer_decision"
+        
+  restrictions_caregiver_can_set:
+    time_limits:
+      daily_usage_minutes: "1_to_480_minutes"
+      allowed_hours: "specify_time_ranges"
+      
+    day_restrictions:
+      weekdays_only: true
+      weekends_only: true
+      specific_days: ["monday", "tuesday", "etc"]
+      
+    usage_monitoring:
+      track_usage_time: true
+      alert_on_excessive_use: true
+      weekly_usage_reports: true
+
+# Installation and blocking rules
+installation_management:
+  installation_sources:
+    google_play_store: "allowed_with_whitelist_check"
+    unknown_sources: "blocked_by_default"
+    caregiver_recommended: "pre_approved_installation"
+    
+  installation_process:
+    pre_installation_check:
+      - "verify_app_on_whitelist"
+      - "check_content_rating"
+      - "scan_for_security_risks"
+      - "verify_developer_reputation"
+      
+    user_notification:
+      approved_app: "installing_approved_app_notification"
+      blocked_app: "app_blocked_explanation_and_request_process"
+      
+  automatic_blocking:
+    content_filters:
+      age_rating: "block_apps_rated_above_everyone"
+      category_filters: ["gambling", "dating", "violent_games"]
+      keyword_filters: ["casino", "bet", "adult"]
+      
+    security_filters:
+      unknown_developers: true
+      apps_requesting_excessive_permissions: true
+      apps_with_security_warnings: true
+
+# App removal and management
+app_removal:
+  user_initiated_removal:
+    confirmation_required: true
+    pin_protection: false
+    system_apps_protected: true
+    
+  caregiver_initiated_removal:
+    user_approval_required: true
+    explanation_required: true
+    pin_protection: true
+    
+  automatic_removal:
+    unused_apps: "suggest_removal_after_30_days_no_use"
+    problematic_apps: "remove_if_security_risk_detected"
+    
+# Tile placement and priority
+tile_management:
+  placement_rules:
+    priority_apps:
+      emergency_contacts: "position_0_or_1"
+      phone_dialer: "always_visible"
+      sos_button: "dedicated_position"
+      
+    user_apps:
+      most_used: "higher_priority_positions"
+      recently_added: "lower_priority_initially"
+      caregiver_suggested: "medium_priority"
+      
+  tile_customization:
+    icon_override:
+      allowed: true
+      sources: ["custom_photos", "icon_packs", "caregiver_provided"]
+      
+    label_override:
+      allowed: true
+      character_limit: 20
+      profanity_filter: true
+      clarity_optimization: "suggest_clearer_names"
+
+# Privacy and security
+privacy_protection:
+  app_usage_data:
+    local_storage: "encrypted_usage_statistics"
+    caregiver_sharing: "summary_only_no_detailed_activity"
+    retention_period: "30_days_rolling"
+    
+  installation_history:
+    track_installations: true
+    track_removals: true
+    audit_trail: "who_approved_what_when"
+    
+  data_sharing:
+    with_caregivers:
+      app_list: "names_only_no_usage_details"
+      installation_requests: "full_details_with_user_consent"
+      usage_patterns: "weekly_summary_only"
+
+# Error handling and recovery
+error_handling:
+  whitelist_corruption:
+    backup_restoration: "restore_from_last_known_good_state"
+    factory_defaults: "restore_essential_apps_only"
+    
+  installation_failures:
+    retry_logic: "3_attempts_with_exponential_backoff"
+    fallback_options: "suggest_alternative_apps"
+    user_notification: "clear_explanation_of_failure"
+    
+  permission_conflicts:
+    resolution_priority: "user_safety_first"
+    escalation: "involve_caregiver_if_needed"
+    
+# Integration with other systems
+system_integration:
+  launcher_integration:
+    tile_updates: "real_time_whitelist_changes_reflect_in_tiles"
+    app_launching: "only_launch_whitelisted_apps"
+    
+  android_system:
+    package_manager: "hook_into_installation_events"
+    accessibility_services: "support_app_switching_assistance"
+    
+  caregiver_app:
+    real_time_sync: "bidirectional_whitelist_synchronization"
+    notification_system: "alert_on_installation_requests"
