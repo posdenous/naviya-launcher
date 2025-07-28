@@ -26,19 +26,13 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.2.0' apply false
-    id 'com.android.library' version '8.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.21' apply false
-    id 'com.google.dagger.hilt.android' version '2.48.1' apply false
+    id 'com.android.application' version '8.1.0' apply false
+    id 'com.android.library' version '8.1.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+    id 'com.google.dagger.hilt.android' version '2.44' apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
-}
+// Repository configuration moved to settings.gradle
 
 // Configuration for elderly user accessibility and performance
 ext {
@@ -108,15 +102,4 @@ gradle.projectsEvaluated {
     }
 }
 
-// Configuration for ProGuard/R8 optimization
-android {
-    buildTypes {
-        release {
-            // Elderly user safety: keep crash reporting and accessibility classes
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            
-            // Keep accessibility and TTS classes for elderly users
-            consumerProguardFiles 'consumer-rules.pro'
-        }
-    }
-}
+// ProGuard/R8 configuration moved to app-level build.gradle

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Naviya Launcher</string>
+    
+    <!-- Main Launcher UI -->
+    <string name="current_mode">Current Mode</string>
+    <string name="switch_mode">Switch Mode</string>
+    <string name="select_mode">Select Mode</string>
+    <string name="cancel">Cancel</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    
+    <!-- Mode Switch Messages -->
+    <string name="mode_switched_to">Switched to %1$s mode</string>
+    <string name="mode_switch_failed">Failed to switch mode</string>
+    
+    <!-- Emergency Messages -->
+    <string name="emergency_activated">Emergency SOS activated</string>
+    <string name="emergency_activation_failed">Emergency activation failed</string>
+    
+    <!-- App Launch Messages -->
+    <string name="app_not_found">App not found</string>
+    <string name="app_launch_failed">Failed to launch app</string>
+    
+    <!-- Toggle Mode Names (English) -->
+    <string name="mode_comfort">Comfort</string>
+    <string name="mode_family">Family</string>
+    <string name="mode_focus">Focus</string>
+    <string name="mode_minimal">Minimal</string>
+    <string name="mode_welcome">Welcome</string>
+    
+    <!-- Toggle Mode Descriptions (English) -->
+    <string name="mode_comfort_desc">Large icons, simple layout for everyday use</string>
+    <string name="mode_family_desc">Family photos and contacts for connection</string>
+    <string name="mode_focus_desc">Essential apps only, reduced distractions</string>
+    <string name="mode_minimal_desc">Bare essentials, maximum simplicity</string>
+    <string name="mode_welcome_desc">Guided experience for new users</string>
+    
+    <!-- Emergency SOS -->
+    <string name="emergency_sos">Emergency SOS</string>
+    <string name="emergency_sos_desc">Press and hold for emergency</string>
+    <string name="emergency_confirm">Confirm Emergency</string>
+    <string name="emergency_cancel">Cancel</string>
+    <string name="emergency_calling">Calling emergency services...</string>
+    <string name="emergency_notifying_caregivers">Notifying caregivers...</string>
+    
+    <!-- Accessibility -->
+    <string name="launcher_accessibility_desc">Naviya Launcher main screen</string>
+    <string name="mode_switch_accessibility_desc">Switch between launcher modes</string>
+    <string name="emergency_button_accessibility_desc">Emergency SOS button - press and hold to activate</string>
+    <string name="app_tile_accessibility_desc">App tile for %1$s</string>
+    <string name="unread_indicator_accessibility_desc">%1$d unread notifications</string>
+    <string name="connectivity_indicator_accessibility_desc">Connection status: %1$s</string>
+    
+    <!-- Error Messages -->
+    <string name="error_loading_layout">Failed to load layout</string>
+    <string name="error_loading_apps">Failed to load apps</string>
+    <string name="error_network_unavailable">Network unavailable</string>
+    <string name="error_emergency_service_unavailable">Emergency service unavailable</string>
+    
+    <!-- Loading States -->
+    <string name="loading_layout">Loading layout...</string>
+    <string name="loading_apps">Loading apps...</string>
+    <string name="initializing_launcher">Initializing launcher...</string>
+    
+    <!-- Unread Notifications -->
+    <string name="unread_calls_and_messages">Unread</string>
+    <string name="missed_calls">%1$d missed calls</string>
+    <string name="unread_messages">%1$d unread messages</string>
+    <string name="caregiver_not_available">Caregiver not available</string>
+    
+    <!-- Settings and Configuration -->
+    <string name="settings">Settings</string>
+    <string name="preferences">Preferences</string>
+    <string name="language">Language</string>
+    <string name="accessibility_settings">Accessibility</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="caregiver_settings">Caregiver Settings</string>
+    
+    <!-- Common Actions -->
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="retry">Retry</string>
+    <string name="refresh">Refresh</string>
+    <string name="close">Close</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    
+    <!-- Time and Date -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="time_format">%1$s:%2$s</string>
+    <string name="date_format">%1$s %2$d, %3$d</string>
+</resources>

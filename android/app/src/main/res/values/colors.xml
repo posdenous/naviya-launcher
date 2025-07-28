@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Elderly-friendly color palette following Windsurf accessibility rules -->
+    <!-- High contrast ratios (4.5:1 minimum) for elderly users -->
+    
+    <!-- Primary Colors -->
+    <color name="elderly_primary_green">#4CAF50</color>
+    <color name="elderly_primary_green_dark">#2E7D32</color>
+    <color name="elderly_primary_green_light">#C8E6C9</color>
+    
+    <!-- Secondary Colors -->
+    <color name="elderly_accent_blue">#2196F3</color>
+    <color name="elderly_accent_blue_dark">#1565C0</color>
+    <color name="elderly_accent_blue_light">#BBDEFB</color>
+    
+    <!-- Tertiary Colors -->
+    <color name="elderly_accent_orange">#FF9800</color>
+    <color name="elderly_accent_orange_dark">#E65100</color>
+    <color name="elderly_accent_orange_light">#FFE0B2</color>
+    
+    <!-- Error Colors -->
+    <color name="elderly_error_red">#FF5722</color>
+    <color name="elderly_error_red_dark">#D32F2F</color>
+    <color name="elderly_error_red_light">#FFCDD2</color>
+    
+    <!-- Background Colors -->
+    <color name="elderly_background_dark">#1E1E1E</color>
+    <color name="elderly_background_light">#FFFFFF</color>
+    <color name="elderly_surface_dark">#2D2D2D</color>
+    <color name="elderly_surface_light">#F5F5F5</color>
+    <color name="elderly_surface_variant_dark">#3D3D3D</color>
+    <color name="elderly_surface_variant_light">#E0E0E0</color>
+    
+    <!-- Text Colors -->
+    <color name="elderly_text_primary">#FFFFFF</color>
+    <color name="elderly_text_primary_light">#1E1E1E</color>
+    <color name="elderly_text_secondary">#E0E0E0</color>
+    <color name="elderly_text_secondary_light">#424242</color>
+    <color name="elderly_text_disabled">#757575</color>
+    
+    <!-- Border and Outline Colors -->
+    <color name="elderly_outline">#757575</color>
+    <color name="elderly_outline_variant">#424242</color>
+    <color name="elderly_outline_light">#BDBDBD</color>
+    
+    <!-- Overlay and Scrim -->
+    <color name="elderly_overlay">#80000000</color>
+    <color name="elderly_scrim">#80000000</color>
+    
+    <!-- Status Colors -->
+    <color name="elderly_online_green">#4CAF50</color>
+    <color name="elderly_offline_orange">#FF9800</color>
+    <color name="elderly_warning_yellow">#FFC107</color>
+    
+    <!-- Emergency Colors -->
+    <color name="elderly_emergency_red">#FF1744</color>
+    <color name="elderly_emergency_background">#FFEBEE</color>
+    
+    <!-- Unread Badge Colors -->
+    <color name="elderly_unread_badge">#FF5722</color>
+    <color name="elderly_unread_text">#FFFFFF</color>
+    
+    <!-- Button Colors -->
+    <color name="elderly_button_primary">#2196F3</color>
+    <color name="elderly_button_primary_pressed">#1565C0</color>
+    <color name="elderly_button_secondary">#757575</color>
+    <color name="elderly_button_secondary_pressed">#424242</color>
+    
+    <!-- Tile Colors -->
+    <color name="elderly_tile_background">#3D3D3D</color>
+    <color name="elderly_tile_background_light">#E0E0E0</color>
+    <color name="elderly_tile_selected">#2196F3</color>
+    <color name="elderly_tile_pressed">#1565C0</color>
+    
+    <!-- Mode-specific Colors -->
+    <color name="mode_comfort_color">#4CAF50</color>
+    <color name="mode_family_color">#E91E63</color>
+    <color name="mode_focus_color">#2196F3</color>
+    <color name="mode_minimal_color">#757575</color>
+    <color name="mode_welcome_color">#FF9800</color>
+</resources>
