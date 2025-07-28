@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Selection Dialog -->
+    <string name="choose_app_for_tile">Choose an App for This Tile</string>
+    <string name="recommended_apps">Recommended Apps</string>
+    <string name="best_match">Best Match</string>
+    <string name="all_other_apps">All Other Apps</string>
+    <string name="perfect_for_this_tile">Perfect for this tile</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Tile Type Descriptions (Elderly-Friendly) -->
+    <string name="tile_type_communication_desc">Apps for calling, texting, and video chatting with family and friends</string>
+    <string name="tile_type_meditation_focus_desc">Apps to help you relax, meditate, and stay focused</string>
+    <string name="tile_type_education_kids_desc">Educational apps and safe games for children</string>
+    <string name="tile_type_productivity_work_desc">Apps for email, calendar, notes, and work tasks</string>
+    <string name="tile_type_camera_photo_desc">Apps for taking photos and managing your pictures</string>
+    <string name="tile_type_accessibility_desc">Apps that help with vision, hearing, or mobility needs</string>
+    <string name="tile_type_parental_control_desc">Apps to keep children safe and manage screen time</string>
+    <string name="tile_type_emergency_desc">Apps for emergencies and safety situations</string>
+    <string name="tile_type_system_desc">Important system apps like Settings and Calculator</string>
+    <string name="tile_type_flexible_desc">This tile can hold any app you choose</string>
+    
+    <!-- User Guidance Messages -->
+    <string name="tap_empty_tile_to_add">Tap an empty tile to add an app</string>
+    <string name="this_tile_is_for">This tile is designed for:</string>
+    <string name="suggested_apps">We suggest these apps:</string>
+    <string name="or_choose_any_app">Or choose any other app:</string>
+    <string name="app_added_successfully">App added successfully!</string>
+    <string name="app_not_compatible_warning">This app might not be the best fit for this tile type. Are you sure?</string>
+    <string name="continue_anyway">Continue Anyway</string>
+    <string name="choose_different_app">Choose Different App</string>
+</resources>

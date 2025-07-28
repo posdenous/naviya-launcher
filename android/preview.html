@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Elderly Launcher - UI Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 360px;
+            height: 640px;
+            background: #000;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f3460, #16537e);
+            border-radius: 15px;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .header-card {
+            background: rgba(33, 150, 243, 0.2);
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .unread-badge {
+            font-size: 18px;
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        .emergency-card {
+            background: rgba(244, 67, 54, 0.2);
+            border: 2px solid #f44336;
+        }
+
+        .emergency-button {
+            width: 100%;
+            min-height: 80px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .emergency-button:hover {
+            background: #d32f2f;
+            transform: scale(1.02);
+        }
+
+        .emergency-button.active {
+            background: #b71c1c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .unread-card {
+            background: rgba(156, 39, 176, 0.2);
+        }
+
+        .unread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .unread-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .refresh-btn {
+            background: #9c27b0;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .refresh-btn:hover {
+            background: #7b1fa2;
+        }
+
+        .unread-message {
+            font-size: 16px;
+            margin-top: 8px;
+            color: #e1bee7;
+        }
+
+        .apps-card {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .apps-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            max-height: 120px;
+        }
+
+        .app-button {
+            min-height: 60px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .app-button:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .status-card {
+            background: rgba(255, 193, 7, 0.2);
+        }
+
+        .status-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .status-list {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #fff3c4;
+        }
+
+        .demo-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .demo-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .demo-btn.emergency { background: #f44336; color: white; }
+        .demo-btn.unread { background: #9c27b0; color: white; }
+        .demo-btn.reset { background: #607d8b; color: white; }
+
+        .accessibility-note {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="demo-controls">
+            <button class="demo-btn emergency" onclick="toggleEmergency()" title="Toggle Emergency">🚨</button>
+            <button class="demo-btn unread" onclick="updateUnread()" title="Update Unread">📧</button>
+            <button class="demo-btn reset" onclick="resetDemo()" title="Reset">🔄</button>
+        </div>
+        
+        <div class="screen">
+            <!-- Header with unread count -->
+            <div class="card header-card">
+                <div class="header-title">Naviya Launcher</div>
+                <div class="unread-badge" id="headerUnread" style="display: none;">Unread: 0</div>
+            </div>
+
+            <!-- Emergency SOS Button -->
+            <div class="card emergency-card">
+                <button class="emergency-button" id="emergencyBtn" onclick="toggleEmergency()">
+                    Emergency SOS
+                </button>
+            </div>
+
+            <!-- Unread Tile -->
+            <div class="card unread-card">
+                <div class="unread-header">
+                    <div class="unread-title">Missed Communications</div>
+                    <button class="refresh-btn" onclick="updateUnread()">Refresh</button>
+                </div>
+                <div class="unread-message" id="unreadMessage" style="display: none;">
+                    You have 0 missed calls or messages
+                </div>
+            </div>
+
+            <!-- App Grid -->
+            <div class="card apps-card">
+                <div class="apps-title">Quick Apps</div>
+                <div class="apps-grid">
+                    <button class="app-button" onclick="launchApp('Phone')">Phone</button>
+                    <button class="app-button" onclick="launchApp('Messages')">Messages</button>
+                    <button class="app-button" onclick="launchApp('Camera')">Camera</button>
+                    <button class="app-button" onclick="launchApp('Settings')">Settings</button>
+                </div>
+            </div>
+
+            <!-- Status Information -->
+            <div class="card status-card">
+                <div class="status-title">Integration Status</div>
+                <div class="status-list">
+                    ✓ Elderly-friendly UI theme active<br>
+                    ✓ High contrast colors enabled<br>
+                    ✓ Large touch targets (48dp+)<br>
+                    ✓ Emergency SOS system ready<br>
+                    ✓ Unread notifications working<br>
+                    ✓ Compose integration successful
+                </div>
+            </div>
+        </div>
+
+        <div class="accessibility-note">
+            🎯 Accessibility Features: High contrast • Large fonts (1.6x) • 48dp+ touch targets • Screen reader support
+        </div>
+    </div>
+
+    <script>
+        let isEmergencyActive = false;
+        let unreadCount = 0;
+
+        function toggleEmergency() {
+            const btn = document.getElementById('emergencyBtn');
+            isEmergencyActive = !isEmergencyActive;
+            
+            if (isEmergencyActive) {
+                btn.textContent = 'EMERGENCY ACTIVE';
+                btn.classList.add('active');
+                showNotification('🚨 Emergency SOS Activated! Help is being called.', 'error');
+            } else {
+                btn.textContent = 'Emergency SOS';
+                btn.classList.remove('active');
+                showNotification('✅ Emergency cancelled. You are safe.', 'success');
+            }
+        }
+
+        function updateUnread() {
+            unreadCount = Math.floor(Math.random() * 6);
+            const headerUnread = document.getElementById('headerUnread');
+            const unreadMessage = document.getElementById('unreadMessage');
+            
+            if (unreadCount > 0) {
+                headerUnread.style.display = 'block';
+                headerUnread.textContent = `Unread: ${unreadCount}`;
+                unreadMessage.style.display = 'block';
+                unreadMessage.textContent = `You have ${unreadCount} missed calls or messages`;
+                showNotification(`📧 Found ${unreadCount} unread communications`, 'info');
+            } else {
+                headerUnread.style.display = 'none';
+                unreadMessage.style.display = 'none';
+                showNotification('✅ No missed communications', 'success');
+            }
+        }
+
+        function launchApp(appName) {
+            showNotification(`📱 Launching ${appName}...`, 'info');
+        }
+
+        function resetDemo() {
+            isEmergencyActive = false;
+            unreadCount = 0;
+            document.getElementById('emergencyBtn').textContent = 'Emergency SOS';
+            document.getElementById('emergencyBtn').classList.remove('active');
+            document.getElementById('headerUnread').style.display = 'none';
+            document.getElementById('unreadMessage').style.display = 'none';
+            showNotification('🔄 Demo reset', 'info');
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#f44336' : type === 'success' ? '#4caf50' : '#2196f3'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 1000;
+                font-size: 14px;
+                max-width: 300px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize demo
+        showNotification('👋 Welcome to Naviya Elderly Launcher Preview!', 'info');
+    </script>
+</body>
+</html>

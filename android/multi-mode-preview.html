@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Launcher - All Toggle Modes Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #2196f3, #9c27b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #b0bec5;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .mode-btn.comfort { background: #2196f3; }
+        .mode-btn.family { background: #28a745; }
+        .mode-btn.focus { background: #6c757d; }
+        .mode-btn.productivity { background: #fd7e14; }
+        .mode-btn.accessibility { background: #9c27b0; }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .mode-btn.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .phone-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .phone-frame {
+            width: 360px;
+            height: 640px;
+            background: #000;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Comfort Mode Styles */
+        .comfort-mode {
+            background: linear-gradient(135deg, #ffffff, #f5f5f5);
+            color: #000000;
+        }
+
+        .comfort-mode .tile {
+            background: #ffffff;
+            border: 3px solid #2196f3;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .comfort-mode .emergency-tile {
+            background: #d32f2f;
+            color: white;
+            border-color: #b71c1c;
+        }
+
+        /* Family Mode Styles */
+        .family-mode {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #212529;
+        }
+
+        .family-mode .tile {
+            background: #ffffff;
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .family-mode .parental-tile {
+            background: #ffc107;
+            border-color: #f57c00;
+        }
+
+        /* Focus Mode Styles */
+        .focus-mode {
+            background: linear-gradient(135deg, #f5f5f5, #eeeeee);
+            color: #424242;
+        }
+
+        .focus-mode .tile {
+            background: #ffffff;
+            border: 1px solid #9e9e9e;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .focus-mode .essential-tile {
+            background: #e8f5e8;
+            border-color: #4caf50;
+        }
+
+        /* Productivity Mode Styles */
+        .productivity-mode {
+            background: linear-gradient(135deg, #263238, #37474f);
+            color: #ffffff;
+        }
+
+        .productivity-mode .tile {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #fd7e14;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .productivity-mode .work-tile {
+            background: rgba(253,126,20,0.2);
+            border-color: #fd7e14;
+        }
+
+        /* Accessibility Mode Styles */
+        .accessibility-mode {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: #ffffff;
+        }
+
+        .accessibility-mode .tile {
+            background: #333333;
+            border: 4px solid #9c27b0;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .accessibility-mode .emergency-tile {
+            background: #d32f2f;
+            border-color: #f44336;
+        }
+
+        .grid-2x3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+            height: 100%;
+        }
+
+        .grid-2x4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            height: 100%;
+        }
+
+        .grid-3x4 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 8px;
+            height: 100%;
+        }
+
+        .mode-info {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .mode-info h3 {
+            margin-bottom: 8px;
+            color: #2196f3;
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .comparison-view {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .comparison-view.active {
+            display: grid;
+        }
+
+        .comparison-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Naviya Launcher - Toggle Modes</h1>
+            <p>Experience different user interfaces optimized for specific user groups</p>
+        </div>
+
+        <button class="comparison-btn" onclick="toggleComparison()">Compare All Modes</button>
+
+        <div class="mode-selector">
+            <button class="mode-btn comfort active" onclick="showMode('comfort')">Comfort Mode</button>
+            <button class="mode-btn family" onclick="showMode('family')">Family Mode</button>
+            <button class="mode-btn focus" onclick="showMode('focus')">Focus Mode</button>
+            <button class="mode-btn productivity" onclick="showMode('productivity')">Productivity Mode</button>
+            <button class="mode-btn accessibility" onclick="showMode('accessibility')">Accessibility Mode</button>
+        </div>
+
+        <div class="phone-container" id="singleView">
+            <div class="phone-frame">
+                <div class="screen" id="mainScreen">
+                    <!-- Content will be dynamically generated -->
+                </div>
+                <div class="mode-info" id="modeInfo">
+                    <!-- Mode information will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-view" id="comparisonView">
+            <!-- All modes will be shown side by side -->
+        </div>
+    </div>
+
+    <script>
+        const modes = {
+            comfort: {
+                name: "Comfort Mode",
+                target: "Elderly users (60+), Vision impairments, Motor difficulties",
+                grid: "grid-2x3",
+                class: "comfort-mode",
+                tiles: [
+                    { name: "Phone", icon: "📞", class: "tile" },
+                    { name: "Messages", icon: "💬", class: "tile" },
+                    { name: "Emergency SOS", icon: "🚨", class: "tile emergency-tile" },
+                    { name: "Camera", icon: "📷", class: "tile" },
+                    { name: "WhatsApp", icon: "💚", class: "tile" },
+                    { name: "Contacts", icon: "👥", class: "tile" }
+                ],
+                features: "Extra large tiles (72dp), 1.8x font scale, High contrast (7:1), Strong haptic feedback"
+            },
+            family: {
+                name: "Family Mode",
+                target: "Families with children (5-15), Parents needing supervision, Shared devices",
+                grid: "grid-2x4",
+                class: "family-mode",
+                tiles: [
+                    { name: "Roblox", icon: "🎮", class: "tile" },
+                    { name: "Khan Academy Kids", icon: "📚", class: "tile" },
+                    { name: "Google Photos", icon: "📷", class: "tile" },
+                    { name: "Google Meet", icon: "📹", class: "tile" },
+                    { name: "Family SOS", icon: "🚨", class: "tile emergency-tile" },
+                    { name: "Family Link", icon: "🔒", class: "tile parental-tile" },
+                    { name: "Screen Time", icon: "⏰", class: "tile parental-tile" },
+                    { name: "Kiddle", icon: "🌐", class: "tile" }
+                ],
+                features: "Parental controls, App whitelist, Screen time limits, Educational content curation"
+            },
+            focus: {
+                name: "Focus Mode",
+                target: "Mindfulness seekers, ADHD users, Meditation practitioners",
+                grid: "grid-2x3",
+                class: "focus-mode",
+                tiles: [
+                    { name: "Headspace", icon: "🧘", class: "tile essential-tile" },
+                    { name: "Forest", icon: "🌲", class: "tile essential-tile" },
+                    { name: "Calm", icon: "🌬️", class: "tile essential-tile" },
+                    { name: "Day One", icon: "📔", class: "tile" },
+                    { name: "Noisli", icon: "🎵", class: "tile" },
+                    { name: "Insight Timer", icon: "⏰", class: "tile" }
+                ],
+                features: "Minimal distractions, Meditation tools, Focus sessions, Mindful journaling"
+            },
+            productivity: {
+                name: "Productivity Mode",
+                target: "Business professionals, Power users, Multitaskers",
+                grid: "grid-3x4",
+                class: "productivity-mode",
+                tiles: [
+                    { name: "Gmail", icon: "📧", class: "tile work-tile" },
+                    { name: "Google Calendar", icon: "📅", class: "tile work-tile" },
+                    { name: "Todoist", icon: "✅", class: "tile work-tile" },
+                    { name: "Google Drive", icon: "📁", class: "tile" },
+                    { name: "Notion", icon: "📝", class: "tile" },
+                    { name: "Calculator", icon: "🧮", class: "tile" },
+                    { name: "Clock", icon: "🕐", class: "tile" },
+                    { name: "Weather", icon: "🌤️", class: "tile" },
+                    { name: "Google News", icon: "📰", class: "tile" },
+                    { name: "Google Maps", icon: "🗺️", class: "tile" },
+                    { name: "Phone", icon: "📞", class: "tile" },
+                    { name: "Settings", icon: "⚙️", class: "tile" }
+                ],
+                features: "Dense information, Quick access, Multitasking support, Professional tools"
+            },
+            accessibility: {
+                name: "Accessibility Mode",
+                target: "Visual impairments, Motor disabilities, Hearing impairments",
+                grid: "grid-2x3",
+                class: "accessibility-mode",
+                tiles: [
+                    { name: "Voice Access", icon: "🎤", class: "tile" },
+                    { name: "Magnification", icon: "🔍", class: "tile" },
+                    { name: "Emergency SOS", icon: "🚨", class: "tile emergency-tile" },
+                    { name: "TalkBack", icon: "🔊", class: "tile" },
+                    { name: "Switch Access", icon: "👆", class: "tile" },
+                    { name: "Accessibility", icon: "♿", class: "tile" }
+                ],
+                features: "Maximum contrast, 2.0x font scale, Voice navigation, TalkBack optimized, Gesture shortcuts"
+            }
+        };
+
+        let currentMode = 'comfort';
+        let isComparison = false;
+
+        function showMode(mode) {
+            currentMode = mode;
+            
+            // Update active button
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.mode-btn.${mode}`).classList.add('active');
+            
+            // Update screen
+            const screen = document.getElementById('mainScreen');
+            const info = document.getElementById('modeInfo');
+            
+            screen.className = `screen ${modes[mode].grid} ${modes[mode].class}`;
+            screen.innerHTML = '';
+            
+            modes[mode].tiles.forEach(tile => {
+                const tileElement = document.createElement('div');
+                tileElement.className = tile.class;
+                tileElement.innerHTML = `
+                    <div class="icon">${tile.icon}</div>
+                    <div>${tile.name}</div>
+                `;
+                tileElement.onclick = () => showNotification(`${tile.name} activated in ${modes[mode].name}`);
+                screen.appendChild(tileElement);
+            });
+            
+            info.innerHTML = `
+                <h3>${modes[mode].name}</h3>
+                <strong>Target Users:</strong> ${modes[mode].target}<br>
+                <strong>Key Features:</strong> ${modes[mode].features}
+            `;
+        }
+
+        function toggleComparison() {
+            isComparison = !isComparison;
+            const singleView = document.getElementById('singleView');
+            const comparisonView = document.getElementById('comparisonView');
+            const btn = document.querySelector('.comparison-btn');
+            
+            if (isComparison) {
+                singleView.style.display = 'none';
+                comparisonView.classList.add('active');
+                btn.textContent = 'Single View';
+                
+                // Generate comparison view
+                comparisonView.innerHTML = '';
+                Object.keys(modes).forEach(modeKey => {
+                    const mode = modes[modeKey];
+                    const phoneFrame = document.createElement('div');
+                    phoneFrame.className = 'phone-frame';
+                    phoneFrame.style.transform = 'scale(0.7)';
+                    phoneFrame.style.margin = '0 auto';
+                    
+                    const screen = document.createElement('div');
+                    screen.className = `screen ${mode.grid} ${mode.class}`;
+                    
+                    mode.tiles.forEach(tile => {
+                        const tileElement = document.createElement('div');
+                        tileElement.className = tile.class;
+                        tileElement.innerHTML = `
+                            <div class="icon" style="font-size: 1.5em; margin-bottom: 4px;">${tile.icon}</div>
+                            <div style="font-size: 0.8em;">${tile.name}</div>
+                        `;
+                        screen.appendChild(tileElement);
+                    });
+                    
+                    const info = document.createElement('div');
+                    info.className = 'mode-info';
+                    info.innerHTML = `
+                        <h3>${mode.name}</h3>
+                        <strong>Target:</strong> ${mode.target.split(',')[0]}<br>
+                        <strong>Layout:</strong> ${mode.grid.replace('grid-', '').replace('x', '×')} grid
+                    `;
+                    
+                    phoneFrame.appendChild(screen);
+                    phoneFrame.appendChild(info);
+                    comparisonView.appendChild(phoneFrame);
+                });
+            } else {
+                singleView.style.display = 'flex';
+                comparisonView.classList.remove('active');
+                btn.textContent = 'Compare All Modes';
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: #2196f3;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 1000;
+                font-size: 14px;
+                max-width: 300px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Initialize with comfort mode
+        showMode('comfort');
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
