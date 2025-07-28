@@ -1,0 +1,125 @@
+toggle_modes:
+  comfort:
+    name: "comfort"
+    description: "Large buttons, clear text, easy navigation for elderly users"
+    tile_count: 6
+    grid_layout: "2x3"
+    features:
+      - large_buttons: true
+      - high_contrast: true
+      - large_fonts: true
+      - haptic_feedback: true
+      - slow_animations: true
+      - emergency_button: true
+    tile_size: "extra_large"
+    font_scale: 1.8
+    icon_size: "72dp"
+    padding: "24dp"
+    colors:
+      background: "#FFFFFF"
+      text: "#000000"
+      accent: "#2196F3"
+    
+  family:
+    name: "family"
+    description: "Safe layout for kids with parent controls"
+    tile_count: 8
+    grid_layout: "2x4"
+    features:
+      - parental_controls: true
+      - app_whitelist: true
+      - time_limits: true
+      - safe_browsing: true
+      - educational_apps: true
+      - emergency_button: true
+    tile_size: "large"
+    font_scale: 1.4
+    icon_size: "64dp"
+    padding: "16dp"
+    colors:
+      background: "#F8F9FA"
+      text: "#212529"
+      accent: "#28A745"
+    
+  focus:
+    name: "focus"
+    description: "Distraction-free layout for calm and clarity"
+    tile_count: 6
+    grid_layout: "2x3"
+    features:
+      - minimal_ui: true
+      - no_notifications: true
+      - calm_colors: true
+      - reduced_animations: true
+      - essential_apps_only: true
+      - emergency_button: true
+    tile_size: "medium"
+    font_scale: 1.2
+    icon_size: "56dp"
+    padding: "20dp"
+    colors:
+      background: "#F5F5F5"
+      text: "#424242"
+      accent: "#607D8B"
+    
+  minimal:
+    name: "minimal"
+    description: "Stripped-down interface with just essentials"
+    tile_count: 6
+    grid_layout: "2x3"
+    features:
+      - essential_apps_only: true
+      - no_widgets: true
+      - simple_layout: true
+      - fast_access: true
+      - low_memory_usage: true
+      - emergency_button: true
+    tile_size: "medium"
+    font_scale: 1.0
+    icon_size: "48dp"
+    padding: "12dp"
+    colors:
+      background: "#FAFAFA"
+      text: "#333333"
+      accent: "#757575"
+    
+  welcome:
+    name: "welcome"
+    description: "Helpful tools for newcomers in their language"
+    tile_count: 9
+    grid_layout: "3x3"
+    features:
+      - language_selection: true
+      - tutorial_mode: true
+      - help_tooltips: true
+      - translation_tools: true
+      - community_apps: true
+      - emergency_button: true
+    tile_size: "medium"
+    font_scale: 1.3
+    icon_size: "60dp"
+    padding: "16dp"
+    colors:
+      background: "#E8F5E8"
+      text: "#1B5E20"
+      accent: "#4CAF50"
+
+# Mode switching configuration
+mode_switching:
+  default_mode: "comfort"
+  allow_guest_switching: false
+  require_pin_for_switching: true
+  remember_last_mode: true
+  transition_animation: "fade"
+  transition_duration: "300ms"
+
+# Cognitive load management
+cognitive_management:
+  max_tiles_per_screen: 9
+  recommended_tiles_comfort: 6
+  recommended_tiles_family: 8
+  recommended_tiles_focus: 6
+  recommended_tiles_minimal: 6
+  recommended_tiles_welcome: 9
+  tile_spacing: "16dp"
+  visual_hierarchy: true

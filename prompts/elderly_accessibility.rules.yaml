@@ -1,0 +1,40 @@
+id: elderly_accessibility
+description: >
+  Accessibility rules for elderly users to ensure the launcher meets
+  accessibility standards and usability requirements for seniors 60+.
+
+match:
+  - event: ui_component_created
+  - event: layout_rendered
+  - event: text_displayed
+  - event: touch_target_defined
+
+check:
+  - font_scale >= 1.6
+  - touch_target_size >= 48dp
+  - color_contrast_ratio >= 4.5
+  - text_has_tts_description == true
+  - icon_size >= 64dp
+  - animation_duration >= 300ms
+
+response:
+  - enforce_minimum_font_scale(1.6)
+  - validate_touch_target_size(48dp)
+  - ensure_high_contrast_colors()
+  - add_tts_descriptions()
+  - validate_color_blindness_accessibility()
+  - enable_haptic_feedback()
+  - if font_scale < 1.6:
+      show_warning("Font scale too small for elderly users")
+  - if touch_target_size < 48dp:
+      show_error("Touch targets must be at least 48dp")
+  - if color_contrast_ratio < 4.5:
+      show_error("Insufficient color contrast for accessibility")
+
+tags:
+  - accessibility
+  - elderly
+  - font_scale
+  - touch_targets
+  - contrast
+  - tts

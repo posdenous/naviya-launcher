@@ -1,0 +1,58 @@
+id: emergency_safety
+description: >
+  Emergency and safety rules to ensure SOS functionality is always accessible
+  and caregiver integration respects user privacy boundaries. Critical for
+  elderly users who may need emergency assistance.
+
+# Ensure SOS accessibility
+- name: "sos_accessibility"
+  pattern: "SOS|emergency"
+  rule: "Emergency features must be accessible in all states"
+  enforcement: "error"
+  suggestion: "SOS must work even when PIN-locked or in crash recovery"
+
+# Mandate caregiver integration
+- name: "caregiver_integration"
+  pattern: "caregiver|remote"
+  rule: "Caregiver features must respect user privacy boundaries"
+  enforcement: "warning"
+  suggestion: "Implement granular permission controls"
+
+match:
+  - event: sos_access
+  - event: emergency_triggered
+  - event: caregiver_interaction
+  - event: privacy_boundary_check
+  - event: pin_locked_state
+
+check:
+  - sos_accessibility == true
+  - emergency_always_available == true
+  - caregiver_privacy_respected == true
+  - offline_emergency_support == true
+  - emergency_contact_configured == true
+
+response:
+  - ensure_sos_always_accessible()
+  - validate_emergency_functionality()
+  - check_caregiver_permissions()
+  - verify_offline_emergency_support()
+  - if sos_accessibility == false:
+      show_error("SOS accessibility required")
+  - if emergency_always_available == false:
+      show_error("Emergency features must be always available")
+  - if caregiver_privacy_respected == false:
+      show_warning("Caregiver integration must respect privacy")
+  - if offline_emergency_support == false:
+      show_error("Emergency features must work offline")
+  - if emergency_contact_configured == false:
+      show_warning("Emergency contacts must be configured")
+
+tags:
+  - emergency
+  - safety
+  - sos
+  - caregiver
+  - privacy
+  - offline_emergency
+  - accessibility

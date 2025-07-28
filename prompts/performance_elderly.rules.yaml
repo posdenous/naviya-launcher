@@ -1,0 +1,59 @@
+id: performance_elderly
+description: >
+  Performance optimization rules specifically designed for elderly users'
+  devices which may be older or have limited resources. Focuses on memory
+  efficiency and battery optimization for extended usage.
+
+# Limit memory usage
+- name: "elderly_memory_limit"
+  pattern: "bitmap|image|cache"
+  rule: "Memory usage must be optimized for older devices"
+  enforcement: "warning"
+  suggestion: "Use image compression and efficient caching"
+
+# Enforce battery optimization
+- name: "battery_optimization"
+  pattern: "background|service|alarm"
+  rule: "Background operations must be battery-efficient"
+  enforcement: "warning"
+  suggestion: "Use WorkManager for background tasks"
+
+match:
+  - event: memory_allocation
+  - event: image_loading
+  - event: background_task
+  - event: battery_usage
+  - event: cache_operation
+
+check:
+  - memory_usage <= 100MB
+  - battery_optimization == true
+  - image_compression_enabled == true
+  - efficient_caching == true
+  - background_tasks_optimized == true
+
+response:
+  - monitor_memory_usage()
+  - optimize_battery_consumption()
+  - enable_image_compression()
+  - implement_efficient_caching()
+  - optimize_background_tasks()
+  - if memory_usage > 100MB:
+      show_warning("Memory usage too high - optimize for older devices")
+  - if battery_optimization == false:
+      show_warning("Battery optimization required for background operations")
+  - if image_compression_enabled == false:
+      show_warning("Image compression required for memory efficiency")
+  - if efficient_caching == false:
+      show_warning("Efficient caching required for performance")
+  - if background_tasks_optimized == false:
+      show_warning("Background tasks must be optimized for battery life")
+
+tags:
+  - performance
+  - elderly_devices
+  - memory_optimization
+  - battery_efficiency
+  - image_compression
+  - caching
+  - background_tasks

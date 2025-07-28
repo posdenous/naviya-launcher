@@ -1,0 +1,58 @@
+modes:
+  comfort:
+    en: "Comfort Mode – Large buttons, clear text, easy navigation"
+    de: "Komfort-Modus – Große Tasten, klare Texte, einfache Bedienung"
+    tr: "Konfor Modu – Büyük düğmeler, net yazılar, kolay kullanım"
+    uk: "Режим Комфорту – Великі кнопки, чіткий текст, легка навігація"
+    ar: "وضع الراحة – أزرار كبيرة، نص واضح، تنقل سهل"
+
+  family:
+    en: "Family Mode – Safe layout for kids with parent controls"
+    de: "Familienmodus – Sichere Oberfläche mit Elternkontrolle"
+    tr: "Aile Modu – Çocuklar için güvenli, ebeveyn kontrolüyle"
+    uk: "Сімейний режим – Безпечно для дітей, з контролем батьків"
+    ar: "وضع العائلة – آمن للأطفال مع تحكم الوالدين"
+
+  focus:
+    en: "Focus Mode – Distraction-free layout for calm and clarity"
+    de: "Fokusmodus – Ablenkungsfreie Anzeige für mehr Ruhe"
+    tr: "Odak Modu – Rahatlık için dikkat dağıtmaz arayüz"
+    uk: "Режим Фокусу – Без відволікань, для спокою та ясності"
+    ar: "وضع التركيز – تصميم خالٍ من المشتتات للهدوء والوضوح"
+
+  minimal:
+    en: "Minimal Mode – Stripped-down interface, just what you need"
+    de: "Minimalmodus – Nur das Nötigste, einfache Ansicht"
+    tr: "Minimal Mod – Sadece gerekli olan, sade arayüz"
+    uk: "Мінімальний режим – Тільки необхідне, проста панель"
+    ar: "الوضع البسيط – واجهة بسيطة بها الضروريات فقط"
+
+  welcome:
+    en: "Welcome Mode – Helpful tools for newcomers in your language"
+    de: "Willkommensmodus – Nützliche Werkzeuge für Neuankömmlinge"
+    tr: "Hoşgeldiniz Modu – Yeni gelenler için yardımcı araçlar"
+    uk: "Режим Вітання – Корисні інструменти для новоприбулих"
+    ar: "وضع الترحيب – أدوات مفيدة للقادمين الجدد بلغتهم"
+
+# Additional toggle mode labels
+mode_settings:
+  switch_mode:
+    en: "Switch Mode"
+    de: "Modus wechseln"
+    tr: "Mod Değiştir"
+    uk: "Змінити режим"
+    ar: "تبديل الوضع"
+  
+  current_mode:
+    en: "Current Mode"
+    de: "Aktueller Modus"
+    tr: "Mevcut Mod"
+    uk: "Поточний режим"
+    ar: "الوضع الحالي"
+  
+  mode_description:
+    en: "Choose the mode that works best for you"
+    de: "Wählen Sie den Modus, der am besten zu Ihnen passt"
+    tr: "Size en uygun modu seçin"
+    uk: "Оберіть режим, який найкраще вам підходить"
+    ar: "اختر الوضع الذي يناسبك أكثر"

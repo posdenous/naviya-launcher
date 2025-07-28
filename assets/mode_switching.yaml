@@ -1,0 +1,95 @@
+# Mode switching interface configuration
+mode_switching_ui:
+  access_method: "long_press_home"
+  alternative_access: "settings_menu"
+  animation: "slide_up"
+  duration: "300ms"
+  
+  layout:
+    type: "grid"
+    columns: 2
+    rows: 3
+    spacing: "16dp"
+    padding: "24dp"
+    
+  mode_cards:
+    comfort:
+      icon: "accessibility"
+      color: "#2196F3"
+      preview_tiles: 6
+      recommended_for: ["elderly", "vision_impaired", "motor_difficulties"]
+      
+    family:
+      icon: "family_restroom"
+      color: "#4CAF50"
+      preview_tiles: 8
+      recommended_for: ["families", "children", "parental_supervision"]
+      
+    focus:
+      icon: "center_focus_strong"
+      color: "#607D8B"
+      preview_tiles: 6
+      recommended_for: ["meditation", "concentration", "minimal_distractions"]
+      
+    minimal:
+      icon: "minimize"
+      color: "#757575"
+      preview_tiles: 6
+      recommended_for: ["simplicity", "performance", "basic_needs"]
+      
+    welcome:
+      icon: "translate"
+      color: "#FF9800"
+      preview_tiles: 9
+      recommended_for: ["newcomers", "language_learners", "community_support"]
+
+# Mode switching behavior
+switching_behavior:
+  confirmation_required: true
+  pin_protection: true
+  remember_choice: true
+  auto_switch_conditions:
+    - emergency_mode: "comfort"
+    - low_battery: "minimal"
+    - first_time_user: "welcome"
+    - child_detected: "family"
+  
+  transition_effects:
+    fade_duration: "200ms"
+    scale_animation: true
+    haptic_feedback: true
+    sound_feedback: false  # Respects quiet mode for elderly users
+
+# Accessibility for mode switching
+accessibility:
+  voice_commands:
+    - "switch to comfort mode"
+    - "change to family mode"
+    - "activate focus mode"
+    - "minimal mode please"
+    - "welcome mode"
+  
+  gesture_support:
+    - double_tap_home: "mode_selector"
+    - three_finger_swipe_up: "comfort_mode"
+    - emergency_gesture: "always_comfort_mode"
+  
+  visual_indicators:
+    current_mode_badge: true
+    mode_preview: true
+    large_text_labels: true
+    high_contrast_icons: true
+
+# Mode persistence and sync
+persistence:
+  local_storage: true
+  cloud_sync: true
+  caregiver_override: true
+  emergency_reset: "comfort"
+  
+  sync_settings:
+    - mode_preference
+    - tile_arrangements
+    - accessibility_settings
+    - language_preference
+    - emergency_contacts

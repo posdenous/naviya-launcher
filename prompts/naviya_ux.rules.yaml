@@ -1,0 +1,99 @@
+id: naviya_ux
+description: >
+  Naviya-specific UX rules for elderly users focusing on simplified
+  grid layouts, large icons, offline-first functionality, and essential
+  security/privacy requirements.
+
+# Limit grid complexity for elderly users
+- name: "elderly_grid_limit"
+  pattern: "GridLayoutManager|rows.*columns"
+  rule: "Grid layout must not exceed 2x3 for elderly user simplicity"
+  enforcement: "error"
+  suggestion: "Use maximum 2 rows × 3 columns grid"
+
+# Enforce large icon sizes
+- name: "elderly_icon_size"
+  pattern: "iconSize|imageSize"
+  rule: "Icons must be minimum 64dp for elderly visibility"
+  enforcement: "error"
+  suggestion: "Set icon size to at least 64dp"
+
+# Require offline-first functionality
+- name: "offline_first"
+  pattern: "network|internet|online"
+  rule: "All core features must work offline for elderly users"
+  enforcement: "warning"
+  suggestion: "Implement local caching and offline fallbacks"
+
+# Mandate user consent for data collection
+- name: "gdpr_consent"
+  pattern: "collect|track|analytics"
+  rule: "Require explicit user consent before data collection (GDPR)"
+  enforcement: "error"
+  suggestion: "Add consent dialog before collecting any user data"
+
+# Enforce PIN protection patterns
+- name: "pin_security"
+  pattern: "password|pin|auth"
+  rule: "PIN must have emergency bypass for elderly users"
+  enforcement: "warning"
+  suggestion: "Implement emergency bypass mechanism"
+
+# Require audit logging
+- name: "security_audit"
+  pattern: "security|auth|permission"
+  rule: "Security events must be logged for audit trail"
+  enforcement: "warning"
+  suggestion: "Add audit logging for security-related actions"
+
+match:
+  - event: layout_created
+  - event: grid_configured
+  - event: icon_displayed
+  - event: network_operation
+  - event: ui_interaction
+  - event: data_collection
+  - event: pin_auth
+  - event: security_event
+
+check:
+  - grid_size <= "2x3"
+  - icon_size >= 64dp
+  - offline_functionality == true
+  - slow_animations_enabled == true
+  - haptic_feedback_enabled == true
+  - user_consent_given == true
+  - pin_bypass_enabled == true
+  - audit_logging_enabled == true
+
+response:
+  - validate_grid_complexity()
+  - enforce_icon_size_minimum()
+  - ensure_offline_capabilities()
+  - enable_slow_animations()
+  - activate_haptic_feedback()
+  - if grid_size > "2x3":
+      show_error("Grid too complex for elderly users - maximum 2x3")
+  - if icon_size < 64dp:
+      show_error("Icons too small - minimum 64dp required")
+  - if requires_network_only == true:
+      show_warning("Feature should work offline for elderly users")
+  - if user_consent_not_given == true:
+      show_error("User consent required for data collection (GDPR)")
+  - if pin_bypass_disabled == true:
+      show_warning("PIN bypass mechanism required for elderly users")
+  - if audit_logging_disabled == true:
+      show_warning("Audit logging required for security events")
+
+tags:
+  - naviya
+  - elderly_ux
+  - grid_layout
+  - icon_size
+  - offline_first
+  - simplicity
+  - security
+  - privacy
+  - gdpr
+  - pin_protection
+  - audit_logging

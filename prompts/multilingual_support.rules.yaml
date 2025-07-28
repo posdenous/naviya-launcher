@@ -1,0 +1,58 @@
+id: multilingual_support
+description: >
+  Multilingual support rules to ensure proper internationalization (i18n)
+  for the 5 supported languages: German, English, Turkish, Arabic, and Ukrainian.
+  Includes string externalization and RTL support for elderly users.
+
+# Require string externalization
+- name: "string_externalization"
+  pattern: "\"[A-Za-z].*\""
+  rule: "All user-facing strings must be externalized for i18n"
+  enforcement: "error"
+  suggestion: "Move strings to strings.xml with proper keys"
+
+# Enforce RTL support
+- name: "rtl_support"
+  pattern: "layout|margin|padding"
+  rule: "Layouts must support RTL for Arabic language support"
+  enforcement: "warning"
+  suggestion: "Use start/end instead of left/right margins"
+
+match:
+  - event: string_created
+  - event: layout_defined
+  - event: ui_component_created
+  - event: text_displayed
+  - event: language_changed
+
+check:
+  - string_externalization == true
+  - rtl_support == true
+  - supported_languages >= 5
+  - translation_completeness >= 100
+  - tts_multilingual == true
+
+response:
+  - validate_string_externalization()
+  - ensure_rtl_compatibility()
+  - check_translation_completeness()
+  - verify_multilingual_tts()
+  - if string_externalization == false:
+      show_error("String externalization required for i18n")
+  - if rtl_support == false:
+      show_warning("RTL support required for Arabic language")
+  - if translation_completeness < 100:
+      show_warning("Incomplete translations detected")
+  - if tts_multilingual == false:
+      show_warning("TTS support required for all languages")
+
+tags:
+  - multilingual
+  - i18n
+  - string_externalization
+  - rtl_support
+  - german
+  - english
+  - turkish
+  - arabic
+  - ukrainian

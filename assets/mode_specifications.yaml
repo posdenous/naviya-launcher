@@ -1,0 +1,347 @@
+# Detailed Mode Specifications for Naviya Launcher
+# Each mode includes: Target Group, Visuals, Tile Labels, and Functions
+
+comfort_mode:
+  target_group:
+    primary: "Elderly users (60+)"
+    secondary: "Users with vision impairments"
+    tertiary: "Users with motor difficulties"
+    characteristics:
+      - "Limited tech experience"
+      - "Prefer large, clear interfaces"
+      - "Need emergency access"
+      - "Value simplicity over features"
+  
+  visuals:
+    grid_layout: "2x3 (6 tiles)"
+    tile_size: "Extra Large (72dp icons)"
+    font_scale: "1.8x"
+    colors:
+      background: "#FFFFFF (Pure White)"
+      text: "#000000 (Black)"
+      accent: "#2196F3 (Blue)"
+      emergency: "#D32F2F (Red)"
+    spacing: "24dp padding"
+    contrast_ratio: "7:1 (AAA compliant)"
+    animations: "Slow (500ms+)"
+    haptic_feedback: "Strong"
+  
+  tile_labels:
+    - label: "Phone"
+      icon: "phone"
+      description: "Make calls easily"
+    - label: "Messages"
+      icon: "message"
+      description: "Read and send texts"
+    - label: "Emergency"
+      icon: "emergency"
+      description: "SOS button - always accessible"
+    - label: "Camera"
+      icon: "camera"
+      description: "Take photos"
+    - label: "Settings"
+      icon: "settings"
+      description: "Adjust preferences"
+    - label: "Contacts"
+      icon: "contacts"
+      description: "Find people"
+  
+  functions:
+    primary:
+      - "Emergency SOS with offline capability"
+      - "Large button phone dialer"
+      - "Simple message interface"
+      - "One-touch emergency contacts"
+    secondary:
+      - "Voice-guided navigation"
+      - "High contrast mode"
+      - "Large text throughout"
+      - "Simplified settings menu"
+    accessibility:
+      - "TalkBack optimized"
+      - "Voice commands enabled"
+      - "Gesture shortcuts"
+      - "Caregiver remote assistance"
+
+family_mode:
+  target_group:
+    primary: "Families with children (5-15 years)"
+    secondary: "Parents needing child supervision"
+    tertiary: "Shared family devices"
+    characteristics:
+      - "Need parental controls"
+      - "Want educational content"
+      - "Require safety features"
+      - "Multi-user environment"
+  
+  visuals:
+    grid_layout: "2x4 (8 tiles)"
+    tile_size: "Large (64dp icons)"
+    font_scale: "1.4x"
+    colors:
+      background: "#F8F9FA (Light Gray)"
+      text: "#212529 (Dark Gray)"
+      accent: "#28A745 (Green)"
+      parental: "#FFC107 (Amber)"
+    spacing: "16dp padding"
+    contrast_ratio: "4.5:1 (AA compliant)"
+    animations: "Moderate (300ms)"
+    haptic_feedback: "Medium"
+  
+  tile_labels:
+    - label: "Kids Games"
+      icon: "games"
+      description: "Educational games"
+    - label: "Learning"
+      icon: "school"
+      description: "Educational apps"
+    - label: "Camera"
+      icon: "camera"
+      description: "Family photos"
+    - label: "Video Call"
+      icon: "video_call"
+      description: "Call family"
+    - label: "Emergency"
+      icon: "emergency"
+      description: "Family emergency button"
+    - label: "Parent Zone"
+      icon: "security"
+      description: "Parental controls"
+    - label: "Time Tracker"
+      icon: "timer"
+      description: "Screen time limits"
+    - label: "Safe Browser"
+      icon: "web"
+      description: "Kid-safe internet"
+  
+  functions:
+    primary:
+      - "App whitelist management"
+      - "Screen time controls"
+      - "Safe browsing with filters"
+      - "Educational content curation"
+    secondary:
+      - "Family calendar integration"
+      - "Chore and reward system"
+      - "Emergency contacts for kids"
+      - "Location sharing with parents"
+    parental_controls:
+      - "PIN-protected settings"
+      - "Usage reports"
+      - "Content filtering"
+      - "Remote monitoring"
+
+focus_mode:
+  target_group:
+    primary: "Users seeking mindfulness and concentration"
+    secondary: "People with ADHD or attention difficulties"
+    tertiary: "Meditation practitioners"
+    characteristics:
+      - "Easily distracted"
+      - "Value calm interfaces"
+      - "Need minimal notifications"
+      - "Prefer essential functions only"
+  
+  visuals:
+    grid_layout: "2x3 (6 tiles)"
+    tile_size: "Medium (56dp icons)"
+    font_scale: "1.2x"
+    colors:
+      background: "#F5F5F5 (Light Gray)"
+      text: "#424242 (Medium Gray)"
+      accent: "#607D8B (Blue Gray)"
+      calm: "#81C784 (Light Green)"
+    spacing: "20dp padding"
+    contrast_ratio: "4.5:1 (AA compliant)"
+    animations: "Gentle (200ms)"
+    haptic_feedback: "Subtle"
+  
+  tile_labels:
+    - label: "Meditation"
+      icon: "meditation"
+      description: "Mindfulness apps"
+    - label: "Notes"
+      icon: "notes"
+      description: "Capture thoughts"
+    - label: "Calendar"
+      icon: "calendar"
+      description: "Daily schedule"
+    - label: "Clock"
+      icon: "clock"
+      description: "Time awareness"
+    - label: "Emergency"
+      icon: "emergency"
+      description: "Quiet emergency access"
+    - label: "Do Not Disturb"
+      icon: "do_not_disturb"
+      description: "Silence notifications"
+  
+  functions:
+    primary:
+      - "Notification blocking"
+      - "Meditation timers"
+      - "Breathing exercises"
+      - "Calm color schemes"
+    secondary:
+      - "Focus session tracking"
+      - "Minimal UI elements"
+      - "Essential apps only"
+      - "Gentle reminders"
+    wellness:
+      - "Stress monitoring"
+      - "Break reminders"
+      - "Sleep mode integration"
+      - "Digital wellbeing stats"
+
+minimal_mode:
+  target_group:
+    primary: "Users wanting basic functionality only"
+    secondary: "People with older/slower devices"
+    tertiary: "Battery conservation focused users"
+    characteristics:
+      - "Value simplicity"
+      - "Limited storage/memory"
+      - "Basic communication needs"
+      - "Performance-conscious"
+  
+  visuals:
+    grid_layout: "2x3 (6 tiles)"
+    tile_size: "Medium (48dp icons)"
+    font_scale: "1.0x"
+    colors:
+      background: "#FAFAFA (Off White)"
+      text: "#333333 (Dark Gray)"
+      accent: "#757575 (Gray)"
+      essential: "#4CAF50 (Green)"
+    spacing: "12dp padding"
+    contrast_ratio: "4.5:1 (AA compliant)"
+    animations: "Fast (100ms)"
+    haptic_feedback: "Light"
+  
+  tile_labels:
+    - label: "Phone"
+      icon: "phone"
+      description: "Essential calling"
+    - label: "Messages"
+      icon: "message"
+      description: "Basic texting"
+    - label: "Emergency"
+      icon: "emergency"
+      description: "Critical access"
+    - label: "Contacts"
+      icon: "contacts"
+      description: "Essential contacts"
+    - label: "Settings"
+      icon: "settings"
+      description: "Basic settings"
+    - label: "Clock"
+      icon: "clock"
+      description: "Time and alarms"
+  
+  functions:
+    primary:
+      - "Core communication only"
+      - "Minimal resource usage"
+      - "Fast performance"
+      - "Essential features"
+    secondary:
+      - "Battery optimization"
+      - "Storage efficiency"
+      - "Quick access"
+      - "Reduced complexity"
+    performance:
+      - "Low memory footprint"
+      - "Fast app switching"
+      - "Minimal background processes"
+      - "Optimized for older devices"
+
+welcome_mode:
+  target_group:
+    primary: "New immigrants and refugees"
+    secondary: "Language learners"
+    tertiary: "Community newcomers"
+    characteristics:
+      - "Limited local language skills"
+      - "Need community integration"
+      - "Require translation tools"
+      - "Seeking local services"
+  
+  visuals:
+    grid_layout: "3x3 (9 tiles)"
+    tile_size: "Medium (60dp icons)"
+    font_scale: "1.3x"
+    colors:
+      background: "#E8F5E8 (Light Green)"
+      text: "#1B5E20 (Dark Green)"
+      accent: "#4CAF50 (Green)"
+      helpful: "#FF9800 (Orange)"
+    spacing: "16dp padding"
+    contrast_ratio: "4.5:1 (AA compliant)"
+    animations: "Welcoming (250ms)"
+    haptic_feedback: "Encouraging"
+  
+  tile_labels:
+    - label: "Language"
+      icon: "language"
+      description: "Choose your language"
+    - label: "Tutorial"
+      icon: "help"
+      description: "Learn to use this device"
+    - label: "Translator"
+      icon: "translate"
+      description: "Translate text and speech"
+    - label: "Community"
+      icon: "community"
+      description: "Connect with others"
+    - label: "Emergency"
+      icon: "emergency"
+      description: "Emergency help in your language"
+    - label: "Local Services"
+      icon: "location"
+      description: "Find nearby help"
+    - label: "Phone"
+      icon: "phone"
+      description: "Make important calls"
+    - label: "Messages"
+      icon: "message"
+      description: "Send messages"
+    - label: "Settings"
+      icon: "settings"
+      description: "Customize your experience"
+  
+  functions:
+    primary:
+      - "Multi-language support"
+      - "Real-time translation"
+      - "Community app integration"
+      - "Local service directory"
+    secondary:
+      - "Cultural orientation"
+      - "Government service links"
+      - "Language learning tools"
+      - "Emergency services in native language"
+    integration:
+      - "Social services connection"
+      - "Healthcare navigation"
+      - "Legal aid resources"
+      - "Employment assistance"
+
+# Cross-mode specifications
+common_features:
+  emergency_access:
+    always_present: true
+    offline_capable: true
+    multi_language: true
+    caregiver_notification: true
+  
+  accessibility:
+    talkback_support: true
+    voice_commands: true
+    gesture_navigation: true
+    high_contrast_option: true
+  
+  cognitive_load:
+    max_tiles: 9
+    clear_hierarchy: true
+    consistent_positioning: true
+    predictable_behavior: true

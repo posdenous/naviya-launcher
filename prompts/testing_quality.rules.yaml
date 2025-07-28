@@ -1,0 +1,62 @@
+id: testing_quality
+description: >
+  Testing and quality assurance rules to ensure comprehensive test coverage
+  for data models, accessibility features, and crash recovery mechanisms
+  in the elderly-focused Naviya launcher.
+
+# Require unit tests for data models
+- name: "data_model_tests"
+  pattern: "data class|@Entity"
+  rule: "All data models must have corresponding unit tests"
+  enforcement: "error"
+  suggestion: "Create *Test.kt file with @Test methods"
+
+# Mandate accessibility testing
+- name: "accessibility_tests"
+  pattern: "@Test.*accessibility|TalkBack"
+  rule: "Accessibility features must have dedicated test coverage"
+  enforcement: "warning"
+  suggestion: "Add tests for TalkBack, high contrast, and large text"
+
+# Enforce crash recovery testing
+- name: "crash_recovery_tests"
+  pattern: "crash|recovery|safe.*mode"
+  rule: "Crash recovery logic must be thoroughly tested"
+  enforcement: "error"
+  suggestion: "Add tests for 3-crash threshold and safe mode"
+
+match:
+  - event: test_run
+  - event: accessibility_test
+  - event: crash_recovery
+  - event: code_written
+  - event: data_model_created
+
+check:
+  - data_model_tests == true
+  - accessibility_tests == true
+  - crash_recovery_tests == true
+  - test_coverage >= 80
+  - integration_tests == true
+
+response:
+  - validate_test_coverage()
+  - ensure_accessibility_tests()
+  - verify_crash_recovery_tests()
+  - run_integration_tests()
+  - if data_model_tests == false:
+      show_error("Unit tests required for data models")
+  - if accessibility_tests == false:
+      show_warning("Accessibility tests required")
+  - if crash_recovery_tests == false:
+      show_error("Crash recovery tests required")
+  - if test_coverage < 80:
+      show_warning("Test coverage below 80% threshold")
+
+tags:
+  - testing
+  - quality
+  - unit_tests
+  - accessibility_tests
+  - crash_recovery
+  - test_coverage
