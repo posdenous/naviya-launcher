@@ -154,9 +154,10 @@ fun UnreadTile(
                     }
                     
                     // Reminder text if total_unread > 0
-                    if (tileData.hasReminder && tileData.reminderText != null) {
+                    val reminderText = tileData.reminderText
+                    if (tileData.hasReminder && reminderText != null) {
                         Text(
-                            text = tileData.reminderText,
+                            text = reminderText,
                             color = Color(0xFFFF9800), // Orange for attention
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
@@ -166,9 +167,10 @@ fun UnreadTile(
                     }
                     
                     // Caregiver note if offline
-                    if (tileData.caregiverNote != null) {
+                    val caregiverNote = tileData.caregiverNote
+                    if (caregiverNote != null) {
                         Text(
-                            text = tileData.caregiverNote,
+                            text = caregiverNote,
                             color = Color(0xFF757575),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Start,

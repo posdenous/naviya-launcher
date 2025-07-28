@@ -72,10 +72,26 @@
     <color name="elderly_tile_selected">#2196F3</color>
     <color name="elderly_tile_pressed">#1565C0</color>
     
-    <!-- Mode-specific Colors -->
-    <color name="mode_comfort_color">#4CAF50</color>
-    <color name="mode_family_color">#E91E63</color>
-    <color name="mode_focus_color">#2196F3</color>
-    <color name="mode_minimal_color">#757575</color>
-    <color name="mode_welcome_color">#FF9800</color>
+    <!-- Mode-specific colors -->
+    <color name="mode_comfort">#4CAF50</color>
+    <color name="mode_family">#2196F3</color>
+    <color name="mode_focus">#FF9800</color>
+    <color name="mode_minimal">#9C27B0</color>
+    <color name="mode_welcome">#00BCD4</color>
+    
+    <!-- Notification colors -->
+    <color name="notification_color">#2196F3</color>
+    
+    <!-- Theme colors for Material3 compatibility -->
+    <color name="elderly_primary">@color/elderly_primary_green</color>
+    <color name="elderly_on_primary">#FFFFFF</color>
+    <color name="elderly_secondary">@color/elderly_accent_blue</color>
+    <color name="elderly_on_secondary">#FFFFFF</color>
+    <color name="elderly_background">@color/elderly_background_dark</color>
+    <color name="elderly_on_background">@color/elderly_text_primary</color>
+    <color name="elderly_surface">@color/elderly_surface_dark</color>
+    <color name="elderly_on_surface">@color/elderly_text_primary</color>
+    <color name="elderly_emergency">@color/elderly_error_red</color>
+    <color name="elderly_accent">@color/elderly_accent_blue</color>
+    <color name="elderly_accent_green">#4CAF50</color>
 </resources>

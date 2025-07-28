@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="emergency_sos"
+        android:enabled="true"
+        android:icon="@drawable/ic_emergency"
+        android:shortcutShortLabel="@string/emergency_sos"
+        android:shortcutLongLabel="@string/emergency_sos_description">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.naviya.launcher"
+            android:targetClass="com.naviya.launcher.ui.emergency.EmergencyActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="caregiver_contact"
+        android:enabled="true"
+        android:icon="@drawable/ic_caregiver"
+        android:shortcutShortLabel="@string/contact_caregiver"
+        android:shortcutLongLabel="@string/contact_caregiver_description">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.naviya.launcher"
+            android:targetClass="com.naviya.launcher.ui.caregiver.CaregiverPairingActivity" />
+    </shortcut>
+</shortcuts>

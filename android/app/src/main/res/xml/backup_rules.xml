@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude sensitive elderly user data from backup -->
+    <exclude domain="database" />
+    <exclude domain="sharedpref" path="emergency_contacts.xml" />
+    <exclude domain="sharedpref" path="caregiver_data.xml" />
+    <exclude domain="sharedpref" path="pin_security.xml" />
+    
+    <!-- Include safe preferences for elderly user convenience -->
+    <include domain="sharedpref" path="launcher_preferences.xml" />
+    <include domain="sharedpref" path="accessibility_settings.xml" />
+</full-backup-content>

@@ -264,6 +264,7 @@ class EmergencyService @Inject constructor(
             emergencyDao.insertEmergencyEvent(
                 EmergencyEvent(
                     eventType = EmergencyEventType.SOS_CANCELLED,
+                    userLanguage = "en", // Default language for now
                     notes = reason
                 )
             )

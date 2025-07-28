@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
-    <style name="Theme.NaviyaLauncher" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color -->
-        <item name="colorPrimary">@color/elderly_primary_green</item>
-        <item name="colorPrimaryVariant">@color/elderly_primary_green_dark</item>
-        <item name="colorOnPrimary">@android:color/white</item>
-        
-        <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/elderly_accent_blue</item>
-        <item name="colorSecondaryVariant">@color/elderly_accent_blue_dark</item>
-        <item name="colorOnSecondary">@android:color/white</item>
-        
-        <!-- Background colors -->
-        <item name="android:colorBackground">@color/elderly_background_dark</item>
-        <item name="colorSurface">@color/elderly_surface_dark</item>
-        <item name="colorOnBackground">@color/elderly_text_primary</item>
-        <item name="colorOnSurface">@color/elderly_text_primary</item>
-        
-        <!-- Error colors -->
-        <item name="colorError">@color/elderly_error_red</item>
-        <item name="colorOnError">@android:color/white</item>
-        
-        <!-- Status bar -->
-        <item name="android:statusBarColor">@color/elderly_primary_green</item>
-        <item name="android:windowLightStatusBar">false</item>
-        
-        <!-- Navigation bar -->
-        <item name="android:navigationBarColor">@color/elderly_background_dark</item>
-        <item name="android:windowLightNavigationBar">false</item>
-        
-        <!-- Text appearance -->
-        <item name="android:textColorPrimary">@color/elderly_text_primary</item>
-        <item name="android:textColorSecondary">@color/elderly_text_secondary</item>
-        
-        <!-- Font scaling for elderly users (1.6x minimum) -->
-        <item name="android:fontScale">1.6</item>
-    </style>
+    <!-- Theme definitions moved to themes.xml to avoid duplicates -->
 
     <!-- Elderly-friendly button style -->
     <style name="ElderlyButton" parent="Widget.Material3.Button">

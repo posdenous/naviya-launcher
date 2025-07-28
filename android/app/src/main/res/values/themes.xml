@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- Base theme for Naviya Launcher -->
+    <style name="Theme.NaviyaLauncher" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/elderly_primary</item>
+        <item name="colorOnPrimary">@color/elderly_on_primary</item>
+        <item name="colorSecondary">@color/elderly_secondary</item>
+        <item name="colorOnSecondary">@color/elderly_on_secondary</item>
+        <item name="android:colorBackground">@color/elderly_background</item>
+        <item name="colorOnBackground">@color/elderly_on_background</item>
+        <item name="colorSurface">@color/elderly_surface</item>
+        <item name="colorOnSurface">@color/elderly_on_surface</item>
+        <item name="android:textColorPrimary">@color/elderly_text_primary</item>
+        <item name="android:textColorSecondary">@color/elderly_text_secondary</item>
+        <item name="android:windowBackground">@color/elderly_background</item>
+        <item name="android:statusBarColor">@color/elderly_surface</item>
+        <item name="android:navigationBarColor">@color/elderly_surface</item>
+    </style>
+
+    <!-- Launcher Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Launcher" parent="Theme.NaviyaLauncher">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <!-- Onboarding Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Onboarding" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_primary</item>
+        <item name="android:statusBarColor">@color/elderly_primary</item>
+    </style>
+
+    <!-- Settings Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Settings" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_surface</item>
+    </style>
+
+    <!-- Security Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Security" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_background</item>
+        <item name="colorPrimary">@color/elderly_accent</item>
+    </style>
+
+    <!-- Caregiver Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Caregiver" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_surface</item>
+        <item name="colorPrimary">@color/elderly_secondary</item>
+    </style>
+
+    <!-- Emergency Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Emergency" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_emergency</item>
+        <item name="colorPrimary">@color/elderly_emergency</item>
+        <item name="android:statusBarColor">@color/elderly_emergency</item>
+        <item name="android:navigationBarColor">@color/elderly_emergency</item>
+    </style>
+
+    <!-- Recovery Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Recovery" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_surface</item>
+        <item name="colorPrimary">@color/elderly_accent</item>
+    </style>
+
+    <!-- Apps Activity Theme -->
+    <style name="Theme.NaviyaLauncher.Apps" parent="Theme.NaviyaLauncher">
+        <item name="android:windowBackground">@color/elderly_background</item>
+    </style>
+
+</resources>

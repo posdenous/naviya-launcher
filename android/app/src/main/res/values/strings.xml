@@ -3,10 +3,26 @@
     <!-- App Name -->
     <string name="app_name">Naviya Launcher</string>
     
+    <!-- Analytics and logging -->
+    <string name="analytics_app_launch">App launched</string>
+    <string name="analytics_mode_change">Mode changed</string>
+    <string name="analytics_emergency_activated">Emergency activated</string>
+    
+    <!-- Notification channels -->
+    <string name="default_notification_channel_id">naviya_default</string>
+    
     <!-- Main Launcher UI -->
     <string name="current_mode">Current Mode</string>
     <string name="switch_mode">Switch Mode</string>
     <string name="select_mode">Select Mode</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_service_description">Naviya Launcher accessibility service for elderly users</string>
+    
+    <!-- Emergency and Caregiver -->
+    <string name="emergency_sos_description">Emergency SOS for immediate help</string>
+    <string name="contact_caregiver">Contact Caregiver</string>
+    <string name="contact_caregiver_description">Contact your caregiver for assistance</string>
     <string name="cancel">Cancel</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>

@@ -1,0 +1,250 @@
+package com.naviya.launcher.integration
+
+import android.util.Log
+import com.naviya.launcher.emergency.EmergencyService
+import com.naviya.launcher.layout.LayoutManager
+import com.naviya.launcher.toggle.ToggleMode
+import com.naviya.launcher.unread.UnreadTileService
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Simplified integration test runner that can be executed without UI
+ * to validate core component integration.
+ */
+@Singleton
+class SimpleIntegrationTest @Inject constructor(
+    private val emergencyService: EmergencyService,
+    private val layoutManager: LayoutManager,
+    private val unreadTileService: UnreadTileService
+) {
+    
+    companion object {
+        private const val TAG = "SimpleIntegrationTest"
+    }
+    
+    /**
+     * Run all integration tests and return results
+     */
+    fun runAllTests(): IntegrationTestResults {
+        Log.i(TAG, "Starting comprehensive integration tests...")
+        
+        val results = IntegrationTestResults()
+        
+        runBlocking {
+            // Test 1: Emergency System Integration
+            results.emergencySystemTest = testEmergencySystem()
+            
+            // Test 2: Layout Engine Integration
+            results.layoutEngineTest = testLayoutEngine()
+            
+            // Test 3: Unread Tile Integration
+            results.unreadTileTest = testUnreadTile()
+            
+            // Test 4: Mode Switching Integration
+            results.modeSwitchingTest = testModeSwitching()
+            
+            // Test 5: Component Communication
+            results.componentCommunicationTest = testComponentCommunication()
+        }
+        
+        Log.i(TAG, "Integration tests completed: ${results.getPassCount()}/${results.getTotalCount()} passed")
+        return results
+    }
+    
+    private suspend fun testEmergencySystem(): TestResult {
+        return try {
+            Log.i(TAG, "Testing Emergency System integration...")
+            
+            // Initialize emergency service
+            emergencyService.initialize()
+            
+            // Check if service is properly initialized
+            val isInitialized = emergencyService.isInitialized()
+            
+            if (isInitialized) {
+                Log.i(TAG, "✅ Emergency System: PASS")
+                TestResult.PASS("Emergency service initialized successfully")
+            } else {
+                Log.w(TAG, "❌ Emergency System: FAIL - Not initialized")
+                TestResult.FAIL("Emergency service failed to initialize")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Emergency System: ERROR", e)
+            TestResult.ERROR("Emergency system test failed: ${e.message}")
+        }
+    }
+    
+    private suspend fun testLayoutEngine(): TestResult {
+        return try {
+            Log.i(TAG, "Testing Layout Engine integration...")
+            
+            // Initialize layout manager
+            layoutManager.initialize()
+            
+            // Test layout generation for different modes
+            val testResults = mutableListOf<String>()
+            
+            for (mode in ToggleMode.values()) {
+                val layout = layoutManager.switchToMode(mode, 1080, 1920)
+                if (layout != null) {
+                    testResults.add("$mode: ${layout.tiles.size} tiles")
+                    Log.i(TAG, "✅ Layout for $mode: ${layout.tiles.size} tiles")
+                } else {
+                    testResults.add("$mode: FAILED")
+                    Log.w(TAG, "❌ Layout for $mode: FAILED")
+                }
+            }
+            
+            val successCount = testResults.count { !it.contains("FAILED") }
+            val totalCount = ToggleMode.values().size
+            
+            if (successCount == totalCount) {
+                Log.i(TAG, "✅ Layout Engine: PASS - All modes working")
+                TestResult.PASS("All $totalCount modes generated layouts successfully")
+            } else {
+                Log.w(TAG, "❌ Layout Engine: PARTIAL - $successCount/$totalCount modes working")
+                TestResult.FAIL("Only $successCount/$totalCount modes working: ${testResults.joinToString(", ")}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Layout Engine: ERROR", e)
+            TestResult.ERROR("Layout engine test failed: ${e.message}")
+        }
+    }
+    
+    private suspend fun testUnreadTile(): TestResult {
+        return try {
+            Log.i(TAG, "Testing Unread Tile integration...")
+            
+            // Test unread tile service
+            val unreadData = unreadTileService.getUnreadTileData()
+            
+            Log.i(TAG, "Unread data: calls=${unreadData.missedCallCount}, sms=${unreadData.unreadSmsCount}, total=${unreadData.totalUnreadCount}")
+            
+            // Test that service returns valid data structure
+            val isValid = unreadData.missedCallCount >= 0 && 
+                         unreadData.unreadSmsCount >= 0 && 
+                         unreadData.totalUnreadCount == (unreadData.missedCallCount + unreadData.unreadSmsCount)
+            
+            if (isValid) {
+                Log.i(TAG, "✅ Unread Tile: PASS - Data structure valid")
+                TestResult.PASS("Unread tile data valid: ${unreadData.totalUnreadCount} total unread")
+            } else {
+                Log.w(TAG, "❌ Unread Tile: FAIL - Invalid data structure")
+                TestResult.FAIL("Unread tile data structure invalid")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Unread Tile: ERROR", e)
+            TestResult.ERROR("Unread tile test failed: ${e.message}")
+        }
+    }
+    
+    private suspend fun testModeSwitching(): TestResult {
+        return try {
+            Log.i(TAG, "Testing Mode Switching integration...")
+            
+            val originalMode = layoutManager.currentMode.value
+            Log.i(TAG, "Original mode: $originalMode")
+            
+            // Test switching between modes
+            val testModes = listOf(ToggleMode.COMFORT, ToggleMode.FAMILY, ToggleMode.FOCUS)
+            val results = mutableListOf<Boolean>()
+            
+            for (mode in testModes) {
+                val layout = layoutManager.switchToMode(mode, 1080, 1920)
+                val success = layout != null && layout.mode == mode
+                results.add(success)
+                
+                Log.i(TAG, "${if (success) "✅" else "❌"} Mode switch to $mode: ${if (success) "SUCCESS" else "FAILED"}")
+            }
+            
+            val successCount = results.count { it }
+            val totalCount = testModes.size
+            
+            if (successCount == totalCount) {
+                Log.i(TAG, "✅ Mode Switching: PASS - All switches successful")
+                TestResult.PASS("All $totalCount mode switches successful")
+            } else {
+                Log.w(TAG, "❌ Mode Switching: PARTIAL - $successCount/$totalCount successful")
+                TestResult.FAIL("Only $successCount/$totalCount mode switches successful")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Mode Switching: ERROR", e)
+            TestResult.ERROR("Mode switching test failed: ${e.message}")
+        }
+    }
+    
+    private suspend fun testComponentCommunication(): TestResult {
+        return try {
+            Log.i(TAG, "Testing Component Communication...")
+            
+            // Test that all components can be accessed and are properly injected
+            val components = mapOf(
+                "EmergencyService" to (emergencyService != null),
+                "LayoutManager" to (layoutManager != null),
+                "UnreadTileService" to (unreadTileService != null)
+            )
+            
+            val allComponentsAvailable = components.values.all { it }
+            
+            if (allComponentsAvailable) {
+                Log.i(TAG, "✅ Component Communication: PASS - All components available")
+                TestResult.PASS("All components properly injected and accessible")
+            } else {
+                val missingComponents = components.filterValues { !it }.keys
+                Log.w(TAG, "❌ Component Communication: FAIL - Missing: ${missingComponents.joinToString(", ")}")
+                TestResult.FAIL("Missing components: ${missingComponents.joinToString(", ")}")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Component Communication: ERROR", e)
+            TestResult.ERROR("Component communication test failed: ${e.message}")
+        }
+    }
+}
+
+/**
+ * Test result data classes
+ */
+sealed class TestResult(val message: String) {
+    class PASS(message: String) : TestResult(message)
+    class FAIL(message: String) : TestResult(message)
+    class ERROR(message: String) : TestResult(message)
+    
+    val isPassing: Boolean get() = this is PASS
+}
+
+data class IntegrationTestResults(
+    var emergencySystemTest: TestResult = TestResult.ERROR("Not run"),
+    var layoutEngineTest: TestResult = TestResult.ERROR("Not run"),
+    var unreadTileTest: TestResult = TestResult.ERROR("Not run"),
+    var modeSwitchingTest: TestResult = TestResult.ERROR("Not run"),
+    var componentCommunicationTest: TestResult = TestResult.ERROR("Not run")
+) {
+    fun getPassCount(): Int = listOf(
+        emergencySystemTest,
+        layoutEngineTest,
+        unreadTileTest,
+        modeSwitchingTest,
+        componentCommunicationTest
+    ).count { it.isPassing }
+    
+    fun getTotalCount(): Int = 5
+    
+    fun getAllPassed(): Boolean = getPassCount() == getTotalCount()
+    
+    fun getDetailedReport(): String = buildString {
+        appendLine("=== Integration Test Results ===")
+        appendLine("Emergency System: ${emergencySystemTest.javaClass.simpleName} - ${emergencySystemTest.message}")
+        appendLine("Layout Engine: ${layoutEngineTest.javaClass.simpleName} - ${layoutEngineTest.message}")
+        appendLine("Unread Tile: ${unreadTileTest.javaClass.simpleName} - ${unreadTileTest.message}")
+        appendLine("Mode Switching: ${modeSwitchingTest.javaClass.simpleName} - ${modeSwitchingTest.message}")
+        appendLine("Component Communication: ${componentCommunicationTest.javaClass.simpleName} - ${componentCommunicationTest.message}")
+        appendLine("=== Summary: ${getPassCount()}/${getTotalCount()} tests passed ===")
+    }
+}

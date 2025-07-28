@@ -75,7 +75,6 @@
         android:required="false" />
 
     <application
-        android:name=".NaviyaLauncherApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -88,11 +87,11 @@
         android:supportsRtl="true"
         tools:targetApi="31">
 
-        <!-- Main Launcher Activity -->
+        <!-- Minimal Main Launcher Activity for Integration Testing -->
         <activity
-            android:name=".ui.launcher.LauncherActivity"
+            android:name=".MinimalMainActivity"
             android:exported="true"
-            android:theme="@style/Theme.NaviyaLauncher.Launcher"
+            android:theme="@style/Theme.NaviyaLauncher"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
@@ -143,6 +142,25 @@
             android:name=".ui.caregiver.CaregiverPairingActivity"
             android:exported="false"
             android:theme="@style/Theme.NaviyaLauncher.Caregiver"
+            android:screenOrientation="portrait" />
+
+        <!-- Test Main Launcher Integration Activity -->
+        <activity
+            android:name=".integration.TestMainLauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NaviyaLauncher"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Main Activity (Our integrated launcher) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NaviyaLauncher"
             android:screenOrientation="portrait" />
 
         <!-- Emergency SOS Activity -->

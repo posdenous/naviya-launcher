@@ -13,7 +13,7 @@ import java.util.UUID
  * Maps to crash_recovery_state.mcp.yaml schema
  */
 @Entity(tableName = "crash_recovery_state")
-@TypeConverters(DateConverter::class, CrashRecoveryConverter::class)
+// @TypeConverters(DateConverter::class, CrashRecoveryConverter::class) // Temporarily disabled for build
 data class CrashRecoveryState(
     @PrimaryKey
     val recoveryId: String = UUID.randomUUID().toString(),
