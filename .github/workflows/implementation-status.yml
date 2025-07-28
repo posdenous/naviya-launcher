@@ -1,0 +1,248 @@
+name: Generate Implementation Status Report
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+
+jobs:
+  generate-status:
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Generate Implementation Status
+      run: |
+        # Create the status generator script
+        cat > generate_status.js << 'EOF'
+        const fs = require('fs');
+        const path = require('path');
+        
+        // Feature tracking configuration
+        const features = {
+          "Core Android Implementation": {
+            "Toggle Mode System": {
+              files: ["app/src/main/java/**/mode/**/*.kt", "app/src/main/java/**/toggle/**/*.kt"],
+              weight: 15
+            },
+            "Launcher Layout Engine": {
+              files: ["app/src/main/java/**/layout/**/*.kt", "app/src/main/java/**/grid/**/*.kt"],
+              weight: 20
+            },
+            "Emergency SOS System": {
+              files: ["app/src/main/java/**/emergency/**/*.kt", "app/src/main/java/**/sos/**/*.kt"],
+              weight: 15
+            },
+            "Accessibility Implementation": {
+              files: ["app/src/main/java/**/accessibility/**/*.kt", "app/src/main/java/**/talkback/**/*.kt"],
+              weight: 12
+            },
+            "Multilingual Support": {
+              files: ["app/src/main/java/**/i18n/**/*.kt", "app/src/main/res/values-*/**/*.xml"],
+              weight: 10
+            }
+          },
+          "App-Specific Features": {
+            "Caregiver Integration": {
+              files: ["app/src/main/java/**/caregiver/**/*.kt", "app/src/main/java/**/remote/**/*.kt"],
+              weight: 8
+            },
+            "Onboarding System": {
+              files: ["app/src/main/java/**/onboarding/**/*.kt", "app/src/main/java/**/tutorial/**/*.kt"],
+              weight: 6
+            },
+            "Crash Recovery & Safety": {
+              files: ["app/src/main/java/**/crash/**/*.kt", "app/src/main/java/**/recovery/**/*.kt"],
+              weight: 5
+            },
+            "Offline Mode Features": {
+              files: ["app/src/main/java/**/offline/**/*.kt", "app/src/main/java/**/cache/**/*.kt"],
+              weight: 4
+            }
+          },
+          "Technical Infrastructure": {
+            "Data Management": {
+              files: ["app/src/main/java/**/database/**/*.kt", "app/src/main/java/**/room/**/*.kt"],
+              weight: 8
+            },
+            "Security & Privacy": {
+              files: ["app/src/main/java/**/security/**/*.kt", "app/src/main/java/**/privacy/**/*.kt"],
+              weight: 6
+            },
+            "Performance Optimization": {
+              files: ["app/src/main/java/**/performance/**/*.kt", "app/src/main/java/**/optimization/**/*.kt"],
+              weight: 4
+            }
+          }
+        };
+        
+        function checkFileExists(pattern) {
+          const glob = require('glob');
+          try {
+            const files = glob.sync(pattern, { cwd: process.cwd() });
+            return files.length > 0;
+          } catch (error) {
+            return false;
+          }
+        }
+        
+        function calculateFeatureCompletion(featureFiles) {
+          if (!featureFiles || featureFiles.length === 0) return 0;
+          
+          let existingFiles = 0;
+          for (const pattern of featureFiles) {
+            if (checkFileExists(pattern)) {
+              existingFiles++;
+            }
+          }
+          
+          return Math.round((existingFiles / featureFiles.length) * 100);
+        }
+        
+        function generateStatusReport() {
+          const timestamp = new Date().toISOString();
+          const commitHash = process.env.GITHUB_SHA || 'unknown';
+          
+          let report = `# 📊 Naviya Launcher Implementation Status\n\n`;
+          report += `**Generated:** ${timestamp}\n`;
+          report += `**Commit:** ${commitHash.substring(0, 7)}\n`;
+          report += `**Branch:** ${process.env.GITHUB_REF_NAME || 'main'}\n\n`;
+          
+          let totalWeight = 0;
+          let completedWeight = 0;
+          
+          for (const [categoryName, categoryFeatures] of Object.entries(features)) {
+            report += `## ${categoryName}\n\n`;
+            
+            let categoryWeight = 0;
+            let categoryCompleted = 0;
+            
+            for (const [featureName, featureConfig] of Object.entries(categoryFeatures)) {
+              const completion = calculateFeatureCompletion(featureConfig.files);
+              const weight = featureConfig.weight;
+              
+              categoryWeight += weight;
+              categoryCompleted += (completion / 100) * weight;
+              
+              totalWeight += weight;
+              completedWeight += (completion / 100) * weight;
+              
+              const progressBar = '█'.repeat(Math.floor(completion / 5)) + '░'.repeat(20 - Math.floor(completion / 5));
+              const status = completion === 0 ? '🔴' : completion < 50 ? '🟡' : completion < 100 ? '🟠' : '🟢';
+              
+              report += `### ${status} ${featureName}\n`;
+              report += `**Progress:** ${completion}% \`${progressBar}\` (Weight: ${weight})\n\n`;
+            }
+            
+            const categoryCompletion = Math.round((categoryCompleted / categoryWeight) * 100);
+            const categoryProgressBar = '█'.repeat(Math.floor(categoryCompletion / 5)) + '░'.repeat(20 - Math.floor(categoryCompletion / 5));
+            
+            report += `**${categoryName} Total:** ${categoryCompletion}% \`${categoryProgressBar}\`\n\n`;
+            report += `---\n\n`;
+          }
+          
+          const overallCompletion = Math.round((completedWeight / totalWeight) * 100);
+          const overallProgressBar = '█'.repeat(Math.floor(overallCompletion / 2.5)) + '░'.repeat(40 - Math.floor(overallCompletion / 2.5));
+          
+          report = `# 🎯 Overall Progress: ${overallCompletion}%\n\n` +
+                   `\`${overallProgressBar}\`\n\n` +
+                   `**Total Features:** ${Object.values(features).reduce((acc, cat) => acc + Object.keys(cat).length, 0)}\n` +
+                   `**Completed:** ${Math.round((completedWeight / totalWeight) * Object.values(features).reduce((acc, cat) => acc + Object.keys(cat).length, 0))}\n` +
+                   `**In Progress:** ${Object.values(features).reduce((acc, cat) => acc + Object.keys(cat).length, 0) - Math.round((completedWeight / totalWeight) * Object.values(features).reduce((acc, cat) => acc + Object.keys(cat).length, 0))}\n\n` +
+                   report;
+          
+          // Add milestone tracking
+          report += `## 🏆 Milestones\n\n`;
+          if (overallCompletion >= 25) report += `✅ **Foundation** (25%) - Basic structure established\n`;
+          else report += `⏳ **Foundation** (25%) - Basic structure establishment\n`;
+          
+          if (overallCompletion >= 50) report += `✅ **Core Features** (50%) - Essential functionality implemented\n`;
+          else report += `⏳ **Core Features** (50%) - Essential functionality implementation\n`;
+          
+          if (overallCompletion >= 75) report += `✅ **Feature Complete** (75%) - All major features implemented\n`;
+          else report += `⏳ **Feature Complete** (75%) - Major features implementation\n`;
+          
+          if (overallCompletion >= 90) report += `✅ **Production Ready** (90%) - Ready for elderly user testing\n`;
+          else report += `⏳ **Production Ready** (90%) - Preparation for elderly user testing\n`;
+          
+          if (overallCompletion >= 100) report += `🎉 **Launch Ready** (100%) - Naviya launcher complete!\n`;
+          else report += `🎯 **Launch Ready** (100%) - Final completion target\n`;
+          
+          return report;
+        }
+        
+        // Generate and save the report
+        const report = generateStatusReport();
+        fs.writeFileSync('IMPLEMENTATION_STATUS.md', report);
+        console.log('Implementation status report generated successfully!');
+        EOF
+        
+        # Install glob package for file pattern matching
+        npm init -y
+        npm install glob
+        
+        # Generate the status report
+        node generate_status.js
+        
+    - name: Commit and push status report
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add IMPLEMENTATION_STATUS.md
+        
+        # Only commit if there are changes
+        if git diff --staged --quiet; then
+          echo "No changes to implementation status"
+        else
+          git commit -m "📊 Update implementation status report
+          
+          - Generated on $(date)
+          - Commit: ${{ github.sha }}
+          - Overall progress updated
+          - Feature completion tracking"
+          git push
+        fi
+        
+    - name: Create GitHub Release Notes
+      if: github.event_name == 'push'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read the generated status report
+          const statusReport = fs.readFileSync('IMPLEMENTATION_STATUS.md', 'utf8');
+          
+          // Extract overall progress percentage
+          const progressMatch = statusReport.match(/Overall Progress: (\d+)%/);
+          const progress = progressMatch ? progressMatch[1] : '0';
+          
+          // Create or update a release/tag with the status
+          const tagName = `status-${new Date().toISOString().split('T')[0]}`;
+          
+          try {
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tagName,
+              name: `Implementation Status - ${progress}% Complete`,
+              body: `## 📊 Naviya Launcher Progress Report\n\n${statusReport}`,
+              draft: false,
+              prerelease: true
+            });
+            console.log(`Created release with implementation status: ${progress}%`);
+          } catch (error) {
+            console.log('Release creation failed, updating existing or continuing...');
+          }
