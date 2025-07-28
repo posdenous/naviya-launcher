@@ -176,3 +176,4 @@ temp/
 user_data/
 crash_logs/
 analytics_data/
+android/gradle-*.zip
