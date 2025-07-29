@@ -34,39 +34,30 @@ A comprehensive Android launcher designed specifically for elderly users, featur
 
 ## 🏗️ Architecture Overview
 
-## 🔄 Five Adaptive Launcher Modes
+## 🔄 Three Optimized Launcher Modes
 
-Naviya automatically adapts to user capabilities and needs:
+Naviya provides three research-based modes that eliminate complexity while maintaining functionality:
+
+### 🔒 ESSENTIAL Mode
+- **Target**: Users with severe cognitive impairment or dementia
+- **Layout**: 1×3 grid (Phone, Messages, Contacts)
+- **Features**: Maximum simplicity, caregiver-configurable messaging (SMS/WhatsApp)
+- **Design**: Largest elements, minimal cognitive load, essential communication only
+- **Accessibility**: 2.0× fonts, 64dp touch targets, maximum contrast
 
 ### 🏠 COMFORT Mode (Default)
-- **Target**: Independent seniors comfortable with basic smartphone use
-- **Layout**: 2×3 grid (Phone, Messages, Camera, Settings, SOS, Unread)
-- **Features**: Full emergency system, optional caregiver connectivity
+- **Target**: Standard elderly users seeking creative engagement
+- **Layout**: 2×2 grid (Phone, Messages, Camera, Gallery)
+- **Features**: Creative photo workflow, full emergency system, optional caregiver connectivity
+- **Design**: Large elements, creative engagement focus, simplified navigation
 - **Accessibility**: 1.6× fonts, 48dp touch targets, high contrast
 
-### 👨‍👩‍👧‍👦 FAMILY Mode
-- **Target**: Seniors with active family caregiver support
-- **Layout**: Enhanced grid + family communication tiles
-- **Features**: Real-time location sharing, usage reports, video calling
-- **Monitoring**: Transparent activity logs, emergency alerts to family
-
-### 🎯 FOCUS Mode
-- **Target**: Users with cognitive challenges (dementia, memory issues)
-- **Layout**: 2×2 simplified grid with essential functions only
-- **Features**: Enhanced crash recovery, simplified navigation
-- **Safety**: Automatic safe mode, confusion-resistant design
-
-### 🔒 MINIMAL Mode
-- **Target**: Emergency-only users or severe cognitive decline
-- **Layout**: Large SOS button + Phone + one customizable app
-- **Features**: Maximum simplicity, emergency-focused interface
-- **Design**: Extra-large elements, minimal cognitive load
-
-### 👋 WELCOME Mode
-- **Target**: First-time smartphone users transitioning from basic phones
-- **Layout**: Tutorial-driven interface with step-by-step guidance
-- **Features**: Interactive learning, gradual feature introduction
-- **Support**: Built-in help system, progress tracking
+### 🌐 CONNECTED Mode
+- **Target**: Tech-comfortable elderly users with active family support
+- **Layout**: 2×3 grid (Phone, Messages, Camera, Gallery, Weather, Family Communication)
+- **Features**: Enhanced connectivity, family communication, weather updates
+- **Design**: Comprehensive functionality while maintaining elderly-friendly interface
+- **Accessibility**: 1.4× fonts, 48dp touch targets, adaptive contrast
 
 ## 🛡️ Comprehensive Safety & Security Features
 

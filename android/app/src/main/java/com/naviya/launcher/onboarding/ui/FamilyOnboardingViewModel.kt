@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.naviya.launcher.onboarding.*
+import com.naviya.launcher.toggle.ToggleMode
 
 /**
  * ViewModel for family onboarding flow
@@ -24,6 +25,15 @@ class FamilyOnboardingViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = familyOnboardingFlow.isLoading
     val errorMessage: StateFlow<String?> = familyOnboardingFlow.errorMessage
     val setupProgress: StateFlow<OnboardingProgress> = familyOnboardingFlow.setupProgress
+    
+    /**
+     * Select launcher mode for the 3-mode system
+     */
+    fun selectLauncherMode(mode: ToggleMode) {
+        viewModelScope.launch {
+            familyOnboardingFlow.selectLauncherMode(mode)
+        }
+    }
     
     /**
      * Start family-assisted setup

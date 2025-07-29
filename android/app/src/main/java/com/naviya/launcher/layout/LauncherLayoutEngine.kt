@@ -57,11 +57,9 @@ class LauncherLayoutEngine @Inject constructor(
             Log.i(TAG, "Generating layout for mode: $mode")
             
             val layoutConfig = when (mode) {
+                ToggleMode.ESSENTIAL -> generateEssentialLayout(screenWidth, screenHeight, availableApps)
                 ToggleMode.COMFORT -> generateComfortLayout(screenWidth, screenHeight, availableApps)
-                ToggleMode.FAMILY -> generateFamilyLayout(screenWidth, screenHeight, availableApps)
-                ToggleMode.FOCUS -> generateFocusLayout(screenWidth, screenHeight, availableApps)
-                ToggleMode.MINIMAL -> generateMinimalLayout(screenWidth, screenHeight, availableApps)
-                ToggleMode.WELCOME -> generateWelcomeLayout(screenWidth, screenHeight, availableApps)
+                ToggleMode.CONNECTED -> generateConnectedLayout(screenWidth, screenHeight, availableApps)
             }
             
             // Validate layout against Windsurf rules
@@ -136,7 +134,7 @@ class LauncherLayoutEngine @Inject constructor(
     /**
      * Generate Family Mode layout (3x3 grid, medium tiles, family apps)
      */
-    private fun generateFamilyLayout(
+    private fun generateConnectedLayout(
         screenWidth: Int,
         screenHeight: Int,
         availableApps: List<String>
@@ -175,7 +173,7 @@ class LauncherLayoutEngine @Inject constructor(
         }
         
         return LayoutConfiguration(
-            mode = ToggleMode.FAMILY,
+            mode = ToggleMode.CONNECTED,
             gridColumns = 3,
             gridRows = 3,
             tiles = tiles,
@@ -188,62 +186,12 @@ class LauncherLayoutEngine @Inject constructor(
         )
     }
     
-    /**
-     * Generate Focus Mode layout (2x2 grid, large tiles, minimal apps)
-     */
-    private fun generateFocusLayout(
-        screenWidth: Int,
-        screenHeight: Int,
-        availableApps: List<String>
-    ): LayoutConfiguration {
-        val tileSize = calculateOptimalTileSize(screenWidth, screenHeight, 2, 2)
-        val tiles = mutableListOf<TileConfiguration>()
-        
-        // Minimal essential apps for focus
-        val focusApps = listOf("Phone", "Emergency", "Messages", "Settings")
-        
-        var row = 0
-        var col = 0
-        
-        focusApps.forEachIndexed { index, appName ->
-            tiles.add(
-                TileConfiguration(
-                    id = "focus_tile_$index",
-                    appName = appName,
-                    position = TilePosition(row, col),
-                    size = tileSize,
-                    priority = index + 1,
-                    isAccessible = true,
-                    hasLargeText = true,
-                    hasHighContrast = true
-                )
-            )
-            
-            col++
-            if (col >= 2) {
-                col = 0
-                row++
-            }
-        }
-        
-        return LayoutConfiguration(
-            mode = ToggleMode.FOCUS,
-            gridColumns = 2,
-            gridRows = 2,
-            tiles = tiles,
-            backgroundColor = "#E3F2FD", // Light blue for focus
-            fontScale = 1.8f, // Larger text for focus mode
-            iconScale = 1.6f,
-            paddingDp = 24,
-            hasEmergencyAccess = true,
-            isAccessibilityOptimized = true
-        )
-    }
+
     
     /**
      * Generate Minimal Mode layout (1x3 grid, very large tiles, essential only)
      */
-    private fun generateMinimalLayout(
+    private fun generateEssentialLayout(
         screenWidth: Int,
         screenHeight: Int,
         availableApps: List<String>
@@ -270,7 +218,7 @@ class LauncherLayoutEngine @Inject constructor(
         }
         
         return LayoutConfiguration(
-            mode = ToggleMode.MINIMAL,
+            mode = ToggleMode.ESSENTIAL,
             gridColumns = 1,
             gridRows = 3,
             tiles = tiles,
@@ -283,57 +231,7 @@ class LauncherLayoutEngine @Inject constructor(
         )
     }
     
-    /**
-     * Generate Welcome Mode layout (2x3 grid, onboarding-friendly)
-     */
-    private fun generateWelcomeLayout(
-        screenWidth: Int,
-        screenHeight: Int,
-        availableApps: List<String>
-    ): LayoutConfiguration {
-        val tileSize = calculateOptimalTileSize(screenWidth, screenHeight, 2, 3)
-        val tiles = mutableListOf<TileConfiguration>()
-        
-        // Welcome/onboarding apps
-        val welcomeApps = listOf("Setup", "Tutorial", "Phone", "Emergency", "Help", "Settings")
-        
-        var row = 0
-        var col = 0
-        
-        welcomeApps.forEachIndexed { index, appName ->
-            tiles.add(
-                TileConfiguration(
-                    id = "welcome_tile_$index",
-                    appName = appName,
-                    position = TilePosition(row, col),
-                    size = tileSize,
-                    priority = index + 1,
-                    isAccessible = true,
-                    hasLargeText = true,
-                    hasHighContrast = true
-                )
-            )
-            
-            col++
-            if (col >= 2) {
-                col = 0
-                row++
-            }
-        }
-        
-        return LayoutConfiguration(
-            mode = ToggleMode.WELCOME,
-            gridColumns = 2,
-            gridRows = 3,
-            tiles = tiles,
-            backgroundColor = "#FFF3E0", // Light orange for welcome
-            fontScale = 1.6f,
-            iconScale = 1.4f,
-            paddingDp = 20,
-            hasEmergencyAccess = true,
-            isAccessibilityOptimized = true
-        )
-    }
+
     
     /**
      * Calculate optimal tile size based on screen dimensions and grid
@@ -382,7 +280,7 @@ class LauncherLayoutEngine @Inject constructor(
         }
         
         // Validate accessibility requirements
-        if (layout.fontScale < 1.6f && layout.mode != ToggleMode.FAMILY) {
+        if (layout.fontScale < 1.6f && layout.mode != ToggleMode.CONNECTED) {
             violations.add("Font scale below minimum 1.6x for elderly users")
         }
         
@@ -435,7 +333,7 @@ class LauncherLayoutEngine @Inject constructor(
      */
     fun isAccessibilityCompliant(layout: LayoutConfiguration): Boolean {
         // Check font scale
-        if (layout.fontScale < 1.6f && layout.mode != ToggleMode.FAMILY) return false
+        if (layout.fontScale < 1.6f && layout.mode != ToggleMode.CONNECTED) return false
         
         // Check tile count (cognitive load)
         if (layout.tiles.size > MAX_TILES_PER_SCREEN) return false

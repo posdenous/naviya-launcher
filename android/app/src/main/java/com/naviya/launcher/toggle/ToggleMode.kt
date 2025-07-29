@@ -14,65 +14,42 @@ enum class ToggleMode(
     val gridRows: Int
 ) {
     /**
-     * Comfort Mode: For daily elderly users
-     * 2x3 grid, 6 large tiles, essential apps only
+     * Essential Mode: For users with severe cognitive impairment
+     * 1x3 grid, 3 very large tiles, absolute essentials only
+     * Phone, Messages (configurable), Contacts
      */
-    COMFORT(
-        displayName = "Comfort",
-        description = "Simple layout for daily use",
-        targetGroup = "Elderly users, daily activities",
-        maxTiles = 6,
-        gridColumns = 2,
-        gridRows = 3
-    ),
-    
-    /**
-     * Family Mode: For family-connected users
-     * 3x3 grid, 9 medium tiles, family and communication apps
-     */
-    FAMILY(
-        displayName = "Family",
-        description = "Stay connected with family",
-        targetGroup = "Family-oriented users, social activities",
-        maxTiles = 9,
-        gridColumns = 3,
-        gridRows = 3
-    ),
-    
-    /**
-     * Focus Mode: For users with cognitive challenges
-     * 2x2 grid, 4 large tiles, minimal distractions
-     */
-    FOCUS(
-        displayName = "Focus",
-        description = "Minimal distractions, essential only",
-        targetGroup = "Users with cognitive challenges, dementia",
-        maxTiles = 4,
-        gridColumns = 2,
-        gridRows = 2
-    ),
-    
-    /**
-     * Minimal Mode: For users with severe limitations
-     * 1x3 grid, 3 very large tiles, absolute essentials
-     */
-    MINIMAL(
-        displayName = "Minimal",
+    ESSENTIAL(
+        displayName = "Essential",
         description = "Only the most essential functions",
-        targetGroup = "Users with severe limitations, emergency use",
+        targetGroup = "Severe cognitive impairment, dementia patients",
         maxTiles = 3,
         gridColumns = 1,
         gridRows = 3
     ),
     
     /**
-     * Welcome Mode: For new users and onboarding
-     * 2x3 grid, 6 tiles with tutorial and setup
+     * Comfort Mode: For standard elderly users
+     * 2x2 grid, 4 large tiles, balanced simplicity with creative engagement
+     * Phone, Messages, Camera, Gallery
      */
-    WELCOME(
-        displayName = "Welcome",
-        description = "Getting started with Naviya",
-        targetGroup = "New users, onboarding, setup",
+    COMFORT(
+        displayName = "Comfort",
+        description = "Simple layout with creative engagement",
+        targetGroup = "Standard elderly users, daily activities",
+        maxTiles = 4,
+        gridColumns = 2,
+        gridRows = 2
+    ),
+    
+    /**
+     * Connected Mode: For tech-comfortable elderly users with family support
+     * 2x3 grid, 6 tiles, enhanced communication features
+     * Phone, Messages, Camera, Gallery, Weather, Family
+     */
+    CONNECTED(
+        displayName = "Connected",
+        description = "Enhanced communication and family features",
+        targetGroup = "Tech-comfortable elderly with family support",
         maxTiles = 6,
         gridColumns = 2,
         gridRows = 3
@@ -84,32 +61,24 @@ enum class ToggleMode(
     fun getLocalizedName(language: String): String {
         return when (language) {
             "de" -> when (this) {
+                ESSENTIAL -> "Wesentlich"
                 COMFORT -> "Komfort"
-                FAMILY -> "Familie"
-                FOCUS -> "Fokus"
-                MINIMAL -> "Minimal"
-                WELCOME -> "Willkommen"
+                CONNECTED -> "Verbunden"
             }
             "tr" -> when (this) {
+                ESSENTIAL -> "Temel"
                 COMFORT -> "Konfor"
-                FAMILY -> "Aile"
-                FOCUS -> "Odak"
-                MINIMAL -> "Minimal"
-                WELCOME -> "Hoş Geldiniz"
+                CONNECTED -> "Bağlı"
             }
             "uk" -> when (this) {
+                ESSENTIAL -> "Основний"
                 COMFORT -> "Комфорт"
-                FAMILY -> "Сім'я"
-                FOCUS -> "Фокус"
-                MINIMAL -> "Мінімальний"
-                WELCOME -> "Ласкаво просимо"
+                CONNECTED -> "Підключений"
             }
             "ar" -> when (this) {
+                ESSENTIAL -> "أساسي"
                 COMFORT -> "راحة"
-                FAMILY -> "عائلة"
-                FOCUS -> "تركيز"
-                MINIMAL -> "الحد الأدنى"
-                WELCOME -> "مرحبا"
+                CONNECTED -> "متصل"
             }
             else -> displayName // English default
         }
@@ -121,32 +90,24 @@ enum class ToggleMode(
     fun getLocalizedDescription(language: String): String {
         return when (language) {
             "de" -> when (this) {
-                COMFORT -> "Einfaches Layout für den täglichen Gebrauch"
-                FAMILY -> "Bleiben Sie mit der Familie in Verbindung"
-                FOCUS -> "Minimale Ablenkungen, nur das Wesentliche"
-                MINIMAL -> "Nur die wichtigsten Funktionen"
-                WELCOME -> "Erste Schritte mit Naviya"
+                ESSENTIAL -> "Nur die wichtigsten Funktionen"
+                COMFORT -> "Einfaches Layout mit kreativer Beteiligung"
+                CONNECTED -> "Erweiterte Kommunikation und Familienfunktionen"
             }
             "tr" -> when (this) {
-                COMFORT -> "Günlük kullanım için basit düzen"
-                FAMILY -> "Ailenizle bağlantıda kalın"
-                FOCUS -> "Minimum dikkat dağınıklığı, sadece gerekli"
-                MINIMAL -> "Sadece en temel işlevler"
-                WELCOME -> "Naviya ile başlangıç"
+                ESSENTIAL -> "Sadece en temel işlevler"
+                COMFORT -> "Yaratıcı katılımla basit düzen"
+                CONNECTED -> "Gelişmiş iletişim ve aile özellikleri"
             }
             "uk" -> when (this) {
-                COMFORT -> "Простий макет для щоденного використання"
-                FAMILY -> "Залишайтеся на зв'язку з родиною"
-                FOCUS -> "Мінімум відволікань, тільки необхідне"
-                MINIMAL -> "Тільки найважливіші функції"
-                WELCOME -> "Початок роботи з Naviya"
+                ESSENTIAL -> "Тільки найважливіші функції"
+                COMFORT -> "Простий макет з творчою участю"
+                CONNECTED -> "Розширена комунікація та сімейні функції"
             }
             "ar" -> when (this) {
-                COMFORT -> "تخطيط بسيط للاستخدام اليومي"
-                FAMILY -> "ابق على تواصل مع العائلة"
-                FOCUS -> "الحد الأدنى من الإلهاء، الأساسيات فقط"
-                MINIMAL -> "الوظائف الأساسية فقط"
-                WELCOME -> "البدء مع نافيا"
+                ESSENTIAL -> "الوظائف الأساسية فقط"
+                COMFORT -> "تخطيط بسيط مع المشاركة الإبداعية"
+                CONNECTED -> "التواصل المحسن وميزات العائلة"
             }
             else -> description // English default
         }
@@ -157,9 +118,7 @@ enum class ToggleMode(
      */
     fun isElderlyFriendly(): Boolean {
         return when (this) {
-            COMFORT, FOCUS, MINIMAL -> true
-            FAMILY -> true // Family mode is also elderly-friendly
-            WELCOME -> false // Welcome mode is temporary
+            ESSENTIAL, COMFORT, CONNECTED -> true // All 3 modes are elderly-friendly
         }
     }
     
@@ -168,11 +127,9 @@ enum class ToggleMode(
      */
     fun getRecommendedFontScale(): Float {
         return when (this) {
-            COMFORT -> 1.6f
-            FAMILY -> 1.4f
-            FOCUS -> 1.8f
-            MINIMAL -> 2.0f
-            WELCOME -> 1.6f
+            ESSENTIAL -> 2.0f    // Largest font for severe cognitive impairment
+            COMFORT -> 1.6f      // Standard elderly-friendly font
+            CONNECTED -> 1.4f    // Slightly smaller for tech-comfortable users
         }
     }
     
@@ -181,11 +138,9 @@ enum class ToggleMode(
      */
     fun getRecommendedIconScale(): Float {
         return when (this) {
-            COMFORT -> 1.4f
-            FAMILY -> 1.2f
-            FOCUS -> 1.6f
-            MINIMAL -> 1.8f
-            WELCOME -> 1.4f
+            ESSENTIAL -> 1.8f    // Largest icons for motor difficulties
+            COMFORT -> 1.4f      // Standard large icons
+            CONNECTED -> 1.2f    // Slightly smaller for more content
         }
     }
     
@@ -194,8 +149,9 @@ enum class ToggleMode(
      */
     fun shouldUseHighContrast(): Boolean {
         return when (this) {
-            COMFORT, FOCUS, MINIMAL, WELCOME -> true
-            FAMILY -> false // Normal contrast for family mode
+            ESSENTIAL -> true    // Maximum contrast for cognitive impairment
+            COMFORT -> true      // High contrast for standard elderly users
+            CONNECTED -> false   // Normal contrast for tech-comfortable users
         }
     }
     
@@ -204,11 +160,9 @@ enum class ToggleMode(
      */
     fun getNextMode(): ToggleMode? {
         return when (this) {
-            WELCOME -> COMFORT // Welcome -> Comfort
-            MINIMAL -> FOCUS // Minimal -> Focus
-            FOCUS -> COMFORT // Focus -> Comfort
-            COMFORT -> FAMILY // Comfort -> Family
-            FAMILY -> null // Family is the most advanced
+            ESSENTIAL -> COMFORT   // Essential -> Comfort (user improving)
+            COMFORT -> CONNECTED   // Comfort -> Connected (user gaining confidence)
+            CONNECTED -> null      // Connected is the most advanced
         }
     }
     
@@ -217,11 +171,9 @@ enum class ToggleMode(
      */
     fun getPreviousMode(): ToggleMode? {
         return when (this) {
-            FAMILY -> COMFORT // Family -> Comfort
-            COMFORT -> FOCUS // Comfort -> Focus
-            FOCUS -> MINIMAL // Focus -> Minimal
-            MINIMAL -> null // Minimal is the simplest
-            WELCOME -> null // Welcome has no previous
+            CONNECTED -> COMFORT   // Connected -> Comfort (user needs simplification)
+            COMFORT -> ESSENTIAL   // Comfort -> Essential (user needs maximum simplification)
+            ESSENTIAL -> null      // Essential is the simplest
         }
     }
     
@@ -236,7 +188,7 @@ enum class ToggleMode(
         /**
          * Get default mode for new users
          */
-        fun getDefaultMode(): ToggleMode = WELCOME
+        fun getDefaultMode(): ToggleMode = COMFORT
         
         /**
          * Get recommended mode based on user characteristics
@@ -248,11 +200,10 @@ enum class ToggleMode(
             hasFamilySupport: Boolean
         ): ToggleMode {
             return when {
-                isNewUser -> WELCOME
-                hasCognitiveImpairment -> if (isElderly) MINIMAL else FOCUS
-                isElderly && !hasFamilySupport -> COMFORT
-                isElderly && hasFamilySupport -> FAMILY
-                else -> COMFORT
+                hasCognitiveImpairment -> ESSENTIAL    // Severe impairment needs maximum simplification
+                isElderly && !hasFamilySupport -> COMFORT    // Standard elderly without family support
+                isElderly && hasFamilySupport -> CONNECTED   // Elderly with family support can handle more features
+                else -> COMFORT    // Default to standard mode
             }
         }
         

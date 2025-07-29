@@ -1,13 +1,15 @@
 package com.naviya.launcher.toggle
 
+import com.naviya.launcher.core.NaviyaConstants
+import com.naviya.launcher.testing.NaviyaTestConfig
 import org.junit.Test
 import org.junit.Assert.*
 
 /**
- * Unit tests for ToggleMode enum
- * Tests mode properties, localization, and recommendations
+ * Unit tests for ToggleMode enum - 3-mode system (ESSENTIAL, COMFORT, CONNECTED)
+ * Uses standardized NaviyaTestConfig for consistent testing patterns
  */
-class ToggleModeTest {
+class ToggleModeTest : NaviyaTestConfig() {
     
     @Test
     fun `all modes should have valid properties`() {
@@ -24,72 +26,122 @@ class ToggleModeTest {
     }
     
     @Test
+    fun `essential mode should have correct properties`() {
+        val mode = ToggleMode.ESSENTIAL
+        
+        assertEquals("Essential", mode.displayName)
+        assertEquals(NaviyaConstants.Modes.ESSENTIAL_MAX_TILES, mode.maxTiles)
+        assertEquals(NaviyaConstants.Modes.ESSENTIAL_GRID_COLUMNS, mode.gridColumns)
+        assertEquals(NaviyaConstants.Modes.ESSENTIAL_GRID_ROWS, mode.gridRows)
+        assertEquals("Users with severe cognitive impairment", mode.targetGroup)
+    }
+    
+    @Test
     fun `comfort mode should have correct properties`() {
         val mode = ToggleMode.COMFORT
         
         assertEquals("Comfort", mode.displayName)
-        assertEquals(6, mode.maxTiles)
-        assertEquals(2, mode.gridColumns)
-        assertEquals(3, mode.gridRows)
-        assertTrue("Comfort mode should be elderly friendly", mode.isElderlyFriendly())
-        assertEquals(1.6f, mode.getRecommendedFontScale(), 0.1f)
-        assertTrue("Comfort mode should use high contrast", mode.shouldUseHighContrast())
+        assertEquals(NaviyaConstants.Modes.COMFORT_MAX_TILES, mode.maxTiles)
+        assertEquals(NaviyaConstants.Modes.COMFORT_GRID_COLUMNS, mode.gridColumns)
+        assertEquals(NaviyaConstants.Modes.COMFORT_GRID_ROWS, mode.gridRows)
+        assertEquals("Standard elderly users with creative engagement", mode.targetGroup)
     }
     
     @Test
-    fun `family mode should have correct properties`() {
-        val mode = ToggleMode.FAMILY
+    fun `connected mode should have correct properties`() {
+        val mode = ToggleMode.CONNECTED
         
-        assertEquals("Family", mode.displayName)
-        assertEquals(9, mode.maxTiles)
-        assertEquals(3, mode.gridColumns)
-        assertEquals(3, mode.gridRows)
-        assertTrue("Family mode should be elderly friendly", mode.isElderlyFriendly())
-        assertEquals(1.4f, mode.getRecommendedFontScale(), 0.1f)
-        assertFalse("Family mode should not use high contrast by default", mode.shouldUseHighContrast())
+        assertEquals("Connected", mode.displayName)
+        assertEquals(NaviyaConstants.Modes.CONNECTED_MAX_TILES, mode.maxTiles)
+        assertEquals(NaviyaConstants.Modes.CONNECTED_GRID_COLUMNS, mode.gridColumns)
+        assertEquals(NaviyaConstants.Modes.CONNECTED_GRID_ROWS, mode.gridRows)
+        assertEquals("Tech-comfortable elderly with family support", mode.targetGroup)
     }
     
     @Test
-    fun `focus mode should have correct properties`() {
-        val mode = ToggleMode.FOCUS
+    fun `all modes should be elderly friendly`() {
+        ToggleMode.values().forEach { mode ->
+            assertTrue("Mode $mode should be elderly friendly", mode.isElderlyFriendly())
+        }
+    }
+    
+    @Test
+    fun `font scales should meet accessibility requirements`() {
+        // ESSENTIAL should have largest font scale for severe cognitive impairment
+        assertEquals(2.0f, ToggleMode.ESSENTIAL.getRecommendedFontScale(), 0.1f)
         
-        assertEquals("Focus", mode.displayName)
-        assertEquals(4, mode.maxTiles)
-        assertEquals(2, mode.gridColumns)
-        assertEquals(2, mode.gridRows)
-        assertTrue("Focus mode should be elderly friendly", mode.isElderlyFriendly())
-        assertEquals(1.8f, mode.getRecommendedFontScale(), 0.1f)
-        assertTrue("Focus mode should use high contrast", mode.shouldUseHighContrast())
-    }
-    
-    @Test
-    fun `minimal mode should have correct properties`() {
-        val mode = ToggleMode.MINIMAL
+        // COMFORT should have standard elderly-friendly font scale
+        assertEquals(1.6f, ToggleMode.COMFORT.getRecommendedFontScale(), 0.1f)
         
-        assertEquals("Minimal", mode.displayName)
-        assertEquals(3, mode.maxTiles)
-        assertEquals(1, mode.gridColumns)
-        assertEquals(3, mode.gridRows)
-        assertTrue("Minimal mode should be elderly friendly", mode.isElderlyFriendly())
-        assertEquals(2.0f, mode.getRecommendedFontScale(), 0.1f)
-        assertTrue("Minimal mode should use high contrast", mode.shouldUseHighContrast())
-    }
-    
-    @Test
-    fun `welcome mode should have correct properties`() {
-        val mode = ToggleMode.WELCOME
+        // CONNECTED should have slightly smaller font for tech-comfortable users
+        assertEquals(1.4f, ToggleMode.CONNECTED.getRecommendedFontScale(), 0.1f)
         
-        assertEquals("Welcome", mode.displayName)
-        assertEquals(6, mode.maxTiles)
-        assertEquals(2, mode.gridColumns)
-        assertEquals(3, mode.gridRows)
-        assertFalse("Welcome mode should not be elderly friendly (temporary)", mode.isElderlyFriendly())
-        assertEquals(1.6f, mode.getRecommendedFontScale(), 0.1f)
-        assertTrue("Welcome mode should use high contrast", mode.shouldUseHighContrast())
+        // All should meet minimum accessibility requirements
+        ToggleMode.values().forEach { mode ->
+            assertTrue("Mode $mode should have font scale >= 1.4x for elderly accessibility", 
+                mode.getRecommendedFontScale() >= 1.4f)
+        }
     }
     
     @Test
-    fun `localization should work for all supported languages`() {
+    fun `icon scales should be appropriate for elderly users`() {
+        // ESSENTIAL should have largest icons for motor difficulties
+        assertEquals(1.8f, ToggleMode.ESSENTIAL.getRecommendedIconScale(), 0.1f)
+        
+        // COMFORT should have standard large icons
+        assertEquals(1.4f, ToggleMode.COMFORT.getRecommendedIconScale(), 0.1f)
+        
+        // CONNECTED should have slightly smaller icons for more content
+        assertEquals(1.2f, ToggleMode.CONNECTED.getRecommendedIconScale(), 0.1f)
+        
+        // All should have reasonable icon scales
+        ToggleMode.values().forEach { mode ->
+            assertTrue("Mode $mode should have positive icon scale", mode.getRecommendedIconScale() > 0f)
+            assertTrue("Mode $mode should have reasonable icon scale", mode.getRecommendedIconScale() <= 2.0f)
+        }
+    }
+    
+    @Test
+    fun `high contrast settings should be appropriate`() {
+        // ESSENTIAL should use high contrast for cognitive impairment
+        assertTrue("ESSENTIAL should use high contrast", ToggleMode.ESSENTIAL.shouldUseHighContrast())
+        
+        // COMFORT should use high contrast for standard elderly users
+        assertTrue("COMFORT should use high contrast", ToggleMode.COMFORT.shouldUseHighContrast())
+        
+        // CONNECTED may not need high contrast by default (tech-comfortable users)
+        // This depends on the implementation - test what's actually implemented
+    }
+    
+    @Test
+    fun `grid constraints should follow accessibility guidelines`() {
+        ToggleMode.values().forEach { mode ->
+            assertTrue("Mode $mode should not exceed 2 columns for elderly accessibility", mode.gridColumns <= 2)
+            assertTrue("Mode $mode should not exceed 3 rows for elderly accessibility", mode.gridRows <= 3)
+            assertTrue("Mode $mode should not exceed 6 total tiles for simplicity", mode.maxTiles <= 6)
+        }
+    }
+    
+    @Test
+    fun `mode progression should be logical`() {
+        // ESSENTIAL is simplest with 1x3 grid
+        assertEquals("ESSENTIAL should be simplest", 3, ToggleMode.ESSENTIAL.maxTiles)
+        assertEquals(1, ToggleMode.ESSENTIAL.gridColumns)
+        assertEquals(3, ToggleMode.ESSENTIAL.gridRows)
+        
+        // COMFORT adds creative engagement with 2x2 grid
+        assertEquals("COMFORT should have moderate complexity", 4, ToggleMode.COMFORT.maxTiles)
+        assertEquals(2, ToggleMode.COMFORT.gridColumns)
+        assertEquals(2, ToggleMode.COMFORT.gridRows)
+        
+        // CONNECTED adds family features with 2x3 grid
+        assertEquals("CONNECTED should have most features", 6, ToggleMode.CONNECTED.maxTiles)
+        assertEquals(2, ToggleMode.CONNECTED.gridColumns)
+        assertEquals(3, ToggleMode.CONNECTED.gridRows)
+    }
+    
+    @Test
+    fun `localization should work for supported languages`() {
         val supportedLanguages = listOf("de", "tr", "uk", "ar", "en")
         
         ToggleMode.values().forEach { mode ->
@@ -106,138 +158,25 @@ class ToggleModeTest {
     }
     
     @Test
-    fun `german localization should be correct`() {
-        assertEquals("Komfort", ToggleMode.COMFORT.getLocalizedName("de"))
-        assertEquals("Familie", ToggleMode.FAMILY.getLocalizedName("de"))
-        assertEquals("Fokus", ToggleMode.FOCUS.getLocalizedName("de"))
-        assertEquals("Minimal", ToggleMode.MINIMAL.getLocalizedName("de"))
-        assertEquals("Willkommen", ToggleMode.WELCOME.getLocalizedName("de"))
-    }
-    
-    @Test
-    fun `arabic localization should be correct`() {
-        assertEquals("راحة", ToggleMode.COMFORT.getLocalizedName("ar"))
-        assertEquals("عائلة", ToggleMode.FAMILY.getLocalizedName("ar"))
-        assertEquals("تركيز", ToggleMode.FOCUS.getLocalizedName("ar"))
-        assertEquals("الحد الأدنى", ToggleMode.MINIMAL.getLocalizedName("ar"))
-        assertEquals("مرحبا", ToggleMode.WELCOME.getLocalizedName("ar"))
-    }
-    
-    @Test
-    fun `mode progression should work correctly`() {
-        assertEquals(ToggleMode.COMFORT, ToggleMode.WELCOME.getNextMode())
-        assertEquals(ToggleMode.FOCUS, ToggleMode.MINIMAL.getNextMode())
-        assertEquals(ToggleMode.COMFORT, ToggleMode.FOCUS.getNextMode())
-        assertEquals(ToggleMode.FAMILY, ToggleMode.COMFORT.getNextMode())
-        assertNull("Family mode should have no next mode", ToggleMode.FAMILY.getNextMode())
-    }
-    
-    @Test
-    fun `mode regression should work correctly`() {
-        assertEquals(ToggleMode.COMFORT, ToggleMode.FAMILY.getPreviousMode())
-        assertEquals(ToggleMode.FOCUS, ToggleMode.COMFORT.getPreviousMode())
-        assertEquals(ToggleMode.MINIMAL, ToggleMode.FOCUS.getPreviousMode())
-        assertNull("Minimal mode should have no previous mode", ToggleMode.MINIMAL.getPreviousMode())
-        assertNull("Welcome mode should have no previous mode", ToggleMode.WELCOME.getPreviousMode())
-    }
-    
-    @Test
-    fun `fromString should parse mode names correctly`() {
-        assertEquals(ToggleMode.COMFORT, ToggleMode.fromString("COMFORT"))
-        assertEquals(ToggleMode.COMFORT, ToggleMode.fromString("comfort"))
-        assertEquals(ToggleMode.FAMILY, ToggleMode.fromString("Family"))
-        assertNull("Invalid mode string should return null", ToggleMode.fromString("INVALID"))
-    }
-    
-    @Test
-    fun `getDefaultMode should return welcome`() {
-        assertEquals(ToggleMode.WELCOME, ToggleMode.getDefaultMode())
-    }
-    
-    @Test
-    fun `getRecommendedMode should work for different user types`() {
-        // New user should get welcome
-        assertEquals(ToggleMode.WELCOME, ToggleMode.getRecommendedMode(
-            isElderly = true,
-            hasCognitiveImpairment = false,
-            isNewUser = true,
-            hasFamilySupport = false
-        ))
+    fun `mode names should be descriptive`() {
+        assertEquals("Essential", ToggleMode.ESSENTIAL.displayName)
+        assertEquals("Comfort", ToggleMode.COMFORT.displayName)
+        assertEquals("Connected", ToggleMode.CONNECTED.displayName)
         
-        // Elderly with cognitive impairment should get minimal
-        assertEquals(ToggleMode.MINIMAL, ToggleMode.getRecommendedMode(
-            isElderly = true,
-            hasCognitiveImpairment = true,
-            isNewUser = false,
-            hasFamilySupport = false
-        ))
-        
-        // Non-elderly with cognitive impairment should get focus
-        assertEquals(ToggleMode.FOCUS, ToggleMode.getRecommendedMode(
-            isElderly = false,
-            hasCognitiveImpairment = true,
-            isNewUser = false,
-            hasFamilySupport = false
-        ))
-        
-        // Elderly with family support should get family
-        assertEquals(ToggleMode.FAMILY, ToggleMode.getRecommendedMode(
-            isElderly = true,
-            hasCognitiveImpairment = false,
-            isNewUser = false,
-            hasFamilySupport = true
-        ))
-        
-        // Elderly without family support should get comfort
-        assertEquals(ToggleMode.COMFORT, ToggleMode.getRecommendedMode(
-            isElderly = true,
-            hasCognitiveImpairment = false,
-            isNewUser = false,
-            hasFamilySupport = false
-        ))
-    }
-    
-    @Test
-    fun `getElderlyFriendlyModes should return correct modes`() {
-        val elderlyModes = ToggleMode.getElderlyFriendlyModes()
-        
-        assertTrue("Should include COMFORT", elderlyModes.contains(ToggleMode.COMFORT))
-        assertTrue("Should include FAMILY", elderlyModes.contains(ToggleMode.FAMILY))
-        assertTrue("Should include FOCUS", elderlyModes.contains(ToggleMode.FOCUS))
-        assertTrue("Should include MINIMAL", elderlyModes.contains(ToggleMode.MINIMAL))
-        assertFalse("Should not include WELCOME", elderlyModes.contains(ToggleMode.WELCOME))
-    }
-    
-    @Test
-    fun `font scales should meet accessibility requirements`() {
+        // All should have non-empty descriptions
         ToggleMode.values().forEach { mode ->
-            val fontScale = mode.getRecommendedFontScale()
-            
-            if (mode != ToggleMode.FAMILY) {
-                assertTrue("Mode $mode should have font scale >= 1.6x for elderly accessibility", 
-                    fontScale >= 1.6f)
-            } else {
-                assertTrue("Family mode should have reasonable font scale", fontScale >= 1.4f)
-            }
+            assertTrue("Mode ${mode.name} should have description", mode.description.isNotEmpty())
         }
     }
     
     @Test
-    fun `icon scales should be appropriate`() {
-        ToggleMode.values().forEach { mode ->
-            val iconScale = mode.getRecommendedIconScale()
-            
-            assertTrue("Mode $mode should have positive icon scale", iconScale > 0f)
-            assertTrue("Mode $mode should have reasonable icon scale", iconScale <= 2.0f)
-        }
-    }
-    
-    @Test
-    fun `grid constraints should follow windsurf rules`() {
-        ToggleMode.values().forEach { mode ->
-            assertTrue("Mode $mode should not exceed 3 columns", mode.gridColumns <= 3)
-            assertTrue("Mode $mode should not exceed 3 rows", mode.gridRows <= 3)
-            assertTrue("Mode $mode should not exceed 9 total tiles", mode.maxTiles <= 9)
-        }
+    fun `should only have three modes`() {
+        val modes = ToggleMode.values()
+        assertEquals("Should have exactly 3 modes", 3, modes.size)
+        
+        val modeNames = modes.map { it.name }.toSet()
+        assertTrue("Should contain ESSENTIAL", modeNames.contains("ESSENTIAL"))
+        assertTrue("Should contain COMFORT", modeNames.contains("COMFORT"))
+        assertTrue("Should contain CONNECTED", modeNames.contains("CONNECTED"))
     }
 }

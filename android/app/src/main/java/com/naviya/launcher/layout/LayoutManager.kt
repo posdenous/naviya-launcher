@@ -232,18 +232,13 @@ class LayoutManager @Inject constructor(
             ToggleMode.COMFORT -> {
                 listOf("Phone", "Messages", "Camera", "Settings", "Emergency", "Family")
             }
-            ToggleMode.FAMILY -> {
-                listOf("Phone", "Messages", "Camera", "Gallery", "Video Call", 
-                       "Family Chat", "Emergency", "Settings", "Weather")
+            ToggleMode.ESSENTIAL -> {
+                // Essential functions only for severe cognitive impairment
+                listOf("Phone", "Messages", "Contacts")
             }
-            ToggleMode.FOCUS -> {
-                listOf("Phone", "Emergency", "Messages", "Settings")
-            }
-            ToggleMode.MINIMAL -> {
-                listOf("Phone", "Emergency", "Messages")
-            }
-            ToggleMode.WELCOME -> {
-                listOf("Setup", "Tutorial", "Phone", "Emergency", "Help", "Settings")
+            ToggleMode.CONNECTED -> {
+                // Family-focused apps with communication priority
+                listOf("Phone", "Messages", "Camera", "Gallery", "Weather", "Family")
             }
         }
     }
@@ -428,7 +423,7 @@ class LayoutManager @Inject constructor(
                 val warnings = mutableListOf<String>()
                 
                 // Check Windsurf rules compliance
-                if (currentLayout.fontScale < 1.6f && currentLayout.mode != ToggleMode.FAMILY) {
+                if (currentLayout.fontScale < 1.6f && currentLayout.mode != ToggleMode.CONNECTED) {
                     violations.add("Font scale below 1.6x minimum for elderly users")
                 }
                 

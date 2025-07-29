@@ -39,19 +39,22 @@
     <string name="app_not_found">App not found</string>
     <string name="app_launch_failed">Failed to launch app</string>
     
-    <!-- Toggle Mode Names (English) -->
+    <!-- Toggle Mode Names (3-Mode System) -->
+    <string name="mode_essential">Essential</string>
     <string name="mode_comfort">Comfort</string>
-    <string name="mode_family">Family</string>
-    <string name="mode_focus">Focus</string>
-    <string name="mode_minimal">Minimal</string>
-    <string name="mode_welcome">Welcome</string>
+    <string name="mode_connected">Connected</string>
     
-    <!-- Toggle Mode Descriptions (English) -->
-    <string name="mode_comfort_desc">Large icons, simple layout for everyday use</string>
-    <string name="mode_family_desc">Family photos and contacts for connection</string>
-    <string name="mode_focus_desc">Essential apps only, reduced distractions</string>
-    <string name="mode_minimal_desc">Bare essentials, maximum simplicity</string>
-    <string name="mode_welcome_desc">Guided experience for new users</string>
+    <!-- Toggle Mode Descriptions (3-Mode System) -->
+    <string name="mode_essential_desc">Phone, messages, contacts - for users with severe cognitive impairment</string>
+    <string name="mode_comfort_desc">Phone, messages, camera, gallery - for standard elderly users with creative engagement</string>
+    <string name="mode_connected_desc">All comfort features plus weather and family communication - for tech-comfortable elderly users</string>
+    
+    <!-- Mode Selection Onboarding -->
+    <string name="mode_selection_title">Choose Your Launcher Mode</string>
+    <string name="mode_selection_subtitle">Select the mode that best fits your needs</string>
+    <string name="mode_essential_title">Essential Mode</string>
+    <string name="mode_comfort_title">Comfort Mode</string>
+    <string name="mode_connected_title">Connected Mode</string>
     
     <!-- Emergency SOS -->
     <string name="emergency_sos">Emergency SOS</string>

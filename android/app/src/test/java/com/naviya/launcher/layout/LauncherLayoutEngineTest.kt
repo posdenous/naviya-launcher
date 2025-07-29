@@ -1,20 +1,19 @@
 package com.naviya.launcher.layout
 
 import android.content.Context
+import com.naviya.launcher.core.NaviyaConstants
 import com.naviya.launcher.layout.data.LayoutConfiguration
+import com.naviya.launcher.testing.NaviyaTestConfig
 import com.naviya.launcher.toggle.ToggleMode
-import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import org.junit.Assert.*
 
 /**
- * Unit tests for LauncherLayoutEngine
+ * Unit tests for LauncherLayoutEngine - 3-mode system
  * Tests layout generation, Windsurf rules compliance, and accessibility features
+ * Uses standardized NaviyaTestConfig for consistent testing patterns
  */
-class LauncherLayoutEngineTest {
+class LauncherLayoutEngineTest : NaviyaTestConfig() {
     
     private lateinit var layoutEngine: LauncherLayoutEngine
     private lateinit var mockContext: Context
@@ -24,9 +23,9 @@ class LauncherLayoutEngineTest {
     private val testScreenHeight = 1920
     private val testDensity = 3.0f
     
-    @Before
-    fun setup() {
-        mockContext = mockk(relaxed = true)
+    override fun setup() {
+        super.setup()
+        mockContext = createMockContext()
         
         // Mock display metrics
         val mockResources = mockk<android.content.res.Resources>(relaxed = true)
@@ -37,11 +36,6 @@ class LauncherLayoutEngineTest {
         every { mockDisplayMetrics.density } returns testDensity
         
         layoutEngine = LauncherLayoutEngine(mockContext)
-    }
-    
-    @After
-    fun teardown() {
-        clearAllMocks()
     }
     
     @Test

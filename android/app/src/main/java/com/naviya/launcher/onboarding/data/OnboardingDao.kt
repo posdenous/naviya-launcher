@@ -229,7 +229,7 @@ interface OnboardingDao {
     suspend fun isOnboardingCompleted(userId: String): Boolean?
     
     /**
-     * Get onboarding progress percentage
+     * Get onboarding progress percentage for 3-mode system
      */
     @Query("""
         SELECT 
@@ -241,7 +241,7 @@ interface OnboardingDao {
                 WHEN currentStep = 'OPTIONAL_CAREGIVER' THEN 60
                 WHEN currentStep = 'EMERGENCY_CONTACTS' THEN 45
                 WHEN currentStep = 'BASIC_PREFERENCES' THEN 30
-                WHEN currentStep = 'FAMILY_INTRODUCTION' THEN 15
+                WHEN currentStep = 'MODE_SELECTION' THEN 15
                 ELSE 0
             END as progress
         FROM onboarding_state 

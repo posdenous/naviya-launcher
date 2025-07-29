@@ -1,24 +1,197 @@
 package com.naviya.launcher.onboarding.ui
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Security
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naviya.launcher.R
 import com.naviya.launcher.onboarding.*
+import com.naviya.launcher.toggle.ToggleMode
+
+/**
+ * Mode selection step for choosing launcher mode
+ */
+@Composable
+fun ModeSelectionStep(
+    onModeSelected: (ToggleMode) -> Unit
+) {
+    var selectedMode by remember { mutableStateOf<ToggleMode?>(null) }
+    
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Choose Your Launcher Mode",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "Select the mode that best fits your needs. You can change this later in settings.",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        // ESSENTIAL Mode Card
+        ModeSelectionCard(
+            mode = ToggleMode.ESSENTIAL,
+            isSelected = selectedMode == ToggleMode.ESSENTIAL,
+            onSelect = { selectedMode = ToggleMode.ESSENTIAL }
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // COMFORT Mode Card
+        ModeSelectionCard(
+            mode = ToggleMode.COMFORT,
+            isSelected = selectedMode == ToggleMode.COMFORT,
+            onSelect = { selectedMode = ToggleMode.COMFORT }
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // CONNECTED Mode Card
+        ModeSelectionCard(
+            mode = ToggleMode.CONNECTED,
+            isSelected = selectedMode == ToggleMode.CONNECTED,
+            onSelect = { selectedMode = ToggleMode.CONNECTED }
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        // Continue button
+        Button(
+            onClick = {
+                selectedMode?.let { mode ->
+                    onModeSelected(mode)
+                }
+            },
+            enabled = selectedMode != null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                text = "Continue with ${selectedMode?.displayName ?: "Selected Mode"}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+/**
+ * Mode selection card component
+ */
+@Composable
+private fun ModeSelectionCard(
+    mode: ToggleMode,
+    isSelected: Boolean,
+    onSelect: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onSelect() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) 
+                MaterialTheme.colorScheme.primaryContainer 
+            else 
+                MaterialTheme.colorScheme.surface
+        ),
+        border = if (isSelected) 
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary) 
+        else null,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isSelected,
+                    onClick = onSelect,
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = mode.displayName,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isSelected) 
+                            MaterialTheme.colorScheme.onPrimaryContainer 
+                        else 
+                            MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "${mode.gridColumns}×${mode.gridRows} grid • ${mode.maxTiles} apps",
+                        fontSize = 14.sp,
+                        color = if (isSelected) 
+                            MaterialTheme.colorScheme.onPrimaryContainer 
+                        else 
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = mode.description,
+                fontSize = 16.sp,
+                color = if (isSelected) 
+                    MaterialTheme.colorScheme.onPrimaryContainer 
+                else 
+                    MaterialTheme.colorScheme.onSurface
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "Target: ${mode.targetGroup}",
+                fontSize = 14.sp,
+                fontStyle = FontStyle.Italic,
+                color = if (isSelected) 
+                    MaterialTheme.colorScheme.onPrimaryContainer 
+                else 
+                    MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
 
 /**
  * Basic preferences step with elderly-optimized defaults

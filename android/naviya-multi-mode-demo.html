@@ -204,6 +204,263 @@
             line-height: 1.4;
         }
 
+        .caregiver-status {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #4ecdc4;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .caregiver-status:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .caregiver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .caregiver-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .online-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #51cf66;
+            animation: pulse 2s infinite;
+        }
+
+        .offline-indicator {
+            background: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .caregiver-count {
+            background: #4ecdc4;
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .caregiver-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .caregiver-list {
+            margin-top: 12px;
+        }
+
+        .caregiver-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .caregiver-item:last-child {
+            border-bottom: none;
+        }
+
+        .caregiver-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .caregiver-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .caregiver-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .caregiver-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .permission-level {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .permission-minimal {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .permission-basic {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .permission-enhanced {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .permission-full {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .caregiver-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .caregiver-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sync-status {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .sync-status h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .sync-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #44a08d;
+        }
+
+        .mode-compatibility {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .mode-compatibility h4 {
+            color: #0ea5e9;
+            margin-bottom: 10px;
+        }
+
+        .compatibility-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .compatibility-level {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .high-compatibility {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .medium-compatibility {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .low-compatibility {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
         /* Dynamic Grid System for Different Modes */
         .app-grid {
             display: grid;
@@ -508,6 +765,55 @@
                     <p id="modeInfoDescription">Simple layout for daily use with 6 large tiles in a 2×3 grid. Perfect for elderly users who want easy access to essential apps.</p>
                 </div>
                 
+                <div class="caregiver-status" onclick="showCaregiverModal()">
+                    <div class="caregiver-header">
+                        <div class="caregiver-title">
+                            <span class="online-indicator" id="onlineIndicator"></span>
+                            👨‍👩‍👧‍👦 Caregivers
+                        </div>
+                        <div class="caregiver-count" id="caregiverCount">3</div>
+                    </div>
+                    <div class="caregiver-details" id="caregiverDetails">
+                        2 online, 1 offline<br>
+                        Last sync: 2 minutes ago
+                    </div>
+                    
+                    <div class="caregiver-list" id="caregiverList">
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">👩</div>
+                                <div>
+                                    <div class="caregiver-name">Sarah (Daughter)</div>
+                                    <div class="caregiver-role">Primary Caregiver</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-enhanced">Enhanced</div>
+                        </div>
+                        
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">👨</div>
+                                <div>
+                                    <div class="caregiver-name">Dr. Smith</div>
+                                    <div class="caregiver-role">Healthcare Provider</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-basic">Basic</div>
+                        </div>
+                        
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">⚖️</div>
+                                <div>
+                                    <div class="caregiver-name">Elder Rights Advocate</div>
+                                    <div class="caregiver-role">Independent Oversight</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-minimal">Protected</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="app-grid comfort" id="appGrid">
                     <!-- Apps will be dynamically generated based on mode -->
                 </div>
@@ -542,6 +848,75 @@
     
     <div class="caregiver-status" id="caregiverStatus">
         👨‍👩‍👧‍👦 Caregiver: Online
+    </div>
+    
+    <!-- Caregiver Modal -->
+    <div class="caregiver-modal" id="caregiverModal">
+        <div class="caregiver-modal-content">
+            <div class="modal-title">👨‍👩‍👧‍👦 Caregiver Status</div>
+            
+            <div class="sync-status">
+                <h4>📡 Sync Status</h4>
+                <div class="sync-item">
+                    <span>Last Sync:</span>
+                    <span id="modalLastSync">2 minutes ago</span>
+                </div>
+                <div class="sync-item">
+                    <span>Network Status:</span>
+                    <span>Online</span>
+                </div>
+                <div class="sync-item">
+                    <span>Pending Alerts:</span>
+                    <span>0</span>
+                </div>
+                <div class="sync-item">
+                    <span>Emergency Ready:</span>
+                    <span>✅ Yes</span>
+                </div>
+            </div>
+            
+            <div class="sync-status">
+                <h4>🔒 Permission Levels</h4>
+                <div class="sync-item">
+                    <span><strong>MINIMAL:</strong> Emergency only</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>BASIC:</strong> + Location & unread count</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>ENHANCED:</strong> + App usage patterns</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>FULL:</strong> + Remote configuration</span>
+                </div>
+            </div>
+            
+            <div class="mode-compatibility">
+                <h4>🎯 Current Mode Compatibility</h4>
+                <div class="compatibility-item">
+                    <span id="currentModeText">COMFORT Mode</span>
+                    <span class="compatibility-level high-compatibility" id="currentModeCompatibility">High</span>
+                </div>
+            </div>
+            
+            <div class="sync-status">
+                <h4>⚠️ Abuse Prevention</h4>
+                <div class="sync-item">
+                    <span>• Financial data NEVER accessible</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Elder Rights Advocate protected</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Monthly consent review required</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Independent witness for full access</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="closeCaregiverModal()">Close</button>
+        </div>
     </div>
 
     <script>
@@ -770,8 +1145,103 @@
         // Initialize the launcher when page loads
         document.addEventListener('DOMContentLoaded', initializeLauncher);
 
+        // Caregiver modal functions
+        function showCaregiverModal() {
+            document.getElementById('caregiverModal').style.display = 'flex';
+            updateModalModeCompatibility();
+        }
+
+        function closeCaregiverModal() {
+            document.getElementById('caregiverModal').style.display = 'none';
+        }
+
+        // Update mode compatibility in modal
+        function updateModalModeCompatibility() {
+            const currentModeText = document.getElementById('currentModeText');
+            const currentModeCompatibility = document.getElementById('currentModeCompatibility');
+            
+            if (currentModeText && currentModeCompatibility) {
+                currentModeText.textContent = `${currentMode} Mode`;
+                
+                // Set compatibility level based on current mode
+                const compatibility = getModeCompatibility(currentMode);
+                currentModeCompatibility.textContent = compatibility.level;
+                currentModeCompatibility.className = `compatibility-level ${compatibility.class}`;
+            }
+        }
+
+        // Get mode compatibility info
+        function getModeCompatibility(mode) {
+            const compatibilityMap = {
+                'COMFORT': { level: 'High', class: 'high-compatibility' },
+                'FAMILY': { level: 'Highest', class: 'high-compatibility' },
+                'FOCUS': { level: 'Limited', class: 'medium-compatibility' },
+                'MINIMAL': { level: 'Emergency Only', class: 'low-compatibility' },
+                'WELCOME': { level: 'Setup Assist', class: 'high-compatibility' }
+            };
+            return compatibilityMap[mode] || { level: 'Unknown', class: 'medium-compatibility' };
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('caregiverModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCaregiverModal();
+            }
+        });
+
+        // Caregiver status simulation
+        let caregiverOnlineStatus = true;
+        let onlineCaregivers = 2;
+        let totalCaregivers = 3;
+
+        // Simulate caregiver status changes
+        setInterval(() => {
+            // Randomly change online status
+            if (Math.random() < 0.1) {
+                caregiverOnlineStatus = !caregiverOnlineStatus;
+                const indicator = document.getElementById('onlineIndicator');
+                const details = document.getElementById('caregiverDetails');
+                const modalLastSync = document.getElementById('modalLastSync');
+                
+                if (caregiverOnlineStatus) {
+                    indicator.classList.remove('offline-indicator');
+                    onlineCaregivers = Math.min(onlineCaregivers + 1, totalCaregivers);
+                } else {
+                    indicator.classList.add('offline-indicator');
+                    onlineCaregivers = Math.max(onlineCaregivers - 1, 0);
+                }
+                
+                const offlineCaregivers = totalCaregivers - onlineCaregivers;
+                const syncTime = `${Math.floor(Math.random() * 5) + 1} minutes ago`;
+                
+                if (details) {
+                    details.innerHTML = `${onlineCaregivers} online, ${offlineCaregivers} offline<br>Last sync: ${syncTime}`;
+                }
+                
+                if (modalLastSync) {
+                    modalLastSync.textContent = syncTime;
+                }
+            }
+        }, 5000);
+
+        // Enhanced app opening with caregiver notifications
+        function openApp(appName) {
+            const caregiverInfo = {
+                'phone': 'Sarah can see call patterns but not specific numbers (Enhanced Access)',
+                'messages': 'Dr. Smith can see unread count only (Basic Access)',
+                'family': 'All caregivers notified of family app usage',
+                'settings': 'Only user can access settings (Protected)',
+                'camera': 'App usage logged for caregivers (Basic Access)',
+                'calendar': 'Calendar access shared with primary caregiver (Enhanced Access)'
+            };
+            
+            alert(`Opening ${appName} app\n\nCaregiver Impact:\n${caregiverInfo[appName] || 'Standard caregiver permissions apply'}\n\nMode: ${currentMode}\nCompatibility: ${getModeCompatibility(currentMode).level}`);
+        }
+
         console.log('🏥 Naviya Multi-Mode Launcher Demo Loaded');
-        console.log('Available modes:', Object.keys(modeConfigs));
+        console.log('Available modes: COMFORT, FAMILY, FOCUS, MINIMAL, WELCOME');
+        console.log('Voice commands: "comfort mode", "family mode", "focus mode", "minimal mode", "welcome mode", "emergency", "help", "caregiver"');
+        console.log('Enhanced caregiver integration: Click caregiver status for detailed modal');
     </script>
 </body>
 </html>

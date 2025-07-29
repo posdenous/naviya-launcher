@@ -1,5 +1,6 @@
 package com.naviya.launcher.database
 
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -7,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import android.content.Context
+import java.util.concurrent.Executors
 import com.naviya.launcher.healthcare.data.*
 import com.naviya.launcher.abuse.data.*
 import com.naviya.launcher.elderrights.data.*
@@ -54,12 +56,7 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
     version = 3,
     exportSchema = true
 )
-@TypeConverters(
-    HealthcareProfessionalTypeConverters::class,
-    AbuseDetectionTypeConverters::class,
-    ElderRightsTypeConverters::class,
-    CaregiverTypeConverters::class
-)
+// TypeConverters will be added as needed for specific data types
 abstract class NaviyaDatabase : RoomDatabase() {
     
     // Healthcare Professional DAOs
@@ -84,28 +81,44 @@ abstract class NaviyaDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: NaviyaDatabase? = null
         
+        /**
+         * Thread-safe database instance creation
+         * Removed fallbackToDestructiveMigration for production safety
+         */
         fun getDatabase(context: Context): NaviyaDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    NaviyaDatabase::class.java,
-                    "naviya_database"
-                )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                .fallbackToDestructiveMigration() // For development only
-                .build()
-                INSTANCE = instance
-                instance
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
+        }
+        
+        private fun buildDatabase(context: Context): NaviyaDatabase {
+            return Room.databaseBuilder(
+                context.applicationContext,
+                NaviyaDatabase::class.java,
+                "naviya_database"
+            )
+            .addMigrations(*getAllMigrations())
+            .setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING) // Better performance for elderly users
+            .setQueryCallback(QueryCallback { sqlQuery, _ ->
+                // Log slow queries for performance monitoring
+                if (System.getProperty("naviya.debug") == "true") {
+                    Log.d("NaviyaDB", "Query: $sqlQuery")
+                }
+            }, Executors.newSingleThreadExecutor())
+            .build()
+        }
+        
+        private fun getAllMigrations(): Array<Migration> {
+            return arrayOf(MIGRATION_1_2, MIGRATION_2_3)
         }
         
         /**
          * Migration from version 1 to 2 - adds healthcare professional tables
          */
         private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 // Create healthcare professional registration table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS healthcare_professional_registration (
                         registrationId TEXT PRIMARY KEY NOT NULL,
                         professionalId TEXT NOT NULL,
@@ -126,7 +139,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create professional installation table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS professional_installation (
                         installationId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -147,7 +160,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create clinical oversight table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS clinical_oversight (
                         oversightId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -169,7 +182,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create clinical assessment table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS clinical_assessment (
                         assessmentId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -193,12 +206,12 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create indexes for better performance
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_healthcare_professional_registration_professionalId ON healthcare_professional_registration(professionalId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_professional_installation_userId ON professional_installation(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_professional_installation_professionalId ON professional_installation(professionalId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_oversight_userId ON clinical_oversight(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_userId ON clinical_assessment(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_assessingPhysicianId ON clinical_assessment(assessingPhysicianId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_healthcare_professional_registration_professionalId ON healthcare_professional_registration(professionalId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_professional_installation_userId ON professional_installation(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_professional_installation_professionalId ON professional_installation(professionalId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_oversight_userId ON clinical_oversight(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_userId ON clinical_assessment(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_assessingPhysicianId ON clinical_assessment(assessingPhysicianId)")
             }
         }
         
@@ -206,9 +219,9 @@ abstract class NaviyaDatabase : RoomDatabase() {
          * Migration from version 2 to 3 - adds security audit tables
          */
         private val MIGRATION_2_3 = object : Migration(2, 3) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 // Create mode switch audit table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS mode_switch_audit (
                         auditId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -226,7 +239,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create security events table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS security_events (
                         eventId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -243,7 +256,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create authentication attempts table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS authentication_attempts (
                         attemptId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -258,7 +271,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create elderly consent log table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS elderly_consent_log (
                         consentId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -275,7 +288,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create system lockout log table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS system_lockout_log (
                         lockoutId TEXT PRIMARY KEY NOT NULL,
                         userId TEXT NOT NULL,
@@ -289,7 +302,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create caregiver token validation table
-                database.execSQL("""
+                db.execSQL("""
                     CREATE TABLE IF NOT EXISTS caregiver_token_validation (
                         validationId TEXT PRIMARY KEY NOT NULL,
                         caregiverId TEXT NOT NULL,
@@ -303,29 +316,29 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 """)
                 
                 // Create indexes for security audit tables
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_userId ON mode_switch_audit(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_timestamp ON mode_switch_audit(timestamp)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_requestedBy ON mode_switch_audit(requestedBy)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_userId ON mode_switch_audit(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_timestamp ON mode_switch_audit(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_requestedBy ON mode_switch_audit(requestedBy)")
                 
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_userId ON security_events(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_eventType ON security_events(eventType)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_timestamp ON security_events(timestamp)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_resolved ON security_events(resolved)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_userId ON security_events(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_eventType ON security_events(eventType)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_timestamp ON security_events(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_resolved ON security_events(resolved)")
                 
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_userId ON authentication_attempts(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_timestamp ON authentication_attempts(timestamp)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_success ON authentication_attempts(success)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_userId ON authentication_attempts(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_timestamp ON authentication_attempts(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_success ON authentication_attempts(success)")
                 
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_userId ON elderly_consent_log(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_consentType ON elderly_consent_log(consentType)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_timestamp ON elderly_consent_log(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_userId ON elderly_consent_log(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_consentType ON elderly_consent_log(consentType)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_timestamp ON elderly_consent_log(timestamp)")
                 
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_userId ON system_lockout_log(userId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_lockoutStartTime ON system_lockout_log(lockoutStartTime)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_userId ON system_lockout_log(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_lockoutStartTime ON system_lockout_log(lockoutStartTime)")
                 
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_caregiverId ON caregiver_token_validation(caregiverId)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_isValid ON caregiver_token_validation(isValid)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_expiryTimestamp ON caregiver_token_validation(expiryTimestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_caregiverId ON caregiver_token_validation(caregiverId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_isValid ON caregiver_token_validation(isValid)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_expiryTimestamp ON caregiver_token_validation(expiryTimestamp)")
             }
         }
     }

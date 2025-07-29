@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Caregiver Integration Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #2c5aa0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .launcher-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .launcher-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .mode-indicator {
+            font-size: 16px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .main-content {
+            padding: 30px 20px;
+            height: calc(100% - 144px);
+            overflow-y: auto;
+        }
+
+        .emergency-section {
+            margin-bottom: 30px;
+        }
+
+        .sos-button {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff4757 0%, #c44569 100%);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .caregiver-status-enhanced {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #4ecdc4;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .caregiver-status-enhanced:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .caregiver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .caregiver-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .online-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #51cf66;
+            animation: pulse 2s infinite;
+        }
+
+        .offline-indicator {
+            background: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .caregiver-count {
+            background: #4ecdc4;
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .caregiver-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .caregiver-list {
+            margin-top: 12px;
+        }
+
+        .caregiver-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .caregiver-item:last-child {
+            border-bottom: none;
+        }
+
+        .caregiver-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .caregiver-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .caregiver-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .caregiver-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .permission-level {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .permission-minimal {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .permission-basic {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .permission-enhanced {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .permission-full {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .app-tile {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .app-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .app-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .caregiver-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .caregiver-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sync-status {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .sync-status h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .sync-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #44a08d;
+        }
+
+        .mode-compatibility {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .mode-compatibility h4 {
+            color: #0ea5e9;
+            margin-bottom: 10px;
+        }
+
+        .compatibility-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .compatibility-level {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .high-compatibility {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .medium-compatibility {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .low-compatibility {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Naviya Caregiver Demo</span>
+                <span>100%</span>
+            </div>
+            
+            <div class="launcher-header">
+                <div class="launcher-title">🏥 Naviya</div>
+                <div class="mode-indicator">
+                    <span>COMFORT Mode</span>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="emergency-section">
+                    <button class="sos-button" id="sosButton">
+                        🚨<br>SOS<br>HELP
+                    </button>
+                </div>
+                
+                <div class="caregiver-status-enhanced" id="caregiverStatus" onclick="showCaregiverModal()">
+                    <div class="caregiver-header">
+                        <div class="caregiver-title">
+                            <span class="online-indicator" id="onlineIndicator"></span>
+                            👨‍👩‍👧‍👦 Caregivers
+                        </div>
+                        <div class="caregiver-count" id="caregiverCount">3</div>
+                    </div>
+                    <div class="caregiver-details" id="caregiverDetails">
+                        2 online, 1 offline<br>
+                        Last sync: 2 minutes ago
+                    </div>
+                    
+                    <div class="caregiver-list" id="caregiverList">
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">👩</div>
+                                <div>
+                                    <div class="caregiver-name">Sarah (Daughter)</div>
+                                    <div class="caregiver-role">Primary Caregiver</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-enhanced">Enhanced</div>
+                        </div>
+                        
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">👨</div>
+                                <div>
+                                    <div class="caregiver-name">Dr. Smith</div>
+                                    <div class="caregiver-role">Healthcare Provider</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-basic">Basic</div>
+                        </div>
+                        
+                        <div class="caregiver-item">
+                            <div class="caregiver-info">
+                                <div class="caregiver-avatar">⚖️</div>
+                                <div>
+                                    <div class="caregiver-name">Elder Rights Advocate</div>
+                                    <div class="caregiver-role">Independent Oversight</div>
+                                </div>
+                            </div>
+                            <div class="permission-level permission-minimal">Protected</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mode-compatibility">
+                    <h4>🎯 Mode Compatibility</h4>
+                    <div class="compatibility-item">
+                        <span>COMFORT Mode</span>
+                        <span class="compatibility-level high-compatibility">High</span>
+                    </div>
+                    <div class="compatibility-item">
+                        <span>FAMILY Mode</span>
+                        <span class="compatibility-level high-compatibility">Highest</span>
+                    </div>
+                    <div class="compatibility-item">
+                        <span>FOCUS Mode</span>
+                        <span class="compatibility-level medium-compatibility">Limited</span>
+                    </div>
+                    <div class="compatibility-item">
+                        <span>MINIMAL Mode</span>
+                        <span class="compatibility-level low-compatibility">Emergency Only</span>
+                    </div>
+                    <div class="compatibility-item">
+                        <span>WELCOME Mode</span>
+                        <span class="compatibility-level high-compatibility">Setup Assist</span>
+                    </div>
+                </div>
+                
+                <div class="app-grid">
+                    <div class="app-tile" onclick="openApp('phone')">
+                        <div class="app-icon">📞</div>
+                        <div class="app-name">Phone</div>
+                    </div>
+                    
+                    <div class="app-tile" onclick="openApp('messages')">
+                        <div class="app-icon">💬</div>
+                        <div class="app-name">Messages</div>
+                    </div>
+                    
+                    <div class="app-tile" onclick="openApp('family')">
+                        <div class="app-icon">👨‍👩‍👧‍👦</div>
+                        <div class="app-name">Family</div>
+                    </div>
+                    
+                    <div class="app-tile" onclick="openApp('settings')">
+                        <div class="app-icon">⚙️</div>
+                        <div class="app-name">Settings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Caregiver Modal -->
+    <div class="caregiver-modal" id="caregiverModal">
+        <div class="caregiver-modal-content">
+            <div class="modal-title">👨‍👩‍👧‍👦 Caregiver Status</div>
+            
+            <div class="sync-status">
+                <h4>📡 Sync Status</h4>
+                <div class="sync-item">
+                    <span>Last Sync:</span>
+                    <span>2 minutes ago</span>
+                </div>
+                <div class="sync-item">
+                    <span>Network Status:</span>
+                    <span>Online</span>
+                </div>
+                <div class="sync-item">
+                    <span>Pending Alerts:</span>
+                    <span>0</span>
+                </div>
+                <div class="sync-item">
+                    <span>Emergency Ready:</span>
+                    <span>✅ Yes</span>
+                </div>
+            </div>
+            
+            <div class="sync-status">
+                <h4>🔒 Permission Levels</h4>
+                <div class="sync-item">
+                    <span><strong>MINIMAL:</strong> Emergency only</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>BASIC:</strong> + Location & unread count</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>ENHANCED:</strong> + App usage patterns</span>
+                </div>
+                <div class="sync-item">
+                    <span><strong>FULL:</strong> + Remote configuration</span>
+                </div>
+            </div>
+            
+            <div class="sync-status">
+                <h4>⚠️ Abuse Prevention</h4>
+                <div class="sync-item">
+                    <span>• Financial data NEVER accessible</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Elder Rights Advocate protected</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Monthly consent review required</span>
+                </div>
+                <div class="sync-item">
+                    <span>• Independent witness for full access</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="closeCaregiverModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let caregiverOnlineStatus = true;
+        let onlineCaregivers = 2;
+        let totalCaregivers = 3;
+
+        // SOS Button functionality
+        document.getElementById('sosButton').addEventListener('click', function() {
+            this.classList.add('activated');
+            setTimeout(() => {
+                this.classList.remove('activated');
+                alert(`🚨 Emergency Alert Sent!\n\nNotified caregivers:\n• Sarah (Daughter) - Enhanced Access\n• Dr. Smith - Basic Access\n• Elder Rights Advocate - Protected\n\nLocation shared with emergency contacts\nTime: ${new Date().toLocaleTimeString()}`);
+            }, 1000);
+        });
+
+        // Show caregiver modal
+        function showCaregiverModal() {
+            document.getElementById('caregiverModal').style.display = 'flex';
+        }
+
+        // Close caregiver modal
+        function closeCaregiverModal() {
+            document.getElementById('caregiverModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('caregiverModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCaregiverModal();
+            }
+        });
+
+        // App opening functionality
+        function openApp(appName) {
+            const caregiverInfo = {
+                'phone': 'Sarah can see call patterns but not specific numbers (Enhanced Access)',
+                'messages': 'Dr. Smith can see unread count only (Basic Access)',
+                'family': 'All caregivers notified of family app usage',
+                'settings': 'Only user can access settings (Protected)'
+            };
+            
+            alert(`Opening ${appName} app\n\nCaregiver Impact:\n${caregiverInfo[appName] || 'Standard caregiver permissions apply'}`);
+        }
+
+        // Simulate caregiver status changes
+        setInterval(() => {
+            // Randomly change online status
+            if (Math.random() < 0.1) {
+                caregiverOnlineStatus = !caregiverOnlineStatus;
+                const indicator = document.getElementById('onlineIndicator');
+                const details = document.getElementById('caregiverDetails');
+                
+                if (caregiverOnlineStatus) {
+                    indicator.classList.remove('offline-indicator');
+                    onlineCaregivers = Math.min(onlineCaregivers + 1, totalCaregivers);
+                } else {
+                    indicator.classList.add('offline-indicator');
+                    onlineCaregivers = Math.max(onlineCaregivers - 1, 0);
+                }
+                
+                const offlineCaregivers = totalCaregivers - onlineCaregivers;
+                details.innerHTML = `${onlineCaregivers} online, ${offlineCaregivers} offline<br>Last sync: ${Math.floor(Math.random() * 5) + 1} minutes ago`;
+            }
+        }, 5000);
+
+        console.log('🏥 Naviya Caregiver Integration Demo Loaded');
+        console.log('Features: Enhanced caregiver status, permission levels, mode compatibility');
+    </script>
+</body>
+</html>

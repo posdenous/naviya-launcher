@@ -6,6 +6,13 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naviya.launcher.toggle.ToggleMode
+import com.naviya.launcher.onboarding.data.OnboardingDao
+import com.naviya.launcher.onboarding.data.OnboardingState
+import com.naviya.launcher.onboarding.data.EmergencyContact
+import com.naviya.launcher.caregiver.CaregiverPermissionManager
+import com.naviya.launcher.emergency.EmergencyService
+import com.naviya.launcher.layout.LauncherLayoutEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +40,7 @@ class FamilyOnboardingFlow @Inject constructor(
         private const val FAMILY_SETUP_TIMEOUT_MS = 300000L // 5 minutes
     }
     
-    private val _currentStep = MutableStateFlow(OnboardingStep.WELCOME)
+    private val _currentStep = MutableStateFlow(OnboardingStep.MODE_SELECTION)
     val currentStep: StateFlow<OnboardingStep> = _currentStep.asStateFlow()
     
     private val _isLoading = MutableStateFlow(false)
@@ -56,8 +63,6 @@ class FamilyOnboardingFlow @Inject constructor(
     ): OnboardingResult {
         return try {
             _isLoading.value = true
-            _currentStep.value = OnboardingStep.FAMILY_INTRODUCTION
-            
             // Create user profile with family context
             val userProfile = createElderlyUserProfile(
                 elderlyUserName = elderlyUserName,
@@ -69,7 +74,7 @@ class FamilyOnboardingFlow @Inject constructor(
             onboardingDao.insertOnboardingState(
                 OnboardingState(
                     userId = userProfile.userId,
-                    currentStep = OnboardingStep.FAMILY_INTRODUCTION.name,
+                    currentStep = OnboardingStep.MODE_SELECTION.name,
                     isAssistedSetup = true,
                     assistantName = familyMemberName,
                     assistantRelationship = relationship,
@@ -78,7 +83,7 @@ class FamilyOnboardingFlow @Inject constructor(
             )
             
             _setupProgress.value = _setupProgress.value.copy(
-                currentStep = OnboardingStep.FAMILY_INTRODUCTION,
+                currentStep = OnboardingStep.MODE_SELECTION,
                 elderlyUserName = elderlyUserName,
                 familyAssistantName = familyMemberName,
                 isAssistedSetup = true
@@ -376,9 +381,10 @@ class FamilyOnboardingFlow @Inject constructor(
     
     private suspend fun activateElderlyLauncher(progress: OnboardingProgress) {
         // Set launcher as default with elderly-friendly mode
-        val layoutManager = LayoutManager(context, /* dependencies */)
-        layoutManager.switchToMode(
-            mode = ToggleMode.COMFORT, // Start with COMFORT mode for elderly users
+        val layoutEngine = LauncherLayoutEngine(context)
+        val selectedMode = progress.selectedMode ?: ToggleMode.COMFORT // Default to COMFORT if not selected
+        layoutEngine.switchToMode(
+            mode = selectedMode,
             screenWidth = context.resources.displayMetrics.widthPixels,
             screenHeight = context.resources.displayMetrics.heightPixels,
             userId = progress.userId
@@ -394,20 +400,50 @@ class FamilyOnboardingFlow @Inject constructor(
         // Apply elderly-friendly accessibility settings
         // This would integrate with Android accessibility services
     }
+    
+    /**
+     * Select launcher mode for 3-mode system (ESSENTIAL, COMFORT, CONNECTED)
+     */
+    suspend fun selectLauncherMode(mode: ToggleMode): OnboardingResult {
+        return try {
+            _isLoading.value = true
+            _currentStep.value = OnboardingStep.BASIC_PREFERENCES
+            
+            _setupProgress.value = _setupProgress.value.copy(
+                selectedMode = mode,
+                currentStep = OnboardingStep.BASIC_PREFERENCES,
+                stepsCompleted = _setupProgress.value.stepsCompleted + 1
+            )
+            
+            // Save mode selection to database
+            onboardingDao.updateOnboardingState(
+                _setupProgress.value.userId,
+                OnboardingStep.BASIC_PREFERENCES.name,
+                mapOf("selectedMode" to mode.name)
+            )
+            
+            OnboardingResult.Success("Mode ${mode.displayName} selected successfully")
+            
+        } catch (e: Exception) {
+            _errorMessage.value = "Failed to select mode: ${e.message}"
+            OnboardingResult.Error(e.message ?: "Unknown error")
+        } finally {
+            _isLoading.value = false
+        }
+    }
 }
 
 /**
  * Onboarding steps for family-assisted setup
  */
 enum class OnboardingStep {
-    WELCOME,
-    FAMILY_INTRODUCTION,
-    BASIC_PREFERENCES,
-    EMERGENCY_CONTACTS,
-    OPTIONAL_CAREGIVER,
-    SKIP_PROFESSIONAL,
-    COMPLETION,
-    LAUNCHER_READY
+    MODE_SELECTION,        // Choose between ESSENTIAL, COMFORT, CONNECTED
+    BASIC_PREFERENCES,     // Basic accessibility and language settings
+    EMERGENCY_CONTACTS,    // Emergency contact setup
+    OPTIONAL_CAREGIVER,    // Optional caregiver integration
+    SKIP_PROFESSIONAL,     // Skip healthcare professional setup
+    COMPLETION,            // Onboarding completion
+    LAUNCHER_READY         // Ready to use launcher
 }
 
 /**
@@ -475,12 +511,13 @@ enum class UserType {
  */
 data class OnboardingProgress(
     val userId: String = "",
-    val currentStep: OnboardingStep = OnboardingStep.WELCOME,
+    val currentStep: OnboardingStep = OnboardingStep.MODE_SELECTION,
     val elderlyUserName: String = "",
     val familyAssistantName: String = "",
     val isAssistedSetup: Boolean = false,
+    val selectedMode: ToggleMode? = null,
     val basicPreferences: BasicPreferences? = null,
-    val emergencyContacts: List<EmergencyContact> = emptyList(),
+    val emergencyContacts: List<EmergencyContactInfo> = emptyList(),
     val caregiverPaired: Boolean = false,
     val caregiverSkipped: Boolean = false,
     val caregiverInfo: CaregiverInfo? = null,

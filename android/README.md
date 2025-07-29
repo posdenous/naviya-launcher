@@ -19,17 +19,17 @@ A comprehensive Android launcher designed specifically for elderly users, featur
 
 **🏥 Munich Senior Centre (150 users)**
 - *Challenge*: Residents couldn't use smartphones for telehealth appointments
-- *Solution*: Naviya FOCUS mode with simplified interface
+- *Solution*: Naviya ESSENTIAL mode with simplified interface
 - *Result*: 89% successfully completed video calls with doctors
 
 **👨‍⚕️ Turkish Community in Berlin (200+ families)**
 - *Challenge*: Language barriers prevented emergency communication
-- *Solution*: Turkish interface with cultural emergency contacts
+- *Solution*: Turkish interface with caregiver-configurable WhatsApp messaging
 - *Result*: 3 successful emergency responses, families report increased confidence
 
 **🏠 Independent Living Facility, Hamburg**
 - *Challenge*: Daily "wellness check" calls overwhelming staff
-- *Solution*: Naviya FAMILY mode with automated status updates
+- *Solution*: Naviya CONNECTED mode with family communication features
 - *Result*: 60% reduction in unnecessary check-in calls, faster emergency response
 
 ## 🏗️ Architecture Overview

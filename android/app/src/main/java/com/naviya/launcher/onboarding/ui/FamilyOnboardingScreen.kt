@@ -62,14 +62,10 @@ fun FamilyOnboardingScreen(
                 
                 // Main content based on current step
                 when (currentStep) {
-                    OnboardingStep.WELCOME -> WelcomeStep(
-                        onStartSetup = { elderlyName, familyName, relationship ->
-                            viewModel.startFamilyAssistedSetup(elderlyName, familyName, relationship)
+                    OnboardingStep.MODE_SELECTION -> ModeSelectionStep(
+                        onModeSelected = { selectedMode ->
+                            viewModel.selectLauncherMode(selectedMode)
                         }
-                    )
-                    OnboardingStep.FAMILY_INTRODUCTION -> FamilyIntroductionStep(
-                        setupProgress = setupProgress,
-                        onContinue = { viewModel.proceedToNextStep() }
                     )
                     OnboardingStep.BASIC_PREFERENCES -> BasicPreferencesStep(
                         onPreferencesSet = { preferences ->

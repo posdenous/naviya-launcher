@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya 3-Mode Launcher Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: #4CAF50;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+        }
+
+        .phone-container {
+            width: 350px;
+            height: 600px;
+            background: #000;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .mode-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .mode-subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .app-grid {
+            flex: 1;
+            display: grid;
+            gap: 15px;
+            align-content: center;
+        }
+
+        /* Essential Mode - 1x3 Grid */
+        .essential-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        /* Comfort Mode - 2x2 Grid */
+        .comfort-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+
+        /* Connected Mode - 2x3 Grid */
+        .connected-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .app-tile {
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .app-tile:active {
+            transform: scale(0.95);
+        }
+
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .app-label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Essential Mode Styling */
+        .essential .app-tile {
+            min-height: 120px;
+        }
+
+        .essential .app-icon {
+            font-size: 4rem;
+        }
+
+        .essential .app-label {
+            font-size: 1.3rem;
+        }
+
+        /* Comfort Mode Styling */
+        .comfort .app-tile {
+            min-height: 140px;
+        }
+
+        /* Connected Mode Styling */
+        .connected .app-tile {
+            min-height: 100px;
+        }
+
+        .connected .app-icon {
+            font-size: 2.5rem;
+        }
+
+        .connected .app-label {
+            font-size: 1rem;
+        }
+
+        .emergency-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #f44336;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(244,67,54,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .emergency-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+
+        .caregiver-panel {
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-left: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .caregiver-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .caregiver-header h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .caregiver-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .caregiver-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .control-group h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .control-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: #ccc;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4CAF50;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(25px);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background: #4CAF50;
+        }
+
+        .status-offline {
+            background: #f44336;
+        }
+
+        .demo-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .unread-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .caregiver-panel {
+                margin-left: 0;
+                margin-top: 20px;
+                width: 350px;
+            }
+
+            .phone-container {
+                width: 320px;
+                height: 550px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>🚀 Naviya 3-Mode Launcher</h1>
+        <p>Elderly-friendly Android launcher with research-based design</p>
+    </div>
+
+    <div class="mode-selector">
+        <button class="mode-btn active" data-mode="essential">🔒 Essential Mode</button>
+        <button class="mode-btn" data-mode="comfort">🏠 Comfort Mode</button>
+        <button class="mode-btn" data-mode="connected">🌐 Connected Mode</button>
+        <button class="mode-btn" data-mode="caregiver">👨‍⚕️ Caregiver View</button>
+    </div>
+
+    <div class="demo-container">
+        <div class="phone-container">
+            <div class="screen" id="screen">
+                <div class="status-bar">
+                    <span>📶 Vodafone</span>
+                    <span>14:30</span>
+                    <span>🔋 85%</span>
+                </div>
+                
+                <div class="mode-title" id="modeTitle">Essential Mode</div>
+                <div class="mode-subtitle" id="modeSubtitle">Maximum simplicity for cognitive support</div>
+                
+                <div class="app-grid essential-grid" id="appGrid">
+                    <div class="app-tile" data-app="phone">
+                        <div class="app-icon">📞</div>
+                        <div class="app-label">Phone</div>
+                    </div>
+                    <div class="app-tile" data-app="messages">
+                        <div class="app-icon">💬</div>
+                        <div class="app-label">Messages</div>
+                        <div class="unread-badge">3</div>
+                    </div>
+                    <div class="app-tile" data-app="contacts">
+                        <div class="app-icon">👥</div>
+                        <div class="app-label">Contacts</div>
+                    </div>
+                </div>
+                
+                <button class="emergency-btn" title="Emergency SOS">🆘</button>
+            </div>
+        </div>
+
+        <div class="caregiver-panel" id="caregiverPanel" style="display: none;">
+            <div class="caregiver-header">
+                <h3>👨‍⚕️ Caregiver Dashboard</h3>
+                <p>Monitoring elderly user with ethical safeguards</p>
+            </div>
+            
+            <div class="caregiver-controls">
+                <div class="control-group">
+                    <h4>📊 User Status</h4>
+                    <div class="control-item">
+                        <span><span class="status-indicator status-online"></span>Device Online</span>
+                        <span>✅</span>
+                    </div>
+                    <div class="control-item">
+                        <span><span class="status-indicator status-online"></span>Last Activity</span>
+                        <span>2 min ago</span>
+                    </div>
+                    <div class="control-item">
+                        <span><span class="status-indicator status-online"></span>Current Mode</span>
+                        <span id="currentModeDisplay">Essential</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h4>🔔 Notifications (Minimal Access)</h4>
+                    <div class="control-item">
+                        <span>Emergency Alerts</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="control-item">
+                        <span>Daily Check-in</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="control-item">
+                        <span>App Usage Summary</span>
+                        <div class="toggle-switch"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h4>⚙️ Messaging Configuration</h4>
+                    <div class="control-item">
+                        <span>Primary: SMS</span>
+                        <button style="padding: 5px 10px; border: none; border-radius: 5px; background: #e3f2fd; cursor: pointer;">Change</button>
+                    </div>
+                    <div class="control-item">
+                        <span>Backup: WhatsApp</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h4>🛡️ Ethical Safeguards</h4>
+                    <div class="control-item">
+                        <span>Elder Rights Advocate</span>
+                        <span>📞 Protected</span>
+                    </div>
+                    <div class="control-item">
+                        <span>Audit Trail</span>
+                        <span>🔒 Immutable</span>
+                    </div>
+                    <div class="control-item">
+                        <span>User Autonomy</span>
+                        <span>✅ Preserved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modeConfigs = {
+            essential: {
+                title: 'Essential Mode',
+                subtitle: 'Maximum simplicity for cognitive support',
+                gridClass: 'essential-grid',
+                screenClass: 'essential',
+                apps: [
+                    { icon: '📞', label: 'Phone', id: 'phone' },
+                    { icon: '💬', label: 'Messages', id: 'messages', badge: 3 },
+                    { icon: '👥', label: 'Contacts', id: 'contacts' }
+                ]
+            },
+            comfort: {
+                title: 'Comfort Mode',
+                subtitle: 'Creative engagement for standard elderly users',
+                gridClass: 'comfort-grid',
+                screenClass: 'comfort',
+                apps: [
+                    { icon: '📞', label: 'Phone', id: 'phone' },
+                    { icon: '💬', label: 'Messages', id: 'messages', badge: 3 },
+                    { icon: '📷', label: 'Camera', id: 'camera' },
+                    { icon: '🖼️', label: 'Gallery', id: 'gallery' }
+                ]
+            },
+            connected: {
+                title: 'Connected Mode',
+                subtitle: 'Enhanced connectivity for tech-comfortable users',
+                gridClass: 'connected-grid',
+                screenClass: 'connected',
+                apps: [
+                    { icon: '📞', label: 'Phone', id: 'phone' },
+                    { icon: '💬', label: 'Messages', id: 'messages', badge: 3 },
+                    { icon: '📷', label: 'Camera', id: 'camera' },
+                    { icon: '🖼️', label: 'Gallery', id: 'gallery' },
+                    { icon: '🌤️', label: 'Weather', id: 'weather' },
+                    { icon: '👨‍👩‍👧‍👦', label: 'Family', id: 'family', badge: 2 }
+                ]
+            }
+        };
+
+        let currentMode = 'essential';
+        let caregiverViewActive = false;
+
+        function switchMode(mode) {
+            if (mode === 'caregiver') {
+                caregiverViewActive = !caregiverViewActive;
+                document.getElementById('caregiverPanel').style.display = 
+                    caregiverViewActive ? 'block' : 'none';
+                
+                // Update button state
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    if (btn.dataset.mode === 'caregiver') {
+                        btn.classList.toggle('active', caregiverViewActive);
+                    }
+                });
+                return;
+            }
+
+            currentMode = mode;
+            const config = modeConfigs[mode];
+            
+            // Update UI
+            document.getElementById('modeTitle').textContent = config.title;
+            document.getElementById('modeSubtitle').textContent = config.subtitle;
+            document.getElementById('currentModeDisplay').textContent = config.title.split(' ')[0];
+            
+            // Update screen class
+            const screen = document.getElementById('screen');
+            screen.className = `screen ${config.screenClass}`;
+            
+            // Update grid
+            const appGrid = document.getElementById('appGrid');
+            appGrid.className = `app-grid ${config.gridClass}`;
+            
+            // Update apps
+            appGrid.innerHTML = config.apps.map(app => `
+                <div class="app-tile" data-app="${app.id}">
+                    <div class="app-icon">${app.icon}</div>
+                    <div class="app-label">${app.label}</div>
+                    ${app.badge ? `<div class="unread-badge">${app.badge}</div>` : ''}
+                </div>
+            `).join('');
+            
+            // Update button states
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+        }
+
+        // Event listeners
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+        });
+
+        // App tile interactions
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.app-tile')) {
+                const appTile = e.target.closest('.app-tile');
+                const appId = appTile.dataset.app;
+                
+                // Simulate app launch
+                appTile.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    appTile.style.transform = '';
+                    alert(`Launching ${appId} app...`);
+                }, 150);
+            }
+        });
+
+        // Emergency button
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.emergency-btn')) {
+                alert('🚨 Emergency SOS Activated!\n\nCalling emergency services...\nNotifying caregivers...\nSending location...');
+            }
+        });
+
+        // Toggle switches
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('toggle-switch')) {
+                e.target.classList.toggle('active');
+            }
+        });
+
+        // Voice recognition simulation
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript.toLowerCase();
+                if (command.includes('help') || command.includes('emergency')) {
+                    alert('🎤 Voice Command Detected: "' + command + '"\n\n🚨 Activating Emergency SOS...');
+                }
+            };
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const timeElement = document.querySelector('.status-bar span:nth-child(2)');
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }, 1000);
+
+        // Initialize
+        switchMode('essential');
+    </script>
+</body>
+</html>

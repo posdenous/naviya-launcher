@@ -19,6 +19,118 @@ enum class TileType(
     val allowedPackagePatterns: Set<String>,
     val requiredPermissions: Set<String> = emptySet()
 ) {
+    PHONE(
+        displayName = "Phone",
+        description = "Phone dialer and calling apps",
+        allowedCategories = setOf(
+            "android.intent.category.APP_DIALER"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.android.dialer",
+            "com.google.android.dialer",
+            "com.samsung.android.dialer"
+        ),
+        requiredPermissions = setOf(
+            "android.permission.CALL_PHONE"
+        )
+    ),
+
+    MESSAGES(
+        displayName = "Messages",
+        description = "SMS and messaging apps (caregiver-configurable)",
+        allowedCategories = setOf(
+            "android.intent.category.APP_MESSAGING"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.android.mms",
+            "com.google.android.apps.messaging",
+            "com.whatsapp",
+            "com.facebook.orca", // Messenger
+            "com.viber.voip",
+            "com.telegram.messenger"
+        ),
+        requiredPermissions = setOf(
+            "android.permission.SEND_SMS",
+            "android.permission.READ_SMS"
+        )
+    ),
+
+    CONTACTS(
+        displayName = "Contacts",
+        description = "Contact management apps",
+        allowedCategories = setOf(
+            "android.intent.category.APP_CONTACTS"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.android.contacts",
+            "com.google.android.contacts",
+            "com.samsung.android.contacts"
+        ),
+        requiredPermissions = setOf(
+            "android.permission.READ_CONTACTS"
+        )
+    ),
+
+    CAMERA(
+        displayName = "Camera",
+        description = "Camera apps for photo taking",
+        allowedCategories = setOf(
+            "android.intent.category.APP_CAMERA"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.android.camera",
+            "com.google.android.GoogleCamera",
+            "com.samsung.android.camera"
+        ),
+        requiredPermissions = setOf(
+            "android.permission.CAMERA"
+        )
+    ),
+
+    GALLERY(
+        displayName = "Gallery",
+        description = "Photo gallery and viewing apps",
+        allowedCategories = setOf(
+            "android.intent.category.APP_GALLERY"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.android.gallery3d",
+            "com.google.android.apps.photos",
+            "com.samsung.android.gallery3d"
+        )
+    ),
+
+    WEATHER(
+        displayName = "Weather",
+        description = "Weather forecast and information apps",
+        allowedCategories = setOf(
+            "android.intent.category.APP_WEATHER"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.google.android.googlequicksearchbox", // Google Weather
+            "com.weather.Weather",
+            "com.accuweather.android",
+            "com.weather.com.android"
+        )
+    ),
+
+    FAMILY_COMMUNICATION(
+        displayName = "Family Communication",
+        description = "Family-focused communication and video calling apps",
+        allowedCategories = setOf(
+            "android.intent.category.APP_MESSAGING",
+            "android.intent.category.APP_VIDEO_CALLING"
+        ),
+        allowedPackagePatterns = setOf(
+            "com.google.android.apps.tachyon", // Google Meet
+            "com.skype.raider",
+            "us.zoom.videomeetings",
+            "com.facebook.orca", // Messenger
+            "com.whatsapp",
+            "com.naviya.launcher.family" // Our family app
+        )
+    ),
+
     COMMUNICATION(
         displayName = "Communication",
         description = "Phone, messaging, and video calling apps",
@@ -251,71 +363,34 @@ data class SemanticTileLayout(
          */
         fun getLayoutForMode(mode: ToggleMode): SemanticTileLayout {
             return when (mode) {
+                ToggleMode.ESSENTIAL -> SemanticTileLayout(
+                    mode = ToggleMode.ESSENTIAL,
+                    slots = listOf(
+                        TileSlot(0, TileType.PHONE, isRequired = true, displayPriority = 10),
+                        TileSlot(1, TileType.MESSAGES, isRequired = true, displayPriority = 9),
+                        TileSlot(2, TileType.CONTACTS, isRequired = true, displayPriority = 8)
+                    )
+                )
+                
                 ToggleMode.COMFORT -> SemanticTileLayout(
                     mode = ToggleMode.COMFORT,
                     slots = listOf(
-                        TileSlot(0, TileType.COMMUNICATION, isRequired = true, displayPriority = 10),
-                        TileSlot(1, TileType.COMMUNICATION, displayPriority = 9),
-                        TileSlot(2, TileType.EMERGENCY_SAFETY, isRequired = true, displayPriority = 10),
-                        TileSlot(3, TileType.CAMERA_PHOTO, displayPriority = 7),
-                        TileSlot(4, TileType.SYSTEM_ESSENTIAL, displayPriority = 6),
-                        TileSlot(5, TileType.FLEXIBLE, displayPriority = 5)
+                        TileSlot(0, TileType.PHONE, isRequired = true, displayPriority = 10),
+                        TileSlot(1, TileType.MESSAGES, isRequired = true, displayPriority = 9),
+                        TileSlot(2, TileType.CAMERA, displayPriority = 8),
+                        TileSlot(3, TileType.GALLERY, displayPriority = 7)
                     )
                 )
                 
-                ToggleMode.FAMILY -> SemanticTileLayout(
-                    mode = ToggleMode.FAMILY,
+                ToggleMode.CONNECTED -> SemanticTileLayout(
+                    mode = ToggleMode.CONNECTED,
                     slots = listOf(
-                        TileSlot(0, TileType.EDUCATION_KIDS, displayPriority = 10),
-                        TileSlot(1, TileType.EDUCATION_KIDS, displayPriority = 9),
-                        TileSlot(2, TileType.CAMERA_PHOTO, displayPriority = 8),
-                        TileSlot(3, TileType.COMMUNICATION, displayPriority = 7),
-                        TileSlot(4, TileType.EMERGENCY_SAFETY, isRequired = true, displayPriority = 10),
-                        TileSlot(5, TileType.PARENTAL_CONTROL, isRequired = true, displayPriority = 9),
-                        TileSlot(6, TileType.PARENTAL_CONTROL, displayPriority = 8),
-                        TileSlot(7, TileType.FLEXIBLE, displayPriority = 5)
-                    )
-                )
-                
-                ToggleMode.FOCUS -> SemanticTileLayout(
-                    mode = ToggleMode.FOCUS,
-                    slots = listOf(
-                        TileSlot(0, TileType.MEDITATION_FOCUS, isRequired = true, displayPriority = 10),
-                        TileSlot(1, TileType.MEDITATION_FOCUS, displayPriority = 9),
-                        TileSlot(2, TileType.MEDITATION_FOCUS, displayPriority = 8),
-                        TileSlot(3, TileType.PRODUCTIVITY_WORK, displayPriority = 6),
-                        TileSlot(4, TileType.SYSTEM_ESSENTIAL, displayPriority = 5),
-                        TileSlot(5, TileType.FLEXIBLE, displayPriority = 4)
-                    )
-                )
-                
-                ToggleMode.PRODUCTIVITY -> SemanticTileLayout(
-                    mode = ToggleMode.PRODUCTIVITY,
-                    slots = listOf(
-                        TileSlot(0, TileType.PRODUCTIVITY_WORK, isRequired = true, displayPriority = 10),
-                        TileSlot(1, TileType.PRODUCTIVITY_WORK, displayPriority = 9),
-                        TileSlot(2, TileType.PRODUCTIVITY_WORK, displayPriority = 8),
-                        TileSlot(3, TileType.COMMUNICATION, displayPriority = 7),
-                        TileSlot(4, TileType.PRODUCTIVITY_WORK, displayPriority = 6),
-                        TileSlot(5, TileType.SYSTEM_ESSENTIAL, displayPriority = 5),
-                        TileSlot(6, TileType.SYSTEM_ESSENTIAL, displayPriority = 4),
-                        TileSlot(7, TileType.SYSTEM_ESSENTIAL, displayPriority = 3),
-                        TileSlot(8, TileType.FLEXIBLE, displayPriority = 2),
-                        TileSlot(9, TileType.FLEXIBLE, displayPriority = 1),
-                        TileSlot(10, TileType.COMMUNICATION, displayPriority = 6),
-                        TileSlot(11, TileType.SYSTEM_ESSENTIAL, displayPriority = 4)
-                    )
-                )
-                
-                ToggleMode.ACCESSIBILITY -> SemanticTileLayout(
-                    mode = ToggleMode.ACCESSIBILITY,
-                    slots = listOf(
-                        TileSlot(0, TileType.ACCESSIBILITY_TOOLS, isRequired = true, displayPriority = 10),
-                        TileSlot(1, TileType.ACCESSIBILITY_TOOLS, displayPriority = 9),
-                        TileSlot(2, TileType.EMERGENCY_SAFETY, isRequired = true, displayPriority = 10),
-                        TileSlot(3, TileType.ACCESSIBILITY_TOOLS, displayPriority = 8),
-                        TileSlot(4, TileType.ACCESSIBILITY_TOOLS, displayPriority = 7),
-                        TileSlot(5, TileType.SYSTEM_ESSENTIAL, displayPriority = 6)
+                        TileSlot(0, TileType.PHONE, isRequired = true, displayPriority = 10),
+                        TileSlot(1, TileType.MESSAGES, isRequired = true, displayPriority = 9),
+                        TileSlot(2, TileType.CAMERA, displayPriority = 8),
+                        TileSlot(3, TileType.GALLERY, displayPriority = 7),
+                        TileSlot(4, TileType.WEATHER, displayPriority = 6),
+                        TileSlot(5, TileType.FAMILY_COMMUNICATION, displayPriority = 5)
                     )
                 )
             }

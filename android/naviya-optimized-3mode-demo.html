@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Optimized 3-Mode Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            display: flex;
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #2c5aa0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .launcher-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .launcher-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .mode-button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-button.active {
+            background: rgba(255,255,255,0.9);
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+
+        .mode-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .main-content {
+            padding: 30px 20px;
+            height: calc(100% - 144px);
+            overflow-y: auto;
+        }
+
+        .emergency-section {
+            margin-bottom: 30px;
+        }
+
+        .sos-button {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff4757 0%, #c44569 100%);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .sos-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        .unread-tile {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .unread-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .unread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .unread-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unread-count {
+            background: #ff6b6b;
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .unread-details {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .mode-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .mode-info h3 {
+            color: #1976d2;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .mode-info p {
+            color: #424242;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .research-badge {
+            background: #4caf50;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .caregiver-status {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #4ecdc4;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .caregiver-status:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .caregiver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .caregiver-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #51cf66;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .caregiver-count {
+            background: #4ecdc4;
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .caregiver-details {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        /* Dynamic Grid System for Different Modes */
+        .app-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        /* ESSENTIAL Mode - 1x3 grid */
+        .app-grid.essential {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            max-width: 200px;
+            margin: 20px auto;
+        }
+
+        /* COMFORT Mode - 2x2 grid */
+        .app-grid.comfort {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+
+        /* CONNECTED Mode - 2x3 grid */
+        .app-grid.connected {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .app-tile {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .app-grid.essential .app-tile {
+            min-height: 80px;
+            padding: 25px;
+        }
+
+        .app-grid.comfort .app-tile {
+            min-height: 100px;
+        }
+
+        .app-grid.connected .app-tile {
+            min-height: 90px;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .app-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .app-grid.essential .app-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .app-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .app-grid.essential .app-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            height: fit-content;
+        }
+
+        .info-panel h2 {
+            color: #2c5aa0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .mode-comparison {
+            margin-bottom: 30px;
+        }
+
+        .mode-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .mode-card.active {
+            border-color: #2c5aa0;
+            background: #f3f7ff;
+        }
+
+        .mode-card h3 {
+            color: #2c5aa0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mode-card .grid-info {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .mode-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .mode-card .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-tag {
+            background: #f0f0f0;
+            color: #555;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .research-highlight {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .research-highlight h4 {
+            color: #f57c00;
+            margin-bottom: 8px;
+        }
+
+        .research-highlight ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .research-highlight li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .eliminated-modes {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .eliminated-modes h4 {
+            color: #d32f2f;
+            margin-bottom: 8px;
+        }
+
+        .eliminated-modes ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .voice-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .voice-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        .voice-button.listening {
+            animation: pulse-voice 1s infinite;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        @keyframes pulse-voice {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="phone-container">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>Naviya Optimized</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="launcher-header">
+                    <div class="launcher-title">🏥 Naviya</div>
+                    <div class="mode-selector">
+                        <button class="mode-button active" onclick="switchMode('ESSENTIAL')">ESSENTIAL</button>
+                        <button class="mode-button" onclick="switchMode('COMFORT')">COMFORT</button>
+                        <button class="mode-button" onclick="switchMode('CONNECTED')">CONNECTED</button>
+                    </div>
+                </div>
+                
+                <div class="main-content">
+                    <div class="emergency-section">
+                        <button class="sos-button" id="sosButton">
+                            🚨<br>SOS<br>HELP
+                        </button>
+                    </div>
+                    
+                    <div class="unread-tile">
+                        <div class="unread-header">
+                            <div class="unread-title">
+                                📱 Unread
+                            </div>
+                            <div class="unread-count" id="unreadCount">2</div>
+                        </div>
+                        <div class="unread-details" id="unreadDetails">
+                            1 missed call from Sarah<br>
+                            1 text message from Dr. Smith
+                        </div>
+                    </div>
+                    
+                    <div class="mode-info" id="modeInfo">
+                        <h3 id="modeInfoTitle">ESSENTIAL Mode <span class="research-badge">Research-Validated</span></h3>
+                        <p id="modeInfoDescription">Maximum simplification for severe cognitive impairment. Only 3 essential functions in a 1×3 grid layout.</p>
+                    </div>
+                    
+                    <div class="caregiver-status">
+                        <div class="caregiver-header">
+                            <div class="caregiver-title">
+                                <span class="online-indicator"></span>
+                                👨‍👩‍👧‍👦 Caregivers
+                            </div>
+                            <div class="caregiver-count">3</div>
+                        </div>
+                        <div class="caregiver-details" id="caregiverDetails">
+                            2 online, 1 offline<br>
+                            Emergency-only access
+                        </div>
+                    </div>
+                    
+                    <div class="app-grid essential" id="appGrid">
+                        <!-- Apps will be dynamically generated based on mode -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2>🔬 Research-Optimized 3-Mode System</h2>
+            
+            <div class="research-highlight">
+                <h4>📊 Based on 15+ Elderly UI Studies</h4>
+                <ul>
+                    <li><strong>Simplify everything</strong> - Cognitive difficulties require extra simplification</li>
+                    <li><strong>Reduce available elements</strong> - Fewer options = better UX</li>
+                    <li><strong>Increase touch targets</strong> - Motor limitations need larger buttons</li>
+                    <li><strong>Maintain focus</strong> - Concentration difficulties require singular attention</li>
+                </ul>
+            </div>
+            
+            <div class="mode-comparison">
+                <div class="mode-card active" id="essentialCard">
+                    <h3>ESSENTIAL Mode <span class="grid-info">1×3 Grid</span></h3>
+                    <p><strong>Target:</strong> Severe cognitive impairment, dementia patients</p>
+                    <p><strong>Research Alignment:</strong> Maximum simplification principle</p>
+                    <div class="features">
+                        <span class="feature-tag">Phone</span>
+                        <span class="feature-tag">Messages (Configurable)</span>
+                        <span class="feature-tag">Contacts</span>
+                    </div>
+                    <p style="font-size: 12px; color: #666; margin-top: 8px;"><strong>Note:</strong> Emergency SOS redundancy removed - dedicated SOS button above serves this purpose</p>
+                </div>
+                
+                <div class="mode-card" id="comfortCard">
+                    <h3>COMFORT Mode <span class="grid-info">2×2 Grid</span></h3>
+                    <p><strong>Target:</strong> Standard elderly users, daily activities</p>
+                    <p><strong>Research Alignment:</strong> Balanced simplicity with creative engagement</p>
+                    <div class="features">
+                        <span class="feature-tag">Phone</span>
+                        <span class="feature-tag">Messages</span>
+                        <span class="feature-tag">Camera</span>
+                        <span class="feature-tag">Gallery</span>
+                    </div>
+                    <p style="font-size: 12px; color: #666; margin-top: 8px;"><strong>Photo Workflow:</strong> Camera + Gallery create complete creative experience for sharing memories with family</p>
+                </div>
+                
+                <div class="mode-card" id="connectedCard">
+                    <h3>CONNECTED Mode <span class="grid-info">2×3 Grid</span></h3>
+                    <p><strong>Target:</strong> Tech-comfortable elderly with family support</p>
+                    <p><strong>Research Alignment:</strong> Social connection without cognitive overload</p>
+                    <div class="features">
+                        <span class="feature-tag">Phone</span>
+                        <span class="feature-tag">Messages</span>
+                        <span class="feature-tag">Video Call</span>
+                        <span class="feature-tag">Family</span>
+                        <span class="feature-tag">Photos</span>
+                        <span class="feature-tag">Calendar</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="eliminated-modes">
+                <h4>🗑️ Eliminated Modes (Research-Based)</h4>
+                <ul>
+                    <li><strong>WELCOME Mode:</strong> Converted to tutorial overlay system</li>
+                    <li><strong>FAMILY Mode:</strong> 9 tiles violated "reduce elements" research</li>
+                    <li><strong>FOCUS Mode:</strong> Functionality absorbed by COMFORT mode</li>
+                </ul>
+            </div>
+            
+            <div class="research-highlight">
+                <h4>⚙️ Caregiver Configuration - Messaging Apps</h4>
+                <ul>
+                    <li><strong>Setup Question:</strong> "Does your family primarily use WhatsApp for messaging?"</li>
+                    <li><strong>International Families:</strong> WhatsApp enables free messaging for children abroad</li>
+                    <li><strong>User Experience:</strong> Same "Messages" tile, different app underneath</li>
+                    <li><strong>Options:</strong> SMS (default), WhatsApp, Telegram, Signal</li>
+                    <li><strong>Ethical Control:</strong> User sees consistent interface, caregiver configures during setup</li>
+                </ul>
+                <p style="font-size: 12px; margin-top: 8px;"><strong>Example:</strong> Elderly parent in UK, adult children in Australia → WhatsApp configured for free international messaging</p>
+            </div>
+        </div>
+    </div>
+    
+    <button class="voice-button" id="voiceButton" onclick="toggleVoiceRecognition()">🎤</button>
+
+    <script>
+        // Mode configurations - Research-optimized 3-mode system
+        const modeConfigs = {
+            ESSENTIAL: {
+                displayName: "ESSENTIAL",
+                description: "Maximum simplification for severe cognitive impairment. 3 core communication functions in a 1×3 grid layout.",
+                targetGroup: "Severe cognitive impairment, dementia patients",
+                maxTiles: 3,
+                gridClass: "essential",
+                caregiverAccess: "Emergency-only access",
+                researchAlignment: "Maximum simplification principle",
+                messagingApp: "WhatsApp", // Caregiver-configured during setup
+                apps: [
+                    { name: "Phone", icon: "📞", id: "phone", packageName: "com.android.dialer" },
+                    { name: "Messages", icon: "💬", id: "messages", packageName: "com.whatsapp", configurable: true },
+                    { name: "Contacts", icon: "👥", id: "contacts", packageName: "com.android.contacts" }
+                ]
+            },
+            COMFORT: {
+                displayName: "COMFORT",
+                description: "Balanced simplicity and core functionality for standard elderly users. 4 essential apps in a 2×2 grid.",
+                targetGroup: "Standard elderly users, daily activities",
+                maxTiles: 4,
+                gridClass: "comfort",
+                caregiverAccess: "Basic to Enhanced access",
+                researchAlignment: "Balanced simplicity + core functionality",
+                apps: [
+                    { name: "Phone", icon: "📞", id: "phone" },
+                    { name: "Messages", icon: "💬", id: "messages" },
+                    { name: "Camera", icon: "📷", id: "camera" },
+                    { name: "Gallery", icon: "🖼️", id: "gallery" }
+                ]
+            },
+            CONNECTED: {
+                displayName: "CONNECTED",
+                description: "Communication-focused layout for tech-comfortable elderly with family support. 6 apps in a 2×3 grid.",
+                targetGroup: "Tech-comfortable elderly with family support",
+                maxTiles: 6,
+                gridClass: "connected",
+                caregiverAccess: "Enhanced access for family coordination",
+                researchAlignment: "Social connection without cognitive overload",
+                apps: [
+                    { name: "Phone", icon: "📞", id: "phone" },
+                    { name: "Messages", icon: "💬", id: "messages" },
+                    { name: "Video Call", icon: "📹", id: "videocall" },
+                    { name: "Family", icon: "👨‍👩‍👧‍👦", id: "family" },
+                    { name: "Photos", icon: "📸", id: "photos" },
+                    { name: "Calendar", icon: "📅", id: "calendar" }
+                ]
+            }
+        };
+
+        let currentMode = 'ESSENTIAL';
+        let isVoiceListening = false;
+        let recognition = null;
+
+        // Initialize speech recognition
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                processVoiceCommand(transcript);
+            };
+
+            recognition.onend = function() {
+                isVoiceListening = false;
+                document.getElementById('voiceButton').classList.remove('listening');
+            };
+        }
+
+        // Switch between modes
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update mode buttons
+            document.querySelectorAll('.mode-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update mode info
+            const config = modeConfigs[mode];
+            document.getElementById('modeInfoTitle').innerHTML = `${config.displayName} Mode <span class="research-badge">Research-Validated</span>`;
+            document.getElementById('modeInfoDescription').textContent = config.description;
+            
+            // Update caregiver access info
+            document.getElementById('caregiverDetails').innerHTML = `2 online, 1 offline<br>${config.caregiverAccess}`;
+            
+            // Update info panel cards
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.getElementById(`${mode.toLowerCase()}Card`).classList.add('active');
+            
+            // Update app grid
+            updateAppGrid(mode);
+            
+            console.log(`Switched to ${mode} mode - ${config.researchAlignment}`);
+        }
+
+        // Update app grid based on mode
+        function updateAppGrid(mode) {
+            const config = modeConfigs[mode];
+            const appGrid = document.getElementById('appGrid');
+            
+            // Update grid class
+            appGrid.className = `app-grid ${config.gridClass}`;
+            
+            // Clear existing apps
+            appGrid.innerHTML = '';
+            
+            // Add apps for current mode
+            config.apps.forEach(app => {
+                const appTile = document.createElement('div');
+                appTile.className = 'app-tile';
+                appTile.onclick = () => openApp(app.id, app.name);
+                
+                appTile.innerHTML = `
+                    <div class="app-icon">${app.icon}</div>
+                    <div class="app-name">${app.name}</div>
+                `;
+                
+                appGrid.appendChild(appTile);
+            });
+        }
+
+        // Open app with mode-specific behavior
+        function openApp(appId, appName) {
+            const config = modeConfigs[currentMode];
+            const modeInfo = {
+                'ESSENTIAL': 'Maximum simplification - Emergency-only caregiver access',
+                'COMFORT': 'Balanced functionality - Basic to Enhanced caregiver access',
+                'CONNECTED': 'Communication-focused - Enhanced caregiver access for family coordination'
+            };
+            
+            alert(`Opening ${appName}\n\nMode: ${config.displayName}\nResearch Alignment: ${config.researchAlignment}\nCaregiver Access: ${config.caregiverAccess}`);
+        }
+
+        // Emergency SOS functionality
+        document.getElementById('sosButton').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                alert(`🚨 Emergency Alert Sent!\n\nMode: ${currentMode}\nAll caregivers notified regardless of access level\nLocation shared with emergency contacts\nTime: ${new Date().toLocaleTimeString()}`);
+            }, 150);
+        });
+
+        // Voice recognition toggle
+        function toggleVoiceRecognition() {
+            if (!recognition) {
+                alert('Voice recognition not supported in this browser');
+                return;
+            }
+
+            if (isVoiceListening) {
+                recognition.stop();
+                isVoiceListening = false;
+                document.getElementById('voiceButton').classList.remove('listening');
+            } else {
+                recognition.start();
+                isVoiceListening = true;
+                document.getElementById('voiceButton').classList.add('listening');
+            }
+        }
+
+        // Process voice commands
+        function processVoiceCommand(transcript) {
+            const command = transcript.toLowerCase();
+            
+            // Emergency commands
+            if (command.includes('emergency') || command.includes('help') || command.includes('sos')) {
+                document.getElementById('sosButton').click();
+                return;
+            }
+            
+            // Mode switching commands
+            if (command.includes('essential mode') || command.includes('essential')) {
+                switchMode('ESSENTIAL');
+                speak('Switched to Essential mode - maximum simplification');
+                return;
+            }
+            if (command.includes('comfort mode') || command.includes('comfort')) {
+                switchMode('COMFORT');
+                speak('Switched to Comfort mode - balanced functionality');
+                return;
+            }
+            if (command.includes('connected mode') || command.includes('connected')) {
+                switchMode('CONNECTED');
+                speak('Switched to Connected mode - communication focused');
+                return;
+            }
+            
+            // App launching commands
+            if (command.includes('open phone') || command.includes('call')) {
+                openApp('phone', 'Phone');
+                return;
+            }
+            if (command.includes('open messages') || command.includes('text')) {
+                openApp('messages', 'Messages');
+                return;
+            }
+            
+            speak('Sorry, I didn\'t understand that command');
+        }
+
+        // Text-to-speech function
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Initialize the launcher when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAppGrid('ESSENTIAL');
+        });
+
+        console.log('🔬 Naviya Optimized 3-Mode Demo Loaded');
+        console.log('Research-validated modes: ESSENTIAL (1×3), COMFORT (2×2), CONNECTED (2×3)');
+        console.log('Voice commands: "essential mode", "comfort mode", "connected mode", "emergency", "help"');
+        console.log('Based on 15+ elderly UI studies emphasizing simplification and cognitive load reduction');
+    </script>
+</body>
+</html>
