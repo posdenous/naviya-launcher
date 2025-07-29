@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Multi-Mode Launcher - Complete Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #2c5aa0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .launcher-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .launcher-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .mode-indicator {
+            font-size: 16px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-indicator:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .mode-selector {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            padding: 12px;
+            display: none;
+            z-index: 100;
+            min-width: 200px;
+        }
+
+        .mode-selector.active {
+            display: block;
+        }
+
+        .mode-option {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mode-option:hover {
+            background: #f0f2f5;
+        }
+
+        .mode-option.selected {
+            background: #2c5aa0;
+            color: white;
+        }
+
+        .mode-description {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .main-content {
+            padding: 30px 20px;
+            height: calc(100% - 144px);
+            overflow-y: auto;
+        }
+
+        .emergency-section {
+            margin-bottom: 30px;
+        }
+
+        .sos-button {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff4757 0%, #c44569 100%);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .sos-button:hover {
+            transform: scale(1.05);
+        }
+
+        .sos-button.activated {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .unread-tile {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .unread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .unread-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .unread-count {
+            background: #ff4757;
+            color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .unread-details {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Dynamic Grid System for Different Modes */
+        .app-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* COMFORT Mode: 2x3 grid */
+        .app-grid.comfort {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        /* FAMILY Mode: 3x3 grid */
+        .app-grid.family {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* FOCUS Mode: 2x2 grid */
+        .app-grid.focus {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+
+        /* MINIMAL Mode: 1x3 grid */
+        .app-grid.minimal {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            max-width: 200px;
+            margin: 20px auto;
+        }
+
+        /* WELCOME Mode: 2x3 grid with tutorial elements */
+        .app-grid.welcome {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .app-tile {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .app-tile.family-size {
+            min-height: 80px;
+            padding: 15px;
+        }
+
+        .app-tile.minimal-size {
+            min-height: 120px;
+            padding: 25px;
+        }
+
+        .app-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .app-icon.family-size {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .app-icon.minimal-size {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .app-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .app-name.family-size {
+            font-size: 14px;
+        }
+
+        .app-name.minimal-size {
+            font-size: 18px;
+        }
+
+        .tutorial-hint {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .mode-info {
+            background: rgba(44, 90, 160, 0.1);
+            border: 1px solid rgba(44, 90, 160, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .mode-info h3 {
+            color: #2c5aa0;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .mode-info p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .voice-button {
+            position: fixed;
+            bottom: 140px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .voice-button:hover {
+            transform: scale(1.1);
+        }
+
+        .voice-button.listening {
+            animation: voicePulse 1.5s infinite;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        @keyframes voicePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .caregiver-status {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(44, 90, 160, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .phone-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+            
+            body {
+                padding: 0;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                background: #f0f2f5;
+                flex-direction: row;
+                gap: 40px;
+            }
+            
+            .info-panel {
+                width: 400px;
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                height: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Naviya Multi-Mode</span>
+                <span>100%</span>
+            </div>
+            
+            <div class="launcher-header">
+                <div class="launcher-title">🏥 Naviya</div>
+                <div class="mode-indicator" id="modeIndicator" onclick="toggleModeSelector()">
+                    <span id="currentModeName">COMFORT Mode</span>
+                </div>
+                
+                <div class="mode-selector" id="modeSelector">
+                    <div class="mode-option selected" data-mode="comfort">
+                        <div>
+                            <div>COMFORT</div>
+                            <div class="mode-description">Simple daily use</div>
+                        </div>
+                        <div>2×3</div>
+                    </div>
+                    <div class="mode-option" data-mode="family">
+                        <div>
+                            <div>FAMILY</div>
+                            <div class="mode-description">Stay connected</div>
+                        </div>
+                        <div>3×3</div>
+                    </div>
+                    <div class="mode-option" data-mode="focus">
+                        <div>
+                            <div>FOCUS</div>
+                            <div class="mode-description">Minimal distraction</div>
+                        </div>
+                        <div>2×2</div>
+                    </div>
+                    <div class="mode-option" data-mode="minimal">
+                        <div>
+                            <div>MINIMAL</div>
+                            <div class="mode-description">Essential only</div>
+                        </div>
+                        <div>1×3</div>
+                    </div>
+                    <div class="mode-option" data-mode="welcome">
+                        <div>
+                            <div>WELCOME</div>
+                            <div class="mode-description">Getting started</div>
+                        </div>
+                        <div>2×3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="emergency-section">
+                    <button class="sos-button" id="sosButton">
+                        🚨<br>SOS<br>HELP
+                    </button>
+                </div>
+                
+                <div class="unread-tile" id="unreadTile">
+                    <div class="unread-header">
+                        <div class="unread-title">📱 Unread</div>
+                        <div class="unread-count" id="unreadCount">3</div>
+                    </div>
+                    <div class="unread-details" id="unreadDetails">
+                        2 missed calls from Sarah<br>
+                        1 text message from Dr. Smith
+                    </div>
+                </div>
+                
+                <div class="mode-info" id="modeInfo">
+                    <h3 id="modeInfoTitle">COMFORT Mode</h3>
+                    <p id="modeInfoDescription">Simple layout for daily use with 6 large tiles in a 2×3 grid. Perfect for elderly users who want easy access to essential apps.</p>
+                </div>
+                
+                <div class="app-grid comfort" id="appGrid">
+                    <!-- Apps will be dynamically generated based on mode -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-panel" style="display: none;">
+        <h2>🏥 Naviya Multi-Mode Demo</h2>
+        <p style="margin: 20px 0;">Experience all 5 launcher modes designed for different elderly user needs:</p>
+        
+        <ul style="line-height: 2; margin: 20px 0;">
+            <li><strong>COMFORT:</strong> Daily use (2×3 grid)</li>
+            <li><strong>FAMILY:</strong> Stay connected (3×3 grid)</li>
+            <li><strong>FOCUS:</strong> Minimal distraction (2×2 grid)</li>
+            <li><strong>MINIMAL:</strong> Essential only (1×3 grid)</li>
+            <li><strong>WELCOME:</strong> Getting started (2×3 grid)</li>
+        </ul>
+        
+        <h3>🎯 Try These Features:</h3>
+        <ul style="line-height: 2; margin: 20px 0;">
+            <li>Click mode indicator to switch modes</li>
+            <li>Press SOS button for emergency</li>
+            <li>Use voice button for commands</li>
+            <li>Notice grid changes per mode</li>
+        </ul>
+    </div>
+    
+    <button class="voice-button" id="voiceButton" title="Voice Commands">
+        🎤
+    </button>
+    
+    <div class="caregiver-status" id="caregiverStatus">
+        👨‍👩‍👧‍👦 Caregiver: Online
+    </div>
+
+    <script>
+        // Mode configurations
+        const modeConfigs = {
+            comfort: {
+                name: 'COMFORT',
+                description: 'Simple layout for daily use with 6 large tiles in a 2×3 grid. Perfect for elderly users who want easy access to essential apps.',
+                gridClass: 'comfort',
+                apps: [
+                    { icon: '📞', name: 'Phone' },
+                    { icon: '💬', name: 'Messages' },
+                    { icon: '📷', name: 'Camera' },
+                    { icon: '⚙️', name: 'Settings' },
+                    { icon: '👨‍👩‍👧‍👦', name: 'Family' },
+                    { icon: '🏥', name: 'Health' }
+                ]
+            },
+            family: {
+                name: 'FAMILY',
+                description: 'Stay connected with family using 9 tiles in a 3×3 grid. Includes video calling, photo sharing, and family communication tools.',
+                gridClass: 'family',
+                apps: [
+                    { icon: '📞', name: 'Phone' },
+                    { icon: '💬', name: 'Messages' },
+                    { icon: '📹', name: 'Video Call' },
+                    { icon: '📷', name: 'Camera' },
+                    { icon: '🖼️', name: 'Photos' },
+                    { icon: '👨‍👩‍👧‍👦', name: 'Family Chat' },
+                    { icon: '🌤️', name: 'Weather' },
+                    { icon: '📰', name: 'News' },
+                    { icon: '⚙️', name: 'Settings' }
+                ]
+            },
+            focus: {
+                name: 'FOCUS',
+                description: 'Minimal distraction with only 4 essential tiles in a 2×2 grid. Reduces cognitive load while maintaining core functionality.',
+                gridClass: 'focus',
+                apps: [
+                    { icon: '📞', name: 'Phone' },
+                    { icon: '💬', name: 'Messages' },
+                    { icon: '🚨', name: 'Emergency' },
+                    { icon: '⚙️', name: 'Settings' }
+                ]
+            },
+            minimal: {
+                name: 'MINIMAL',
+                description: 'Essential functions only with 3 large tiles in a 1×3 grid. Perfect for users with cognitive impairments or those who want maximum simplicity.',
+                gridClass: 'minimal',
+                apps: [
+                    { icon: '📞', name: 'Phone' },
+                    { icon: '🚨', name: 'Emergency' },
+                    { icon: '💬', name: 'Messages' }
+                ]
+            },
+            welcome: {
+                name: 'WELCOME',
+                description: 'Getting started with Naviya using 6 tiles in a 2×3 grid. Includes tutorial elements and setup guidance for new users.',
+                gridClass: 'welcome',
+                apps: [
+                    { icon: '🎯', name: 'Setup', tutorial: '1' },
+                    { icon: '📖', name: 'Tutorial', tutorial: '2' },
+                    { icon: '📞', name: 'Phone', tutorial: '3' },
+                    { icon: '🚨', name: 'Emergency', tutorial: '4' },
+                    { icon: '❓', name: 'Help', tutorial: '5' },
+                    { icon: '⚙️', name: 'Settings', tutorial: '6' }
+                ]
+            }
+        };
+
+        let currentMode = 'comfort';
+
+        // Initialize the launcher
+        function initializeLauncher() {
+            switchMode('comfort');
+            
+            // Show info panel on desktop
+            if (window.innerWidth >= 768) {
+                document.querySelector('.info-panel').style.display = 'block';
+            }
+        }
+
+        // Toggle mode selector
+        function toggleModeSelector() {
+            const selector = document.getElementById('modeSelector');
+            selector.classList.toggle('active');
+        }
+
+        // Switch launcher mode
+        function switchMode(mode) {
+            if (!modeConfigs[mode]) return;
+            
+            currentMode = mode;
+            const config = modeConfigs[mode];
+            
+            // Update mode indicator
+            document.getElementById('currentModeName').textContent = `${config.name} Mode`;
+            
+            // Update mode info
+            document.getElementById('modeInfoTitle').textContent = `${config.name} Mode`;
+            document.getElementById('modeInfoDescription').textContent = config.description;
+            
+            // Update selected mode in selector
+            document.querySelectorAll('.mode-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.mode === mode) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Update app grid
+            const appGrid = document.getElementById('appGrid');
+            appGrid.className = `app-grid ${config.gridClass}`;
+            
+            // Generate apps for this mode
+            generateApps(config);
+            
+            // Hide mode selector
+            document.getElementById('modeSelector').classList.remove('active');
+            
+            console.log(`Switched to ${config.name} mode`);
+        }
+
+        // Generate apps based on mode configuration
+        function generateApps(config) {
+            const appGrid = document.getElementById('appGrid');
+            appGrid.innerHTML = '';
+            
+            config.apps.forEach(app => {
+                const tile = document.createElement('div');
+                tile.className = `app-tile ${config.gridClass === 'family' ? 'family-size' : ''} ${config.gridClass === 'minimal' ? 'minimal-size' : ''}`;
+                tile.onclick = () => openApp(app.name.toLowerCase());
+                
+                const icon = document.createElement('div');
+                icon.className = `app-icon ${config.gridClass === 'family' ? 'family-size' : ''} ${config.gridClass === 'minimal' ? 'minimal-size' : ''}`;
+                icon.textContent = app.icon;
+                
+                const name = document.createElement('div');
+                name.className = `app-name ${config.gridClass === 'family' ? 'family-size' : ''} ${config.gridClass === 'minimal' ? 'minimal-size' : ''}`;
+                name.textContent = app.name;
+                
+                tile.appendChild(icon);
+                tile.appendChild(name);
+                
+                // Add tutorial hint for welcome mode
+                if (app.tutorial) {
+                    const hint = document.createElement('div');
+                    hint.className = 'tutorial-hint';
+                    hint.textContent = app.tutorial;
+                    tile.appendChild(hint);
+                }
+                
+                appGrid.appendChild(tile);
+            });
+        }
+
+        // Handle mode selection clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.mode-option')) {
+                const mode = e.target.closest('.mode-option').dataset.mode;
+                switchMode(mode);
+            }
+            
+            // Close mode selector when clicking outside
+            if (!e.target.closest('.launcher-header')) {
+                document.getElementById('modeSelector').classList.remove('active');
+            }
+        });
+
+        // SOS Button functionality
+        document.getElementById('sosButton').addEventListener('click', function() {
+            this.classList.add('activated');
+            setTimeout(() => {
+                this.classList.remove('activated');
+                alert(`🚨 Emergency alert sent!\n\nMode: ${modeConfigs[currentMode].name}\nLocation: Shared with emergency contacts\nTime: ${new Date().toLocaleTimeString()}`);
+            }, 1000);
+        });
+
+        // Voice button functionality
+        document.getElementById('voiceButton').addEventListener('click', function() {
+            this.classList.add('listening');
+            
+            setTimeout(() => {
+                this.classList.remove('listening');
+                
+                // Simulate voice command recognition
+                const commands = [
+                    'Switch to Family mode',
+                    'Switch to Minimal mode',
+                    'Switch to Focus mode',
+                    'Call emergency',
+                    'Open phone app'
+                ];
+                
+                const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+                
+                if (randomCommand.includes('Family')) {
+                    switchMode('family');
+                } else if (randomCommand.includes('Minimal')) {
+                    switchMode('minimal');
+                } else if (randomCommand.includes('Focus')) {
+                    switchMode('focus');
+                }
+                
+                console.log(`Voice command recognized: "${randomCommand}"`);
+            }, 2000);
+        });
+
+        // App opening functionality
+        function openApp(appName) {
+            alert(`Opening ${appName} app in ${modeConfigs[currentMode].name} mode\n\nThis would launch the app with elderly-friendly interface optimized for the current mode.`);
+        }
+
+        // Unread tile functionality
+        document.getElementById('unreadTile').addEventListener('click', function() {
+            const details = document.getElementById('unreadDetails');
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                this.style.borderLeftColor = '#51cf66';
+            } else {
+                details.style.display = 'none';
+                this.style.borderLeftColor = '#2c5aa0';
+            }
+        });
+
+        // Initialize the launcher when page loads
+        document.addEventListener('DOMContentLoaded', initializeLauncher);
+
+        console.log('🏥 Naviya Multi-Mode Launcher Demo Loaded');
+        console.log('Available modes:', Object.keys(modeConfigs));
+    </script>
+</body>
+</html>
