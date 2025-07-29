@@ -1,0 +1,345 @@
+package com.naviya.launcher.contacts.data
+
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+import com.naviya.launcher.contacts.*
+
+/**
+ * Data Access Object for contact protection system
+ * Handles all database operations for contact management and abuse prevention
+ */
+@Dao
+interface ContactDao {
+    
+    // Protected Contacts Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProtectedContact(contact: ProtectedContact): Long
+    
+    @Update
+    suspend fun updateProtectedContact(contact: ProtectedContact)
+    
+    @Query("SELECT * FROM protected_contacts WHERE contactId = :contactId")
+    suspend fun getProtectedContact(contactId: String): ProtectedContact?
+    
+    @Query("SELECT * FROM protected_contacts WHERE userId = :userId AND isActive = 1 ORDER BY contactType, name")
+    suspend fun getProtectedContacts(userId: String): List<ProtectedContact>
+    
+    @Query("SELECT * FROM protected_contacts WHERE userId = :userId AND contactType = :contactType AND isActive = 1")
+    suspend fun getContactByType(userId: String, contactType: String): ProtectedContact?
+    
+    @Query("SELECT * FROM protected_contacts WHERE userId = :userId AND emergencyContact = 1 AND isActive = 1")
+    suspend fun getEmergencyContacts(userId: String): List<ProtectedContact>
+    
+    @Query("SELECT * FROM protected_contacts WHERE userId = :userId AND systemContact = 1 AND isActive = 1")
+    suspend fun getSystemContacts(userId: String): List<ProtectedContact>
+    
+    @Query("SELECT * FROM protected_contacts WHERE userId = :userId")
+    fun getProtectedContactsFlow(userId: String): Flow<List<ProtectedContact>>
+    
+    @Query("UPDATE protected_contacts SET isActive = 0, updatedAt = :timestamp WHERE contactId = :contactId")
+    suspend fun deactivateProtectedContact(contactId: String, timestamp: Long = System.currentTimeMillis())
+    
+    @Query("DELETE FROM protected_contacts WHERE contactId = :contactId")
+    suspend fun deleteProtectedContact(contactId: String)
+    
+    @Query("SELECT * FROM protected_contacts WHERE contactId = :contactId")
+    suspend fun getContactById(contactId: String): ProtectedContact?
+    
+    // Pending Contact Requests Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPendingContactRequest(request: PendingContactRequest): Long
+    
+    @Update
+    suspend fun updatePendingContactRequest(request: PendingContactRequest)
+    
+    @Query("SELECT * FROM pending_contact_requests WHERE requestId = :requestId")
+    suspend fun getPendingContactRequest(requestId: String): PendingContactRequest?
+    
+    @Query("SELECT * FROM pending_contact_requests WHERE userId = :userId AND status = 'PENDING_USER_APPROVAL' ORDER BY requestTimestamp DESC")
+    suspend fun getPendingContactRequests(userId: String): List<PendingContactRequest>
+    
+    @Query("SELECT * FROM pending_contact_requests WHERE caregiverId = :caregiverId AND status = 'PENDING_USER_APPROVAL' ORDER BY requestTimestamp DESC")
+    suspend fun getCaregiverPendingRequests(caregiverId: String): List<PendingContactRequest>
+    
+    @Query("SELECT * FROM pending_contact_requests WHERE userId = :userId ORDER BY requestTimestamp DESC")
+    fun getPendingRequestsFlow(userId: String): Flow<List<PendingContactRequest>>
+    
+    @Query("UPDATE pending_contact_requests SET isExpired = 1, status = 'EXPIRED' WHERE expiresAt < :currentTime AND status = 'PENDING_USER_APPROVAL'")
+    suspend fun expirePendingRequests(currentTime: Long = System.currentTimeMillis())
+    
+    @Query("DELETE FROM pending_contact_requests WHERE status IN ('APPROVED', 'REJECTED', 'EXPIRED') AND responseTimestamp < :cutoffTime")
+    suspend fun cleanupOldRequests(cutoffTime: Long)
+    
+    // Contact Modification Attempts Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContactModificationAttempt(attempt: ContactModificationAttempt): Long
+    
+    @Query("SELECT * FROM contact_modification_attempts WHERE userId = :userId ORDER BY timestamp DESC LIMIT :limit")
+    suspend fun getContactModificationAttempts(userId: String, limit: Int = 50): List<ContactModificationAttempt>
+    
+    @Query("SELECT * FROM contact_modification_attempts WHERE caregiverId = :caregiverId AND userId = :userId AND timestamp > :timeWindowStart ORDER BY timestamp DESC")
+    suspend fun getRecentContactModificationAttempts(
+        caregiverId: String,
+        userId: String,
+        timeWindowStart: Long
+    ): List<ContactModificationAttempt>
+    
+    @Query("SELECT * FROM contact_modification_attempts WHERE caregiverId = :caregiverId AND userId = :userId AND timestamp > :sinceTime")
+    suspend fun getContactModificationAttemptsSince(
+        caregiverId: String,
+        userId: String,
+        sinceTime: Long
+    ): List<ContactModificationAttempt>
+    
+    @Query("SELECT COUNT(*) FROM contact_modification_attempts WHERE caregiverId = :caregiverId AND result = 'BLOCKED_BY_PROTECTION' AND timestamp > :timeWindowStart")
+    suspend fun getBlockedAttemptsCount(caregiverId: String, timeWindowStart: Long): Int
+    
+    @Query("SELECT * FROM contact_modification_attempts WHERE flaggedAsAbusive = 1 AND userId = :userId ORDER BY timestamp DESC")
+    suspend fun getAbusiveAttempts(userId: String): List<ContactModificationAttempt>
+    
+    @Query("DELETE FROM contact_modification_attempts WHERE timestamp < :cutoffTime")
+    suspend fun cleanupOldAttempts(cutoffTime: Long)
+    
+    // Contact Protection Rules Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContactProtectionRules(rules: ContactProtectionRules): Long
+    
+    @Update
+    suspend fun updateContactProtectionRules(rules: ContactProtectionRules)
+    
+    @Query("SELECT * FROM contact_protection_rules WHERE userId = :userId")
+    suspend fun getContactProtectionRules(userId: String): ContactProtectionRules?
+    
+    @Query("SELECT * FROM contact_protection_rules WHERE userId = :userId")
+    fun getContactProtectionRulesFlow(userId: String): Flow<ContactProtectionRules?>
+    
+    @Query("DELETE FROM contact_protection_rules WHERE userId = :userId")
+    suspend fun deleteContactProtectionRules(userId: String)
+    
+    // Contact Protection Statistics Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContactProtectionStats(stats: ContactProtectionStats): Long
+    
+    @Query("SELECT * FROM contact_protection_stats WHERE userId = :userId AND periodType = :periodType ORDER BY periodStart DESC LIMIT 1")
+    suspend fun getLatestContactProtectionStats(userId: String, periodType: String): ContactProtectionStats?
+    
+    @Query("SELECT * FROM contact_protection_stats WHERE userId = :userId AND caregiverId = :caregiverId ORDER BY periodStart DESC")
+    suspend fun getCaregiverContactStats(userId: String, caregiverId: String): List<ContactProtectionStats>
+    
+    @Query("SELECT SUM(blockedAttempts) FROM contact_protection_stats WHERE userId = :userId AND periodStart > :sinceTime")
+    suspend fun getTotalBlockedAttempts(userId: String, sinceTime: Long): Int?
+    
+    @Query("DELETE FROM contact_protection_stats WHERE recordedAt < :cutoffTime")
+    suspend fun cleanupOldStats(cutoffTime: Long)
+    
+    // Emergency Contact Backup Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEmergencyContactBackup(backup: EmergencyContactBackup): Long
+    
+    @Query("SELECT * FROM emergency_contact_backup WHERE userId = :userId AND restorable = 1 ORDER BY backupTimestamp DESC")
+    suspend fun getRestorableContactBackups(userId: String): List<EmergencyContactBackup>
+    
+    @Query("SELECT * FROM emergency_contact_backup WHERE originalContactId = :contactId")
+    suspend fun getContactBackup(contactId: String): EmergencyContactBackup?
+    
+    @Query("UPDATE emergency_contact_backup SET restorable = 0 WHERE restoreExpiresAt < :currentTime")
+    suspend fun expireContactBackups(currentTime: Long = System.currentTimeMillis())
+    
+    @Query("DELETE FROM emergency_contact_backup WHERE restoreExpiresAt < :cutoffTime")
+    suspend fun cleanupExpiredBackups(cutoffTime: Long)
+    
+    // Contact Access Log Operations
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContactAccessLog(log: ContactAccessLog): Long
+    
+    @Query("SELECT * FROM contact_access_log WHERE userId = :userId AND contactId = :contactId ORDER BY timestamp DESC LIMIT :limit")
+    suspend fun getContactAccessHistory(userId: String, contactId: String, limit: Int = 20): List<ContactAccessLog>
+    
+    @Query("SELECT * FROM contact_access_log WHERE accessorId = :accessorId AND timestamp > :sinceTime ORDER BY timestamp DESC")
+    suspend fun getAccessorActivity(accessorId: String, sinceTime: Long): List<ContactAccessLog>
+    
+    @Query("DELETE FROM contact_access_log WHERE timestamp < :cutoffTime")
+    suspend fun cleanupOldAccessLogs(cutoffTime: Long)
+    
+    // Utility and Reporting Operations
+    
+    /**
+     * Get comprehensive contact protection status
+     */
+    @Query("""
+        SELECT 
+            pc.userId,
+            COUNT(pc.contactId) as totalProtectedContacts,
+            COUNT(CASE WHEN pc.emergencyContact = 1 THEN 1 END) as emergencyContactCount,
+            COUNT(CASE WHEN pc.systemContact = 1 THEN 1 END) as systemContactCount,
+            COUNT(CASE WHEN pc.canBeRemovedByCaregiver = 0 THEN 1 END) as fullyProtectedCount,
+            COUNT(pr.requestId) as pendingRequestCount
+        FROM protected_contacts pc
+        LEFT JOIN pending_contact_requests pr ON pc.userId = pr.userId AND pr.status = 'PENDING_USER_APPROVAL'
+        WHERE pc.userId = :userId AND pc.isActive = 1
+        GROUP BY pc.userId
+    """)
+    suspend fun getContactProtectionSummary(userId: String): ContactProtectionSummary?
+    
+    /**
+     * Get caregiver activity summary for abuse detection
+     */
+    @Query("""
+        SELECT 
+            caregiverId,
+            COUNT(*) as totalAttempts,
+            COUNT(CASE WHEN result = 'BLOCKED_BY_PROTECTION' THEN 1 END) as blockedAttempts,
+            COUNT(CASE WHEN result = 'SUCCESS' THEN 1 END) as successfulAttempts,
+            COUNT(CASE WHEN flaggedAsAbusive = 1 THEN 1 END) as abusiveAttempts,
+            MIN(timestamp) as firstAttempt,
+            MAX(timestamp) as lastAttempt
+        FROM contact_modification_attempts 
+        WHERE userId = :userId AND caregiverId = :caregiverId AND timestamp > :sinceTime
+        GROUP BY caregiverId
+    """)
+    suspend fun getCaregiverActivitySummary(
+        userId: String, 
+        caregiverId: String, 
+        sinceTime: Long
+    ): CaregiverActivitySummary?
+    
+    /**
+     * Check if contact can be safely removed
+     */
+    @Query("""
+        SELECT 
+            CASE 
+                WHEN pc.contactType = 'elder_rights_advocate' THEN 0
+                WHEN pc.emergencyContact = 1 AND (SELECT COUNT(*) FROM protected_contacts WHERE userId = :userId AND emergencyContact = 1 AND isActive = 1) <= 1 THEN 0
+                WHEN pc.systemContact = 1 THEN 0
+                ELSE 1
+            END as canRemove
+        FROM protected_contacts pc
+        WHERE pc.contactId = :contactId AND pc.userId = :userId
+    """)
+    suspend fun canContactBeRemoved(contactId: String, userId: String): Boolean?
+    
+    /**
+     * Get abuse risk score for caregiver
+     */
+    @Query("""
+        SELECT 
+            CASE 
+                WHEN COUNT(*) = 0 THEN 0.0
+                WHEN COUNT(CASE WHEN result = 'BLOCKED_BY_PROTECTION' THEN 1 END) * 1.0 / COUNT(*) > 0.5 THEN 1.0
+                WHEN COUNT(CASE WHEN flaggedAsAbusive = 1 THEN 1 END) > 0 THEN 0.8
+                WHEN COUNT(CASE WHEN result = 'BLOCKED_BY_PROTECTION' THEN 1 END) > 3 THEN 0.6
+                ELSE COUNT(CASE WHEN result = 'BLOCKED_BY_PROTECTION' THEN 1 END) * 0.1
+            END as riskScore
+        FROM contact_modification_attempts 
+        WHERE caregiverId = :caregiverId AND userId = :userId AND timestamp > :recentTimeWindow
+    """)
+    suspend fun getCaregiverAbuseRiskScore(
+        caregiverId: String, 
+        userId: String, 
+        recentTimeWindow: Long
+    ): Float?
+    
+    /**
+     * Cleanup all contact data for a user
+     */
+    @Transaction
+    suspend fun cleanupUserContactData(userId: String) {
+        // Keep emergency contacts and elder rights advocate
+        val systemContacts = getSystemContacts(userId)
+        val emergencyContacts = getEmergencyContacts(userId)
+        
+        // Delete non-essential protected contacts
+        @Query("DELETE FROM protected_contacts WHERE userId = :userId AND systemContact = 0 AND emergencyContact = 0")
+        suspend fun deleteNonEssentialContacts(userId: String)
+        
+        // Delete pending requests
+        @Query("DELETE FROM pending_contact_requests WHERE userId = :userId")
+        suspend fun deletePendingRequests(userId: String)
+        
+        // Keep audit trail but mark as archived
+        @Query("UPDATE contact_modification_attempts SET userId = 'archived_' || :userId WHERE userId = :userId")
+        suspend fun archiveModificationAttempts(userId: String)
+        
+        deleteNonEssentialContacts(userId)
+        deletePendingRequests(userId)
+        archiveModificationAttempts(userId)
+    }
+    
+    /**
+     * Get recent abuse patterns for monitoring
+     */
+    @Query("""
+        SELECT 
+            caregiverId,
+            action,
+            COUNT(*) as attemptCount,
+            MAX(timestamp) as lastAttempt
+        FROM contact_modification_attempts 
+        WHERE userId = :userId 
+            AND result = 'BLOCKED_BY_PROTECTION' 
+            AND timestamp > :recentTimeWindow
+        GROUP BY caregiverId, action
+        HAVING COUNT(*) >= :minAttempts
+        ORDER BY attemptCount DESC, lastAttempt DESC
+    """)
+    suspend fun getRecentAbusePatterns(
+        userId: String,
+        recentTimeWindow: Long,
+        minAttempts: Int = 2
+    ): List<AbusePattern>
+    
+    /**
+     * Update contact modification attempt with abuse flag
+     */
+    @Query("UPDATE contact_modification_attempts SET flaggedAsAbusive = 1, abuseScore = :score, abuseReasons = :reasons WHERE attemptId = :attemptId")
+    suspend fun flagAttemptAsAbusive(attemptId: String, score: Float, reasons: List<String>)
+    
+    /**
+     * Get contact modification attempts within time window
+     */
+    suspend fun getRecentContactModificationAttempts(
+        caregiverId: String,
+        userId: String,
+        timeWindowMs: Long
+    ): List<ContactModificationAttempt> {
+        val timeWindowStart = System.currentTimeMillis() - timeWindowMs
+        return getRecentContactModificationAttempts(caregiverId, userId, timeWindowStart)
+    }
+}
+
+/**
+ * Summary data classes for reporting
+ */
+data class ContactProtectionSummary(
+    val userId: String,
+    val totalProtectedContacts: Int,
+    val emergencyContactCount: Int,
+    val systemContactCount: Int,
+    val fullyProtectedCount: Int,
+    val pendingRequestCount: Int
+)
+
+data class CaregiverActivitySummary(
+    val caregiverId: String,
+    val totalAttempts: Int,
+    val blockedAttempts: Int,
+    val successfulAttempts: Int,
+    val abusiveAttempts: Int,
+    val firstAttempt: Long,
+    val lastAttempt: Long
+)
+
+data class AbusePattern(
+    val caregiverId: String,
+    val action: ContactAction,
+    val attemptCount: Int,
+    val lastAttempt: Long
+)

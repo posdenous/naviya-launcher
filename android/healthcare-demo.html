@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Healthcare Professional Demo</title>
+    <style>
+        /* Elderly-first accessibility design */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 20px; /* 1.6x larger for elderly users */
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #212529;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #2c5aa0;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #495057;
+            font-size: 24px;
+            margin: 30px 0 15px 0;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .demo-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            min-width: 200px;
+            min-height: 48px; /* Accessibility: 48dp touch target */
+            transition: all 0.2s;
+        }
+        
+        .demo-button:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .demo-button:active {
+            transform: translateY(0);
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #ced4da;
+            border-radius: 6px;
+            background: white;
+            min-height: 48px; /* Accessibility requirement */
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+        
+        .error {
+            color: #dc3545;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        .success {
+            color: #28a745;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        .console-log {
+            background: #212529;
+            color: #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        
+        .step.active {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .step.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .risk-indicator {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .risk-low {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .risk-medium {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .risk-high {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .integration-alert {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Naviya Healthcare Professional Demo</h1>
+        <p style="text-align: center; color: #6c757d; margin-bottom: 30px;">
+            Interactive demo of healthcare professional workflows with mock services
+        </p>
+        
+        <!-- Demo Home Screen -->
+        <div id="demo-home">
+            <h2>Available Workflows</h2>
+            
+            <div class="demo-section">
+                <h3>1. Professional Registration</h3>
+                <p>Register healthcare professional credentials with multi-section form validation.</p>
+                <button class="demo-button" onclick="startRegistration()">Start Registration Demo</button>
+            </div>
+            
+            <div class="demo-section">
+                <h3>2. Professional Installation</h3>
+                <p>6-step guided installation workflow with consent management and clinical context.</p>
+                <button class="demo-button" onclick="startInstallation()">Start Installation Demo</button>
+            </div>
+            
+            <div class="demo-section">
+                <h3>3. Clinical Assessment</h3>
+                <p>Comprehensive patient assessment with risk evaluation and elder rights integration.</p>
+                <button class="demo-button" onclick="startAssessment()">Start Assessment Demo</button>
+            </div>
+        </div>
+        
+        <!-- Professional Registration Demo -->
+        <div id="registration-demo" class="hidden">
+            <h2>Professional Registration</h2>
+            <p>Complete the form below to register as a healthcare professional. Watch for real-time validation and mock service integration.</p>
+            
+            <form id="registration-form">
+                <div class="form-group">
+                    <label for="professional-id">Professional ID *</label>
+                    <input type="text" id="professional-id" placeholder="Enter your professional ID" required>
+                    <div id="professional-id-error" class="error hidden">Professional ID must be at least 6 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="first-name">First Name *</label>
+                    <input type="text" id="first-name" placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last-name">Last Name *</label>
+                    <input type="text" id="last-name" placeholder="Enter your last name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="professional-type">Professional Type *</label>
+                    <select id="professional-type" required>
+                        <option value="">Select your professional type</option>
+                        <option value="physician">Physician</option>
+                        <option value="nurse">Registered Nurse</option>
+                        <option value="social-worker">Social Worker</option>
+                        <option value="psychologist">Psychologist</option>
+                        <option value="geriatrician">Geriatrician</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specializations">Specializations</label>
+                    <input type="text" id="specializations" placeholder="Enter specializations (comma separated)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="years-experience">Years of Experience *</label>
+                    <input type="number" id="years-experience" min="0" max="50" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="license-numbers">License Numbers *</label>
+                    <input type="text" id="license-numbers" placeholder="Enter license numbers (comma separated)" required>
+                </div>
+                
+                <button type="submit" class="demo-button">Register Professional</button>
+                <button type="button" class="demo-button" onclick="goHome()" style="background: #6c757d;">Back to Home</button>
+            </form>
+        </div>
+        
+        <!-- Professional Installation Demo -->
+        <div id="installation-demo" class="hidden">
+            <h2>Professional Installation</h2>
+            <p>6-step guided installation process with consent management and safety protocols.</p>
+            
+            <div class="step-indicator">
+                <div class="step active" id="step-1">1</div>
+                <div class="step" id="step-2">2</div>
+                <div class="step" id="step-3">3</div>
+                <div class="step" id="step-4">4</div>
+                <div class="step" id="step-5">5</div>
+                <div class="step" id="step-6">6</div>
+            </div>
+            
+            <div id="installation-step-1">
+                <h3>Step 1: Authorization Verification</h3>
+                <p>Verify professional authorization and credentials</p>
+                <div class="form-group">
+                    <label>Professional Authorization</label>
+                    <input type="text" value="Dr. Jane Smith - Geriatrician" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Institution Verification</label>
+                    <input type="text" value="General Hospital - Verified ✓" readonly>
+                </div>
+                <button class="demo-button" onclick="nextInstallationStep(2)">Proceed to Consent</button>
+            </div>
+            
+            <div id="installation-step-2" class="hidden">
+                <h3>Step 2: Patient Consent</h3>
+                <p>Obtain and record patient consent with witness</p>
+                <div class="form-group">
+                    <label for="consent-method">Consent Method</label>
+                    <select id="consent-method">
+                        <option value="verbal">Verbal Consent</option>
+                        <option value="written">Written Consent</option>
+                        <option value="electronic">Electronic Consent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="witness-name">Witness Name</label>
+                    <input type="text" id="witness-name" placeholder="Enter witness name">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="consent-confirmation" style="width: auto; margin-right: 10px;">
+                        I confirm that the patient has provided informed consent
+                    </label>
+                </div>
+                <button class="demo-button" onclick="nextInstallationStep(3)">Continue to Clinical Context</button>
+            </div>
+            
+            <div id="installation-step-3" class="hidden">
+                <h3>Step 3: Clinical Context</h3>
+                <p>Provide clinical context and assessment rationale</p>
+                <div class="form-group">
+                    <label for="clinical-reason">Clinical Reason for Installation</label>
+                    <textarea id="clinical-reason" rows="4" placeholder="Describe the clinical rationale for system installation"></textarea>
+                </div>
+                <button class="demo-button" onclick="nextInstallationStep(4)">Continue to Configuration</button>
+            </div>
+            
+            <div id="installation-step-4" class="hidden">
+                <h3>Step 4: System Configuration</h3>
+                <p>Configure system settings and monitoring parameters</p>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" checked style="width: auto; margin-right: 10px;">
+                        Enable emergency SOS features
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" checked style="width: auto; margin-right: 10px;">
+                        Enable caregiver notifications
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" checked style="width: auto; margin-right: 10px;">
+                        Enable abuse detection monitoring
+                    </label>
+                </div>
+                <button class="demo-button" onclick="nextInstallationStep(5)">Continue to Safety Protocols</button>
+            </div>
+            
+            <div id="installation-step-5" class="hidden">
+                <h3>Step 5: Safety Protocols</h3>
+                <p>Review and confirm safety protocols and emergency procedures</p>
+                <div class="integration-alert">
+                    <strong>🛡️ Safety Protocols Activated:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Panic mode with triple-tap activation</li>
+                        <li>Elder rights advocate contact protection</li>
+                        <li>Immutable audit trail logging</li>
+                        <li>Automatic abuse detection rules</li>
+                    </ul>
+                </div>
+                <button class="demo-button" onclick="nextInstallationStep(6)">Final Review</button>
+            </div>
+            
+            <div id="installation-step-6" class="hidden">
+                <h3>Step 6: Final Review</h3>
+                <p>Review installation summary and complete setup</p>
+                <div class="integration-alert">
+                    <strong>✅ Installation Summary:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Professional: Dr. Jane Smith (Verified)</li>
+                        <li>Patient: John Doe (Consent Obtained)</li>
+                        <li>Safety Protocols: Enabled</li>
+                        <li>Elder Rights Integration: Active</li>
+                    </ul>
+                </div>
+                <button class="demo-button" onclick="completeInstallation()">Complete Installation</button>
+            </div>
+            
+            <button type="button" class="demo-button" onclick="goHome()" style="background: #6c757d;">Back to Home</button>
+        </div>
+        
+        <!-- Clinical Assessment Demo -->
+        <div id="assessment-demo" class="hidden">
+            <h2>Clinical Assessment</h2>
+            <p>Comprehensive patient assessment with risk evaluation and automatic elder rights integration.</p>
+            
+            <form id="assessment-form">
+                <h3>Cognitive Assessment</h3>
+                <div class="form-group">
+                    <label for="cognitive-score">Cognitive Assessment Score (0-30)</label>
+                    <input type="number" id="cognitive-score" min="0" max="30" placeholder="Enter MMSE or similar score">
+                </div>
+                <div class="form-group">
+                    <label for="cognitive-interpretation">Interpretation</label>
+                    <textarea id="cognitive-interpretation" rows="3" placeholder="Enter assessment interpretation"></textarea>
+                </div>
+                
+                <h3>Functional Assessment</h3>
+                <div class="form-group">
+                    <label for="adl-score">Activities of Daily Living Score (0-6)</label>
+                    <input type="number" id="adl-score" min="0" max="6" placeholder="Enter ADL score">
+                </div>
+                <div class="form-group">
+                    <label for="iadl-score">Instrumental ADL Score (0-8)</label>
+                    <input type="number" id="iadl-score" min="0" max="8" placeholder="Enter IADL score">
+                </div>
+                
+                <h3>Risk Factor Assessment</h3>
+                <div class="form-group">
+                    <label>Abuse Risk Factors</label>
+                    <div style="margin: 10px 0;">
+                        <label><input type="checkbox" style="width: auto; margin-right: 10px;"> Social isolation</label><br>
+                        <label><input type="checkbox" style="width: auto; margin-right: 10px;"> Financial dependency</label><br>
+                        <label><input type="checkbox" style="width: auto; margin-right: 10px;"> Caregiver stress</label><br>
+                        <label><input type="checkbox" style="width: auto; margin-right: 10px;"> Cognitive impairment</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clinical-notes">Clinical Notes</label>
+                    <textarea id="clinical-notes" rows="4" placeholder="Enter additional clinical observations and recommendations"></textarea>
+                </div>
+                
+                <div id="risk-summary" class="hidden">
+                    <h3>Risk Summary</h3>
+                    <div id="risk-level" class="risk-indicator"></div>
+                    <div id="elder-rights-alert" class="integration-alert hidden">
+                        <strong>🚨 Elder Rights Advocate Notified:</strong>
+                        High risk patient detected. Automatic notification sent to elder rights advocate for follow-up.
+                    </div>
+                </div>
+                
+                <button type="button" class="demo-button" onclick="calculateRisk()">Calculate Risk Assessment</button>
+                <button type="submit" class="demo-button">Complete Assessment</button>
+                <button type="button" class="demo-button" onclick="goHome()" style="background: #6c757d;">Back to Home</button>
+            </form>
+        </div>
+        
+        <!-- Console Log Display -->
+        <div id="console-log" class="console-log">
+            <div id="log-content">🏥 Healthcare Professional Demo Initialized<br>📊 Mock services loaded: Elder Rights Advocate, Abuse Detection, Emergency System<br>✅ Ready for workflow testing<br><br></div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Services and Integration System
+        class MockElderRightsAdvocateService {
+            static notify(riskLevel, patientInfo) {
+                const timestamp = new Date().toLocaleTimeString();
+                logToConsole(`🚨 [${timestamp}] Elder Rights Advocate Notification:`);
+                logToConsole(`   Risk Level: ${riskLevel}`);
+                logToConsole(`   Patient: ${patientInfo.name || 'John Doe'}`);
+                logToConsole(`   Professional: ${patientInfo.professional || 'Dr. Jane Smith'}`);
+                logToConsole(`   Action: Automatic follow-up scheduled`);
+                logToConsole('');
+            }
+        }
+        
+        class MockAbuseDetectionService {
+            static analyzeRiskFactors(factors) {
+                const timestamp = new Date().toLocaleTimeString();
+                logToConsole(`🛡️ [${timestamp}] Abuse Detection System Analysis:`);
+                logToConsole(`   Risk factors detected: ${factors.length}`);
+                
+                if (factors.length >= 3) {
+                    logToConsole(`   🔴 HIGH RISK: Multiple risk factors present`);
+                    logToConsole(`   Action: Immediate elder rights advocate notification`);
+                    return 'HIGH';
+                } else if (factors.length >= 2) {
+                    logToConsole(`   🟡 MEDIUM RISK: Some risk factors present`);
+                    logToConsole(`   Action: Enhanced monitoring enabled`);
+                    return 'MEDIUM';
+                } else {
+                    logToConsole(`   🟢 LOW RISK: Minimal risk factors`);
+                    logToConsole(`   Action: Standard monitoring`);
+                    return 'LOW';
+                }
+            }
+        }
+        
+        class MockHealthcareIntegrationService {
+            static registerProfessional(data) {
+                const timestamp = new Date().toLocaleTimeString();
+                logToConsole(`📋 [${timestamp}] Professional Registration:`);
+                logToConsole(`   Name: ${data.firstName} ${data.lastName}`);
+                logToConsole(`   Type: ${data.professionalType}`);
+                logToConsole(`   Experience: ${data.yearsExperience} years`);
+                logToConsole(`   Status: Registration successful ✅`);
+                logToConsole('');
+                
+                return new Promise(resolve => {
+                    setTimeout(() => resolve({ success: true, professionalId: 'PROF-' + Date.now() }), 1500);
+                });
+            }
+            
+            static completeInstallation(data) {
+                const timestamp = new Date().toLocaleTimeString();
+                logToConsole(`⚙️ [${timestamp}] Installation Completed:`);
+                logToConsole(`   Professional: ${data.professional}`);
+                logToConsole(`   Patient: ${data.patient}`);
+                logToConsole(`   Safety Protocols: Enabled`);
+                logToConsole(`   Audit Trail: Initialized`);
+                logToConsole(`   Status: Installation successful ✅`);
+                logToConsole('');
+            }
+            
+            static submitAssessment(data) {
+                const timestamp = new Date().toLocaleTimeString();
+                logToConsole(`📊 [${timestamp}] Clinical Assessment Submitted:`);
+                logToConsole(`   Cognitive Score: ${data.cognitiveScore}/30`);
+                logToConsole(`   ADL Score: ${data.adlScore}/6`);
+                logToConsole(`   Risk Level: ${data.riskLevel}`);
+                logToConsole(`   Status: Assessment saved ✅`);
+                logToConsole('');
+            }
+        }
+        
+        function logToConsole(message) {
+            const logContent = document.getElementById('log-content');
+            logContent.innerHTML += message + '<br>';
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+        
+        function goHome() {
+            document.querySelectorAll('[id$="-demo"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('demo-home').classList.remove('hidden');
+        }
+        
+        function startRegistration() {
+            document.getElementById('demo-home').classList.add('hidden');
+            document.getElementById('registration-demo').classList.remove('hidden');
+            logToConsole('🏥 Starting Professional Registration Demo...');
+        }
+        
+        function startInstallation() {
+            document.getElementById('demo-home').classList.add('hidden');
+            document.getElementById('installation-demo').classList.remove('hidden');
+            logToConsole('⚙️ Starting Professional Installation Demo...');
+        }
+        
+        function startAssessment() {
+            document.getElementById('demo-home').classList.add('hidden');
+            document.getElementById('assessment-demo').classList.remove('hidden');
+            logToConsole('📊 Starting Clinical Assessment Demo...');
+        }
+        
+        // Professional Registration Logic
+        document.getElementById('registration-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                professionalId: document.getElementById('professional-id').value,
+                firstName: document.getElementById('first-name').value,
+                lastName: document.getElementById('last-name').value,
+                professionalType: document.getElementById('professional-type').value,
+                specializations: document.getElementById('specializations').value,
+                yearsExperience: document.getElementById('years-experience').value,
+                licenseNumbers: document.getElementById('license-numbers').value
+            };
+            
+            // Validate Professional ID
+            if (formData.professionalId.length < 6) {
+                document.getElementById('professional-id-error').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('professional-id-error').classList.add('hidden');
+            }
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Registering...';
+            submitButton.disabled = true;
+            
+            try {
+                const result = await MockHealthcareIntegrationService.registerProfessional(formData);
+                submitButton.textContent = 'Registration Successful ✅';
+                submitButton.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    alert('Professional registration completed successfully!\n\nProfessional ID: ' + result.professionalId);
+                    goHome();
+                }, 1000);
+                
+            } catch (error) {
+                submitButton.textContent = 'Registration Failed ❌';
+                submitButton.style.background = '#dc3545';
+            }
+        });
+        
+        // Installation Step Navigation
+        let currentInstallationStep = 1;
+        
+        function nextInstallationStep(step) {
+            // Hide current step
+            document.getElementById(`installation-step-${currentInstallationStep}`).classList.add('hidden');
+            
+            // Update step indicator
+            document.getElementById(`step-${currentInstallationStep}`).classList.remove('active');
+            document.getElementById(`step-${currentInstallationStep}`).classList.add('completed');
+            
+            // Show next step
+            document.getElementById(`installation-step-${step}`).classList.remove('hidden');
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            currentInstallationStep = step;
+            
+            logToConsole(`⚙️ Installation Step ${step} activated`);
+        }
+        
+        function completeInstallation() {
+            const installationData = {
+                professional: 'Dr. Jane Smith',
+                patient: 'John Doe',
+                consentMethod: document.getElementById('consent-method').value,
+                witnessName: document.getElementById('witness-name').value,
+                clinicalReason: document.getElementById('clinical-reason').value
+            };
+            
+            MockHealthcareIntegrationService.completeInstallation(installationData);
+            
+            // Update final step indicator
+            document.getElementById(`step-${currentInstallationStep}`).classList.remove('active');
+            document.getElementById(`step-${currentInstallationStep}`).classList.add('completed');
+            
+            alert('Professional installation completed successfully!\n\nSafety protocols activated\nElder rights integration enabled\nAudit trail initialized');
+            goHome();
+        }
+        
+        // Clinical Assessment Risk Calculation
+        function calculateRisk() {
+            const cognitiveScore = parseInt(document.getElementById('cognitive-score').value) || 0;
+            const adlScore = parseInt(document.getElementById('adl-score').value) || 0;
+            const iadlScore = parseInt(document.getElementById('iadl-score').value) || 0;
+            
+            // Get checked risk factors
+            const riskFactors = [];
+            document.querySelectorAll('#assessment-demo input[type="checkbox"]:checked').forEach(checkbox => {
+                riskFactors.push(checkbox.parentElement.textContent.trim());
+            });
+            
+            // Calculate risk level based on scores and factors
+            let riskLevel = 'LOW';
+            let riskColor = 'risk-low';
+            
+            if (cognitiveScore < 20 || adlScore < 4 || iadlScore < 6 || riskFactors.length >= 3) {
+                riskLevel = 'HIGH';
+                riskColor = 'risk-high';
+            } else if (cognitiveScore < 25 || adlScore < 5 || iadlScore < 7 || riskFactors.length >= 2) {
+                riskLevel = 'MEDIUM';
+                riskColor = 'risk-medium';
+            }
+            
+            // Update UI
+            const riskSummary = document.getElementById('risk-summary');
+            const riskLevelDiv = document.getElementById('risk-level');
+            const elderRightsAlert = document.getElementById('elder-rights-alert');
+            
+            riskSummary.classList.remove('hidden');
+            riskLevelDiv.className = `risk-indicator ${riskColor}`;
+            riskLevelDiv.textContent = `Overall Risk Level: ${riskLevel}`;
+            
+            // Trigger mock services
+            const detectedRisk = MockAbuseDetectionService.analyzeRiskFactors(riskFactors);
+            
+            if (riskLevel === 'HIGH') {
+                elderRightsAlert.classList.remove('hidden');
+                MockElderRightsAdvocateService.notify(riskLevel, {
+                    name: 'John Doe',
+                    professional: 'Dr. Jane Smith'
+                });
+            }
+            
+            logToConsole(`📊 Risk Assessment Calculated: ${riskLevel}`);
+        }
+        
+        // Clinical Assessment Submission
+        document.getElementById('assessment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const assessmentData = {
+                cognitiveScore: document.getElementById('cognitive-score').value,
+                adlScore: document.getElementById('adl-score').value,
+                iadlScore: document.getElementById('iadl-score').value,
+                clinicalNotes: document.getElementById('clinical-notes').value,
+                riskLevel: document.querySelector('.risk-indicator')?.textContent.split(': ')[1] || 'Not calculated'
+            };
+            
+            MockHealthcareIntegrationService.submitAssessment(assessmentData);
+            
+            alert('Clinical assessment submitted successfully!\n\nRisk level: ' + assessmentData.riskLevel + '\nElder rights advocate notified if high risk');
+            goHome();
+        });
+        
+        // Initialize demo
+        logToConsole('🚀 Demo ready! Click any workflow button to begin.');
+    </script>
+</body>
+</html>

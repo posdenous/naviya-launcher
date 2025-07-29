@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya User Flow Visualizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #2c5aa0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .flow-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .flow-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .flow-button:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .flow-button.active {
+            background: #2c5aa0;
+        }
+        
+        .flow-diagram {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: #ffffff;
+        }
+        
+        .flow-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .user-type {
+            display: inline-block;
+            background: #17a2b8;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .goal {
+            color: #495057;
+            font-style: italic;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Naviya User Flow Visualizer</h1>
+        <p style="text-align: center; color: #6c757d; margin-bottom: 30px;">
+            Interactive visualization of user flows for the Elder Protection System
+        </p>
+        
+        <div class="flow-selector">
+            <button class="flow-button active" onclick="showFlow('launcher')">App Launch</button>
+            <button class="flow-button" onclick="showFlow('emergency')">Emergency SOS</button>
+            <button class="flow-button" onclick="showFlow('panic')">Panic Mode</button>
+            <button class="flow-button" onclick="showFlow('registration')">Professional Registration</button>
+            <button class="flow-button" onclick="showFlow('installation')">Professional Installation</button>
+            <button class="flow-button" onclick="showFlow('assessment')">Clinical Assessment</button>
+            <button class="flow-button" onclick="showFlow('onboarding')">Family Onboarding</button>
+            <button class="flow-button" onclick="showFlow('monitoring')">Caregiver Monitoring</button>
+            <button class="flow-button" onclick="showFlow('abuse')">Abuse Detection</button>
+            <button class="flow-button" onclick="showFlow('advocate')">Elder Rights Response</button>
+        </div>
+        
+        <div id="flow-content">
+            <!-- Flow diagrams will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+        
+        const flows = {
+            launcher: {
+                title: "App Launch & Mode Selection",
+                userType: "Elderly User",
+                goal: "Access personalized launcher interface",
+                diagram: `
+                flowchart TD
+                    A[App Launch] --> B{Profile Exists?}
+                    B -->|Yes| C[Load Saved Mode]
+                    B -->|No| D[Family Onboarding]
+                    C --> E[COMFORT Mode]
+                    C --> F[FAMILY Mode]
+                    C --> G[FOCUS Mode]
+                    C --> H[MINIMAL Mode]
+                    C --> I[WELCOME Mode]
+                    E --> J[Main Interface]
+                    F --> J
+                    G --> J
+                    H --> J
+                    I --> J
+                    D --> J
+                    J --> K[2x3 App Grid]
+                    J --> L[Emergency SOS Button]
+                    J --> M[Unread Notifications]
+                    J --> N[Mode Switcher]
+                    
+                    style A fill:#e1f5fe
+                    style J fill:#c8e6c9
+                    style L fill:#ffcdd2
+                `
+            },
+            
+            emergency: {
+                title: "Emergency SOS Activation",
+                userType: "Elderly User",
+                goal: "Immediate emergency assistance",
+                diagram: `
+                flowchart TD
+                    A[SOS Button Hold 3s] --> D[Emergency Level]
+                    B[Triple-tap Screen] --> D
+                    C[Voice Command] --> D
+                    D --> E{Select Level}
+                    E -->|HELP| F[Assistance Needed]
+                    E -->|URGENT| G[Medical Emergency]
+                    E -->|EMERGENCY| H[Call 911]
+                    F --> I[Multi-Channel Alert]
+                    G --> I
+                    H --> I
+                    I --> J[Call Emergency Services]
+                    I --> K[SMS Emergency Contacts]
+                    I --> L[Notify Caregivers]
+                    I --> M[Alert Elder Rights]
+                    I --> N[Share Location]
+                    J --> O[Emergency Status Screen]
+                    K --> O
+                    L --> O
+                    M --> O
+                    N --> O
+                    
+                    style A fill:#ffcdd2
+                    style B fill:#ffcdd2
+                    style C fill:#ffcdd2
+                    style I fill:#fff3e0
+                    style O fill:#c8e6c9
+                `
+            },
+            
+            panic: {
+                title: "Panic Mode (Silent Emergency)",
+                userType: "Elderly User (Under Duress)",
+                goal: "Silent help without alerting potential abuser",
+                diagram: `
+                flowchart TD
+                    A[Triple-tap Power] --> E[Silent Activation]
+                    B[Whisper Safe Word] --> E
+                    C[SMS CODE RED] --> E
+                    D[App Sequence] --> E
+                    E --> F[NO Visible Changes]
+                    E --> G[NO Audio Alerts]
+                    E --> H[Background Location]
+                    E --> I[Stealth Recording]
+                    E --> J[Disable Caregiver Access]
+                    F --> K[Covert Response]
+                    G --> K
+                    H --> K
+                    I --> K
+                    J --> K
+                    K --> L[Silent SMS to Advocates]
+                    K --> M[Location to Authorities]
+                    K --> N[Evidence Preservation]
+                    K --> O[Maintain Normal UI]
+                    
+                    style A fill:#ffebee
+                    style B fill:#ffebee
+                    style C fill:#ffebee
+                    style D fill:#ffebee
+                    style E fill:#fff3e0
+                    style K fill:#e8f5e8
+                `
+            },
+            
+            registration: {
+                title: "Healthcare Professional Registration",
+                userType: "Healthcare Professional",
+                goal: "Verify credentials and authorize system access",
+                diagram: `
+                flowchart TD
+                    A[Registration Start] --> B[Personal Information]
+                    B --> C[Contact & Experience]
+                    C --> D[Credentials & Institution]
+                    D --> E[Review & Submit]
+                    E --> F[Verification Process]
+                    F --> G[License Board Check]
+                    F --> H[Institution Verification]
+                    F --> I[Background Screening]
+                    G --> J[Registration Complete]
+                    H --> J
+                    I --> J
+                    J --> K[Professional ID Assigned]
+                    J --> L[System Access Granted]
+                    
+                    style A fill:#e3f2fd
+                    style F fill:#fff3e0
+                    style J fill:#c8e6c9
+                `
+            },
+            
+            installation: {
+                title: "Professional Installation (6-Step Process)",
+                userType: "Healthcare Professional",
+                goal: "Safe system installation with proper consent",
+                diagram: `
+                flowchart TD
+                    A[Step 1: Authorization] --> B[Step 2: Patient Consent]
+                    B --> C[Step 3: Clinical Context]
+                    C --> D[Step 4: System Config]
+                    D --> E[Step 5: Safety Protocols]
+                    E --> F[Step 6: Final Review]
+                    
+                    A --> A1[Professional ID Verify]
+                    A --> A2[Patient ID Confirm]
+                    A --> A3[Institution Check]
+                    
+                    B --> B1[Consent Method]
+                    B --> B2[Witness Required]
+                    B --> B3[Legal Documentation]
+                    
+                    D --> D1[Emergency SOS ✓]
+                    D --> D2[Caregiver Notifications ✓]
+                    D --> D3[Abuse Detection ✓]
+                    
+                    E --> E1[Panic Mode Setup]
+                    E --> E2[Emergency Contacts]
+                    E --> E3[Elder Rights Assignment]
+                    
+                    F --> G[System Activation]
+                    
+                    style A fill:#e3f2fd
+                    style B fill:#fff3e0
+                    style D fill:#e8f5e8
+                    style E fill:#ffebee
+                    style G fill:#c8e6c9
+                `
+            },
+            
+            assessment: {
+                title: "Clinical Assessment",
+                userType: "Healthcare Professional",
+                goal: "Comprehensive patient evaluation with risk assessment",
+                diagram: `
+                flowchart TD
+                    A[Assessment Start] --> B[Cognitive Assessment]
+                    B --> C[Functional Assessment]
+                    C --> D[Social Assessment]
+                    D --> E[Risk Factor Assessment]
+                    E --> F[Clinical Notes]
+                    F --> G[Risk Calculation]
+                    
+                    B --> B1[MMSE Score 0-30]
+                    B --> B2[Memory Tests]
+                    B --> B3[Executive Function]
+                    
+                    C --> C1[Activities of Daily Living]
+                    C --> C2[Instrumental ADL]
+                    C --> C3[Mobility Evaluation]
+                    
+                    E --> E1[Abuse Risk Factors]
+                    E --> E2[Neglect Indicators]
+                    E --> E3[Protective Factors]
+                    
+                    G --> H{Risk Level}
+                    H -->|LOW| I[Standard Monitoring]
+                    H -->|MEDIUM| J[Enhanced Tracking]
+                    H -->|HIGH| K[Elder Rights Alert]
+                    
+                    K --> L[Automatic Notification]
+                    K --> M[Investigation Triggered]
+                    
+                    style A fill:#e3f2fd
+                    style G fill:#fff3e0
+                    style K fill:#ffcdd2
+                    style L fill:#ffebee
+                `
+            },
+            
+            onboarding: {
+                title: "Family Onboarding",
+                userType: "Family Member",
+                goal: "Configure system for elderly family member",
+                diagram: `
+                flowchart TD
+                    A[Setup Start] --> B[Relationship Definition]
+                    B --> C[Elderly User Profile]
+                    C --> D[Emergency Contacts]
+                    D --> E[Caregiver Information]
+                    E --> F{Professional Installation?}
+                    F -->|Yes| G[Schedule Healthcare Professional]
+                    F -->|No| H[Family Setup Continue]
+                    F -->|Later| I[Decide Later]
+                    G --> J[Safety Features Config]
+                    H --> J
+                    I --> J
+                    J --> K[Privacy & Consent]
+                    K --> L[Setup Complete]
+                    
+                    C --> C1[Name, Age, Living Situation]
+                    C --> C2[Medical Conditions]
+                    C --> C3[Technology Comfort]
+                    
+                    J --> J1[Emergency SOS ✓]
+                    J --> J2[Location Sharing ✓]
+                    J --> J3[Daily Check-ins ✓]
+                    
+                    style A fill:#e3f2fd
+                    style F fill:#fff3e0
+                    style L fill:#c8e6c9
+                `
+            },
+            
+            monitoring: {
+                title: "Caregiver Monitoring Dashboard",
+                userType: "Family Caregiver",
+                goal: "Monitor elderly family member",
+                diagram: `
+                flowchart TD
+                    A[Login & Authentication] --> B[Dashboard Overview]
+                    B --> C[Status Panel]
+                    B --> D[Activity Panel]
+                    B --> E[Alerts Panel]
+                    
+                    C --> C1[Online Status 🟢]
+                    C --> C2[Location: Home]
+                    C --> C3[Last Seen: 5m ago]
+                    
+                    D --> D1[Recent Apps Used]
+                    D --> D2[Messages Checked]
+                    D --> D3[SOS Test OK]
+                    
+                    E --> E1[No New Alerts]
+                    E --> E2[All Clear]
+                    
+                    B --> F[Available Actions]
+                    F --> G[Check In - Send Message]
+                    F --> H[Call - Voice Call]
+                    F --> I[Location - View Map]
+                    F --> J[Settings - Preferences]
+                    F --> K[Reports - Activity History]
+                    
+                    style A fill:#e3f2fd
+                    style B fill:#c8e6c9
+                    style F fill:#fff3e0
+                `
+            },
+            
+            abuse: {
+                title: "Automated Abuse Detection",
+                userType: "System (Automated)",
+                goal: "Identify and respond to potential abuse",
+                diagram: `
+                flowchart TD
+                    A[Pattern Detection] --> B[Rule-Based Analysis]
+                    B --> C{Risk Level}
+                    
+                    A --> A1[Contact Blocking]
+                    A --> A2[App Restrictions]
+                    A --> A3[Location Limits]
+                    A --> A4[Financial Changes]
+                    
+                    B --> B1[Severity Scoring]
+                    B --> B2[Historical Comparison]
+                    B --> B3[Confidence Calculation]
+                    
+                    C -->|LOW| D[Log for Monitoring]
+                    C -->|MEDIUM| E[Enhanced Tracking]
+                    C -->|HIGH| F[Immediate Alert]
+                    
+                    F --> G[Elder Rights Advocate]
+                    F --> H[Healthcare Professional]
+                    F --> I[Emergency Contact]
+                    F --> J[Law Enforcement]
+                    
+                    F --> K[Protective Actions]
+                    K --> L[Evidence Preservation]
+                    K --> M[Enable Panic Mode]
+                    K --> N[Secure Communications]
+                    
+                    style A fill:#fff3e0
+                    style C fill:#ffebee
+                    style F fill:#ffcdd2
+                    style K fill:#e8f5e8
+                `
+            },
+            
+            advocate: {
+                title: "Elder Rights Advocate Response",
+                userType: "Elder Rights Advocate",
+                goal: "Investigate and respond to potential abuse",
+                diagram: `
+                flowchart TD
+                    A[Alert Received] --> B[Alert Review]
+                    B --> C[Initial Response]
+                    C --> D{Action Selection}
+                    
+                    A --> A1[SMS Notification]
+                    A --> A2[Email with Details]
+                    A --> A3[App Push Notification]
+                    A --> A4[Phone Call - Urgent]
+                    
+                    B --> B1[Patient Information]
+                    B --> B2[Risk Factors Detected]
+                    B --> B3[Pattern Analysis]
+                    B --> B4[Severity Assessment]
+                    
+                    D -->|Check| E[Schedule Welfare Check]
+                    D -->|Contact| F[Contact Patient Directly]
+                    D -->|Coordinate| G[Work with Healthcare]
+                    D -->|Escalate| H[Alert Authorities]
+                    
+                    E --> I[Investigation Process]
+                    F --> I
+                    G --> I
+                    H --> I
+                    
+                    I --> J[Patient Interview]
+                    I --> K[Caregiver Assessment]
+                    I --> L[Evidence Collection]
+                    I --> M[Safety Planning]
+                    
+                    I --> N{Case Resolution}
+                    N -->|No Abuse| O[Close Case]
+                    N -->|Confirmed| P[Intervention Required]
+                    N -->|Ongoing| Q[Continued Monitoring]
+                    N -->|Legal| R[Legal Action Needed]
+                    
+                    style A fill:#ffebee
+                    style B fill:#fff3e0
+                    style I fill:#e3f2fd
+                    style P fill:#ffcdd2
+                `
+            }
+        };
+        
+        function showFlow(flowKey) {
+            // Update active button
+            document.querySelectorAll('.flow-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const flow = flows[flowKey];
+            const content = document.getElementById('flow-content');
+            
+            content.innerHTML = `
+                <div class="flow-description">
+                    <h2>${flow.title}</h2>
+                    <div class="user-type">${flow.userType}</div>
+                    <div class="goal"><strong>Goal:</strong> ${flow.goal}</div>
+                </div>
+                <div class="flow-diagram">
+                    <div class="mermaid">
+                        ${flow.diagram}
+                    </div>
+                </div>
+            `;
+            
+            // Re-render mermaid diagram
+            mermaid.init(undefined, content.querySelector('.mermaid'));
+        }
+        
+        // Initialize with launcher flow
+        window.onload = function() {
+            showFlow('launcher');
+        };
+    </script>
+</body>
+</html>
