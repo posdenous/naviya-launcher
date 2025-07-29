@@ -1,0 +1,157 @@
+name: "Offline-First Architecture Rules"
+version: "1.0.0"
+description: "Universal offline-first development principles for all user modes"
+
+core_principles:
+  philosophy:
+    - "Local functionality first, online features as enhancement"
+    - "Core features must never depend on network connectivity"
+    - "Offline-first benefits all users, especially elderly"
+    - "Network connectivity is optional, not required"
+    
+  universal_application:
+    - "Apply to ALL user modes: COMFORT, FAMILY, FOCUS, MINIMAL, WELCOME"
+    - "No mode-specific network dependency patterns"
+    - "Consistent offline behavior across all interfaces"
+    - "Single architectural pattern for reliability"
+
+local_data_storage:
+  priority_order:
+    - "Local Room database storage first"
+    - "Local file system cache second"
+    - "Cloud synchronization third (when available)"
+    - "Network requests last resort only"
+    
+  essential_local_data:
+    - "User preferences and accessibility settings"
+    - "Emergency contacts and SOS configuration"
+    - "App grid layout and tile configurations"
+    - "Missed calls and unread message counts"
+    - "Usage patterns and activity logs"
+    - "Language and localization settings"
+
+core_functionality_offline:
+  always_available:
+    - "App launcher grid (2x3, 3x3 based on mode)"
+    - "Emergency SOS button activation"
+    - "Phone dialer and SMS messaging"
+    - "Local contacts access and management"
+    - "Settings and accessibility controls"
+    - "Unread notifications tile display"
+    - "Basic navigation between screens"
+    - "PIN security and authentication"
+    
+  emergency_features:
+    - "SOS button works in airplane mode via cellular"
+    - "Emergency contacts callable without internet"
+    - "Local emergency protocol display"
+    - "Emergency event logging to local database"
+
+network_graceful_degradation:
+  offline_fallbacks:
+    - "Show cached data instead of loading indicators"
+    - "Display meaningful offline status messages"
+    - "Provide offline alternatives for online features"
+    - "Queue actions for later sync when reconnected"
+    
+  ui_indicators:
+    - "Clear offline status indicator in all modes"
+    - "Explain which features are limited offline"
+    - "Show sync status for queued actions"
+    - "Display last successful sync timestamp"
+
+caregiver_connectivity:
+  opportunistic_sync:
+    - "Queue all caregiver notifications locally first"
+    - "Sync when network becomes available"
+    - "Retry failed sync attempts with exponential backoff"
+    - "Batch multiple updates for efficiency"
+    
+  heartbeat_system:
+    - "Send periodic device status when online"
+    - "Include battery level, app usage, emergency status"
+    - "Queue heartbeat data when offline"
+    - "Sync accumulated heartbeats on reconnection"
+    
+  critical_events:
+    - "Emergency events use multiple channels (SMS, push, email)"
+    - "Retry critical notifications until delivered"
+    - "Store emergency events locally with high priority"
+    - "Use cellular SMS as fallback for urgent alerts"
+
+data_synchronization:
+  sync_strategy:
+    - "Opportunistic sync - never block core functionality"
+    - "Background sync when network available"
+    - "WiFi-preferred for large data transfers"
+    - "Cellular-allowed for critical emergency data"
+    
+  sync_priorities:
+    - "Emergency events: Immediate retry every 30 seconds"
+    - "Health status: Every 15 minutes when online"
+    - "Usage patterns: Daily when on WiFi"
+    - "Settings backup: Weekly or on significant changes"
+    
+  conflict_resolution:
+    - "Local changes take precedence during conflicts"
+    - "Preserve user autonomy over remote changes"
+    - "Log all sync conflicts for audit trail"
+    - "Provide user choice for conflict resolution"
+
+performance_optimization:
+  local_caching:
+    - "Cache frequently accessed data locally"
+    - "Implement intelligent cache eviction policies"
+    - "Preload essential data during app startup"
+    - "Minimize memory usage for elderly device compatibility"
+    
+  battery_efficiency:
+    - "Reduce network radio usage through batching"
+    - "Use WiFi over cellular when available"
+    - "Implement smart sync scheduling"
+    - "Optimize for elderly users' charging patterns"
+
+mode_specific_adaptations:
+  comfort_minimal_modes:
+    - "Strictest offline requirements"
+    - "Longer cache retention periods"
+    - "More conservative sync behavior"
+    - "Prioritize reliability over features"
+    
+  family_welcome_modes:
+    - "More frequent sync when available"
+    - "Richer online features when connected"
+    - "Progressive enhancement approach"
+    - "Balance features with reliability"
+
+implementation_requirements:
+  architecture_patterns:
+    - "Repository pattern with local-first data access"
+    - "Use Room database for all persistent data"
+    - "Implement WorkManager for background sync"
+    - "Use StateFlow for reactive offline state management"
+    
+  error_handling:
+    - "Graceful network error handling"
+    - "Meaningful offline error messages"
+    - "Automatic retry with exponential backoff"
+    - "User-friendly connectivity status updates"
+    
+  testing_requirements:
+    - "Test all features in airplane mode"
+    - "Verify emergency features work without internet"
+    - "Test sync behavior with intermittent connectivity"
+    - "Validate offline-first across all user modes"
+
+security_considerations:
+  offline_security:
+    - "Local data encryption at rest"
+    - "Secure local authentication methods"
+    - "Protect cached sensitive information"
+    - "Audit trail for offline actions"
+    
+  sync_security:
+    - "End-to-end encryption for sync data"
+    - "Certificate pinning for network requests"
+    - "Validate data integrity after sync"
+    - "Secure token management for authentication"

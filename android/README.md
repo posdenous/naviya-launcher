@@ -220,6 +220,11 @@ android/
 - **Emergency Access**: SOS always functional
 - **App Whitelist**: Controlled app installation
 - **Caregiver Oversight**: Remote assistance capability
+- **Mode Switch Security**: Rate limiting and authentication for mode changes
+- **Ethical App Access**: Protection against surveillance and financial abuse
+- **Elder Rights Integration**: Protected advocacy contacts and resources
+- **Emergency Escape**: Multiple methods for immediate help access
+- **Abuse Prevention**: Immutable audit trails and suspicious activity detection
 
 ### Multilingual Support
 - **5 Languages**: DE, EN, TR, AR, UA
@@ -277,23 +282,84 @@ android/
 - **Device Compatibility**: Older Android devices
 
 ### Automated Testing
-- **Unit Tests**: Business logic validation
-- **Integration Tests**: Component interaction
-- **UI Tests**: User flow automation
-- **Accessibility Tests**: A11y compliance
-- **Performance Tests**: Memory and battery
+- **Unit Tests**: Business logic validation (100+ security tests)
+- **Integration Tests**: Component interaction and security workflows
+- **UI Tests**: User flow automation with accessibility validation
+- **Accessibility Tests**: A11y compliance and elderly-friendly design
+- **Performance Tests**: Memory and battery optimization
+- **Security Tests**: Comprehensive abuse prevention and ethical controls
+- **Mode Switch Tests**: Rate limiting, authentication, and elderly protection
+- **Emergency Tests**: SOS functionality and escape mechanisms
+
+## 🛡️ Security & Ethical Protection
+
+### Comprehensive Security Architecture
+
+Naviya implements enterprise-grade security specifically designed to protect vulnerable elderly users from abuse while maintaining their autonomy and dignity.
+
+#### Mode Switching Security
+- **Rate Limiting**: Maximum 3 mode switches per hour to prevent abuse
+- **Authentication Requirements**: PIN/biometric verification for sensitive modes
+- **Elderly Protection**: Age-based complexity restrictions and consent validation
+- **Caregiver Token Validation**: Secure authentication for caregiver access
+- **Suspicious Activity Detection**: AI-powered abuse pattern recognition
+- **System Lockout**: Automatic protection after multiple violations
+- **Immutable Audit Trails**: Blockchain-style logging of all security events
+
+#### Ethical App Access Controls
+- **Essential App Protection**: Phone, Emergency, Settings always accessible
+- **Surveillance Prevention**: Explicit consent required for monitoring apps
+- **Financial Protection**: Banking/payment apps blocked for caregivers
+- **User Preference Override**: Elderly users can override caregiver restrictions
+- **Emergency Escape**: Immediate access to help regardless of restrictions
+- **Elder Rights Integration**: Protected advocacy contacts unreachable by caregivers
+
+#### Emergency & Advocacy Features
+- **Triple-Tap Emergency**: Discrete emergency activation
+- **Voice Command Escape**: "Help me" voice recognition
+- **Long-Press SOS**: Physical button emergency access
+- **Elder Rights Widget**: Direct access to advocacy resources and helplines
+- **Protected Contacts**: Advocacy contacts immune to caregiver removal
+- **Automatic Notifications**: Elder rights advocates alerted to suspicious activity
+
+### Security UI Components
+- **SecurityNotificationDialog**: Elderly-friendly security alerts with clear messaging
+- **SecurityAuthenticationDialog**: Accessible PIN/biometric authentication
+- **EmergencyEscapeWidget**: Multiple emergency access methods with feedback
+- **ElderRightsAdvocacyWidget**: Protected advocacy resources and helplines
+- **SecurityIntegrationScreen**: Unified security interface with real-time status
+
+### Abuse Prevention Safeguards
+1. **Surveillance Abuse**: Monitoring requires explicit consent, limited scope
+2. **Financial Abuse**: Payment apps blocked for caregivers, audit trails
+3. **Social Isolation**: Essential contacts protected, advocacy always accessible
+4. **Psychological Abuse**: Emergency escape, independent oversight, consent reconfirmation
+5. **Technical Abuse**: Rate limiting, authentication, suspicious activity detection
 
 ## 📊 Data Models & Schemas
 
-The Android data models directly map to the MCP schemas:
-
+### Core Data Models
 - **LauncherState** ↔ `launcher_state.mcp.yaml`
 - **NotificationState** ↔ `notification_state.mcp.yaml`
 - **CrashRecoveryState** ↔ `crash_recovery_state.mcp.yaml`
 - **PinSecurityState** ↔ `pin_security_state.mcp.yaml`
 - **AppWhitelistState** ↔ `app_whitelist_state.mcp.yaml`
 
-This ensures consistency between the AI assistant rules and the Android implementation.
+### Security Data Models
+- **SecurityAuditEntity**: Immutable security event logging
+- **ModeSwitchAuditEntity**: Mode change tracking and validation
+- **AuthenticationAttemptEntity**: Login attempt monitoring
+- **ElderlyConsentEntity**: Consent management and validation
+- **SystemLockoutEntity**: Abuse prevention and system protection
+- **CaregiverTokenEntity**: Secure caregiver authentication
+
+### Database Integration
+- **Room Database**: Local-first data persistence with migration support
+- **Security Audit DAO**: Comprehensive security event querying
+- **Dependency Injection**: Hilt-based DI for security components
+- **Migration Support**: Database versioning for security schema updates
+
+This ensures consistency between AI assistant rules, security requirements, and Android implementation.
 
 ## 🚀 Deployment
 

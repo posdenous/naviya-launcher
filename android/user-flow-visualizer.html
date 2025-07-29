@@ -100,6 +100,10 @@
             <button class="flow-button active" onclick="showFlow('launcher')">App Launch</button>
             <button class="flow-button" onclick="showFlow('emergency')">Emergency SOS</button>
             <button class="flow-button" onclick="showFlow('panic')">Panic Mode</button>
+            <button class="flow-button" onclick="showFlow('security')">Security Integration</button>
+            <button class="flow-button" onclick="showFlow('modeswitch')">Mode Switch Security</button>
+            <button class="flow-button" onclick="showFlow('authentication')">Authentication Flow</button>
+            <button class="flow-button" onclick="showFlow('elderrights')">Elder Rights Advocacy</button>
             <button class="flow-button" onclick="showFlow('registration')">Professional Registration</button>
             <button class="flow-button" onclick="showFlow('installation')">Professional Installation</button>
             <button class="flow-button" onclick="showFlow('assessment')">Clinical Assessment</button>
@@ -286,6 +290,162 @@
                     style D fill:#e8f5e8
                     style E fill:#ffebee
                     style G fill:#c8e6c9
+                `
+            },
+            
+            security: {
+                title: "Security Integration Screen",
+                userType: "Elderly User",
+                goal: "Unified security interface with real-time protection",
+                diagram: `
+                flowchart TD
+                    A[Security Screen Launch] --> B[Security Status Check]
+                    B --> C{Security Status}
+                    C -->|SECURE| D[Green Status Header]
+                    C -->|WARNING| E[Yellow Status Header]
+                    C -->|EMERGENCY| F[Red Status Header]
+                    D --> G[Emergency Escape Widget]
+                    E --> G
+                    F --> G
+                    G --> H[Elder Rights Advocacy Widget]
+                    H --> I[Recent Security Events]
+                    I --> J[Mode Switch Security Card]
+                    J --> K[Available Actions]
+                    K --> L[Emergency Escape]
+                    K --> M[Contact Elder Rights]
+                    K --> N[Mode Switch Request]
+                    
+                    style A fill:#e1f5fe
+                    style D fill:#c8e6c9
+                    style E fill:#fff3e0
+                    style F fill:#ffcdd2
+                    style G fill:#e8f5e8
+                    style H fill:#f3e5f5
+                `
+            },
+            
+            modeswitch: {
+                title: "Mode Switch Security Validation",
+                userType: "Elderly User / Caregiver",
+                goal: "Secure mode switching with abuse prevention",
+                diagram: `
+                flowchart TD
+                    A[Mode Switch Request] --> B[Rate Limit Check]
+                    B -->|PASS| C[Authentication Check]
+                    B -->|FAIL| D[Rate Limited - Blocked]
+                    C -->|Required| E[Authentication Dialog]
+                    C -->|Not Required| F[Elderly Protection Check]
+                    E --> G{Auth Method}
+                    G -->|PIN| H[PIN Entry]
+                    G -->|Biometric| I[Biometric Scan]
+                    H --> J[Validate Credentials]
+                    I --> J
+                    J -->|Success| F
+                    J -->|Fail| K[Authentication Failed]
+                    F --> L{User Age Check}
+                    L -->|Elderly| M[Consent Required]
+                    L -->|Adult| N[Direct Approval]
+                    M --> O[Consent Dialog]
+                    O -->|Approved| P[Mode Switch Approved]
+                    O -->|Denied| Q[Mode Switch Denied]
+                    N --> P
+                    P --> R[Audit Log Entry]
+                    Q --> S[Security Event Log]
+                    D --> S
+                    K --> S
+                    
+                    style A fill:#e1f5fe
+                    style P fill:#c8e6c9
+                    style Q fill:#ffcdd2
+                    style D fill:#ffcdd2
+                    style K fill:#ffcdd2
+                    style R fill:#e8f5e8
+                    style S fill:#fff3e0
+                `
+            },
+            
+            authentication: {
+                title: "Security Authentication Flow",
+                userType: "Elderly User / Caregiver",
+                goal: "Secure authentication with elderly-friendly options",
+                diagram: `
+                flowchart TD
+                    A[Authentication Required] --> B[Authentication Dialog]
+                    B --> C{Auth Method Available}
+                    C -->|PIN Only| D[PIN Entry Screen]
+                    C -->|Biometric Available| E[Choose Method]
+                    E --> F[PIN Entry]
+                    E --> G[Biometric Scan]
+                    D --> H[Validate PIN]
+                    F --> H
+                    G --> I[Biometric Validation]
+                    H -->|Success| J[Authentication Success]
+                    H -->|Failed| K[PIN Error Message]
+                    I -->|Success| J
+                    I -->|Failed| L[Biometric Error]
+                    L --> M[Fallback to PIN]
+                    M --> F
+                    K --> N{Attempt Count}
+                    N -->|< 3| D
+                    N -->|>= 3| O[Account Locked]
+                    J --> P[Proceed with Action]
+                    O --> Q[Security Alert]
+                    Q --> R[Elder Rights Notification]
+                    
+                    style A fill:#e1f5fe
+                    style J fill:#c8e6c9
+                    style P fill:#c8e6c9
+                    style K fill:#fff3e0
+                    style L fill:#fff3e0
+                    style O fill:#ffcdd2
+                    style Q fill:#ffcdd2
+                    style R fill:#f3e5f5
+                `
+            },
+            
+            elderrights: {
+                title: "Elder Rights Advocacy Access",
+                userType: "Elderly User",
+                goal: "Protected access to elder rights resources and advocacy",
+                diagram: `
+                flowchart TD
+                    A[Elder Rights Widget] --> B[Emergency Mode Check]
+                    B -->|Normal| C[Standard Resources]
+                    B -->|Emergency| D[Emergency Resources]
+                    C --> E[Quick Action Buttons]
+                    D --> E
+                    E --> F[Emergency Call 999]
+                    E --> G[Elder Rights Helpline]
+                    E --> H[Resources List]
+                    H --> I[Age UK]
+                    H --> J[Elder Abuse Helpline]
+                    H --> K[Citizens Advice]
+                    H --> L[Legal Aid]
+                    H --> M[Safeguarding Services]
+                    F --> N[Direct Call]
+                    G --> N
+                    I --> O[Contact Method]
+                    J --> O
+                    K --> O
+                    L --> O
+                    M --> O
+                    O --> P[Phone Call]
+                    O --> Q[Website]
+                    O --> R[Email]
+                    N --> S[Emergency Response]
+                    P --> T[Advocacy Support]
+                    Q --> T
+                    R --> T
+                    S --> U[Protected Contact Log]
+                    T --> U
+                    
+                    style A fill:#f3e5f5
+                    style D fill:#ffcdd2
+                    style F fill:#ff1744
+                    style G fill:#ff5722
+                    style S fill:#c8e6c9
+                    style T fill:#c8e6c9
+                    style U fill:#e8f5e8
                 `
             },
             

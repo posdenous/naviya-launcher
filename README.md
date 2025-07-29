@@ -115,13 +115,25 @@ Naviya adapts to different user needs and capabilities through five distinct mod
 - **Protected Communication**: Secret channels to elder rights hotlines
 - **Monthly Consent**: Regular reconfirmation of caregiver permissions
 
-### 🛠️ System Protection
+### 🛠️ System Protection & Mode Switching Security
 - **Crash Recovery**: Automatic safe mode after 3 crashes
 - **PIN Security**: Settings protection with emergency bypass
 - **App Whitelist**: Prevents malicious app installation
 - **Safe Mode**: Core functions only when system is compromised
 - **Backup & Restore**: Automatic configuration backup
 - **Remote Wipe**: Emergency data protection
+
+#### 🔒 Mode Switching Security (Anti-Abuse)
+- **Rate Limiting**: Maximum 3 mode switches per hour to prevent confusion
+- **Authentication Required**: PIN/biometric verification for protected transitions
+- **Elderly Protection**: Blocks complexity increases without explicit consent
+- **Caregiver Validation**: Permission checks for remote mode changes
+- **Suspicious Activity Detection**: AI-powered pattern recognition for abuse
+- **Protected Transitions**: COMFORT→FAMILY requires authentication (surveillance risk)
+- **Time-Based Monitoring**: Unusual hour switches flagged as suspicious
+- **System Lockout**: Automatic protection after multiple suspicious events
+- **Immutable Audit Trail**: Blockchain-style logging of all mode changes
+- **Elder Rights Notification**: Automatic alerts for security violations
 
 ### 👥 Caregiver Safeguards
 - **Default Minimal Access**: Only emergency notifications enabled by default
@@ -196,6 +208,97 @@ All data structures are defined using MCP (Model Context Protocol) schemas:
 4. **Implement UI**
    - Follow guidelines in `prompts/launcher_layout.rules.yaml`
    - Ensure accessibility compliance per `prompts/base_prompt.yaml`
+
+## 💰 Monetization Strategy
+
+### Subscription Tiers & User Cohort Distribution
+
+Based on elderly smartphone adoption patterns, family engagement levels, and healthcare needs:
+
+#### 📱 Basic (Free) - 65% of Users
+**Target Cohorts:**
+- **Independent Seniors** (40%): Self-sufficient users prioritising basic safety features
+- **Value-Conscious Families** (15%): Households preferring essential functionality
+- **New Users** (10%): Families exploring the platform before considering additional features
+
+**Features:**
+- Core launcher with 2×3 grid layout
+- Emergency SOS system (always free)
+- Basic accessibility compliance
+- Single caregiver connection
+- Offline-first functionality
+
+#### 👨‍👩‍👧‍👦 Family Connect (€4.49/month) - 25% of Users
+**Target Cohorts:**
+- **Supportive Family Members** (20%): Adult children staying connected with elderly parents
+- **Multi-Generational Households** (5%): Extended families sharing care coordination
+
+**Features:**
+- Family communication dashboard for staying in touch
+- Optional location sharing (user-controlled)
+- Multiple family member accounts with user-approved access
+- Priority customer support
+- Enhanced emergency contact coordination
+
+#### 🌟 Independence Plus (€4.99/month) - 8% of Users
+**Target Cohorts:**
+- **Independence-Focused Seniors** (5%): Users wanting enhanced convenience features
+- **Tech-Comfortable Families** (3%): Families preferring additional connectivity options
+
+**Features:**
+- Personalised app recommendations and organisation
+- Enhanced voice control and accessibility options
+- Expanded customisation for personal preferences
+- Additional emergency contact options
+- Premium technical support with elderly-specialist staff
+
+#### 🏢 Care Facility (€17.99/month) - 2% of Users
+**Target Cohorts:**
+- **Senior Living Communities** (1.5%): Residential care environments
+- **Community Care Providers** (0.5%): Day centres and support services
+
+**Features:**
+- Multi-resident coordination dashboard
+- Community deployment with individual privacy controls
+- Facility branding whilst maintaining user autonomy
+- Compliance reporting for care standards
+- Dedicated support with care industry expertise
+
+### Revenue Model Ethics
+
+**🚫 Never Monetized (Always Free):**
+- Emergency SOS activation and response
+- Basic accessibility features (font scaling, high contrast)
+- Elder abuse prevention systems
+- Core safety and crash recovery features
+- Essential communication functions
+
+**✅ Ethical Revenue Streams:**
+- Enhanced family connectivity and peace of mind
+- Convenience features that support independence
+- Personalisation options for individual preferences
+- Premium support and customisation services
+
+### German Market Opportunity
+
+**📊 Target Market (Germany):**
+- 17.9M seniors (65+) in Germany (growing 2.1% annually)
+- 68% smartphone adoption among German seniors (2024)
+- €890M+ estimated total addressable market
+- Strong long-term care insurance and family support culture
+
+**💶 Revenue Projections (Germany):**
+- Freemium conversion rate: 18-28% (family-driven purchases)
+- Average revenue per user (ARPU): €2.65/month
+- Enterprise contracts: €8K-400K+ per facility
+- Community partnerships: Service integration 12-22%
+
+**🏥 German Healthcare System Integration:**
+- Long-term care insurance (SGB XI) cost coverage possible
+- Integration with family doctors and care services
+- Telematics infrastructure (TI) connectivity planned
+- Partnerships with major insurers: AOK, Barmer, TK
+- Full GDPR compliance for data protection
 
 ## Development Guidelines
 

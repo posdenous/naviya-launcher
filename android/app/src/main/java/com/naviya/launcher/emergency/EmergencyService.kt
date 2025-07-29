@@ -313,6 +313,40 @@ class EmergencyService @Inject constructor(
         return emergencyDao.getRecentEmergencyEvents()
     }
     
+    /**
+     * Get current SOS system status for monitoring and testing
+     * Provides real-time status information about emergency system readiness
+     */
+    suspend fun getSOSStatus(): SOSStatus {
+        return try {
+            val recentEvents = emergencyDao.getRecentEmergencyEvents().first()
+            val lastActivation = recentEvents.firstOrNull { 
+                it.eventType == EmergencyEventType.SOS_ACTIVATED 
+            }
+            val lastCancellation = recentEvents.firstOrNull {
+                it.eventType == EmergencyEventType.SOS_CANCELLED
+            }
+            
+            // Determine if SOS is currently active
+            val isActive = lastActivation != null && 
+                (lastCancellation == null || lastActivation.timestamp > lastCancellation.timestamp)
+            
+            SOSStatus(
+                isActive = isActive,
+                activatedAt = lastActivation?.timestamp,
+                triggeredBy = SOSTrigger.MANUAL // Default trigger type
+            )
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting SOS status", e)
+            SOSStatus(
+                isActive = false,
+                activatedAt = null,
+                triggeredBy = null
+            )
+        }
+    }
+    
     private fun isNetworkAvailable(): Boolean {
         // Simple network check - implement proper network detection
         return try {
@@ -354,3 +388,13 @@ sealed class ContactResult {
     data class Success(val contact: EmergencyContact, val message: String) : ContactResult()
     data class Failed(val contact: EmergencyContact, val error: String) : ContactResult()
 }
+
+/**
+ * SOS system status for monitoring and testing
+ * Matches the structure expected by existing tests
+ */
+data class SOSStatus(
+    val isActive: Boolean,
+    val activatedAt: Long? = null,
+    val triggeredBy: SOSTrigger? = null
+)

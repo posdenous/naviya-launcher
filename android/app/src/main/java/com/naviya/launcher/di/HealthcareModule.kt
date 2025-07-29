@@ -10,6 +10,7 @@ import com.naviya.launcher.database.NaviyaDatabase
 import com.naviya.launcher.healthcare.data.HealthcareProfessionalDao
 import com.naviya.launcher.healthcare.HealthcareProfessionalRepository
 import com.naviya.launcher.healthcare.HealthcareIntegrationService
+import com.naviya.launcher.data.dao.SecurityAuditDao
 import javax.inject.Singleton
 
 /**
@@ -29,6 +30,11 @@ object HealthcareModule {
     @Provides
     fun provideHealthcareProfessionalDao(database: NaviyaDatabase): HealthcareProfessionalDao {
         return database.healthcareProfessionalDao()
+    }
+    
+    @Provides
+    fun provideSecurityAuditDao(database: NaviyaDatabase): SecurityAuditDao {
+        return database.securityAuditDao()
     }
 
     @Provides

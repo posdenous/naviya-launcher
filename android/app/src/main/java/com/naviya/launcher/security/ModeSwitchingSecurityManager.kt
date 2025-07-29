@@ -1,0 +1,460 @@
+package com.naviya.launcher.security
+
+import android.content.Context
+import android.util.Log
+import androidx.annotation.VisibleForTesting
+import com.naviya.launcher.caregiver.CaregiverPermissionManager
+import com.naviya.launcher.data.dao.SecurityAuditDao
+import com.naviya.launcher.toggle.ToggleMode
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Mode Switching Security Manager
+ * 
+ * Prevents abuse and hacking of launcher modes by different target groups:
+ * - Malicious caregivers switching to exploit modes
+ * - Tech-savvy family members bypassing restrictions
+ * - External attackers attempting mode manipulation
+ * - Elderly users accidentally switching to inappropriate modes
+ * - Social engineering attacks targeting mode changes
+ */
+@Singleton
+class ModeSwitchingSecurityManager @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val securityAuditDao: SecurityAuditDao,
+    private val caregiverPermissionManager: CaregiverPermissionManager
+) {
+    
+    companion object {
+        private const val TAG = "ModeSwitchingSecurityManager"
+        
+        // Security thresholds
+        private const val MAX_MODE_SWITCHES_PER_HOUR = 3
+        private const val MAX_FAILED_PIN_ATTEMPTS = 3
+        private const val LOCKOUT_DURATION_MINUTES = 30
+        private const val SUSPICIOUS_ACTIVITY_THRESHOLD = 5
+        
+        // Protected mode transitions that require additional verification
+        private val PROTECTED_TRANSITIONS = mapOf(
+            ToggleMode.COMFORT to setOf(ToggleMode.FAMILY), // Comfort->Family needs verification
+            ToggleMode.FOCUS to setOf(ToggleMode.FAMILY, ToggleMode.COMFORT), // Focus->higher complexity
+            ToggleMode.MINIMAL to setOf(ToggleMode.FAMILY, ToggleMode.COMFORT, ToggleMode.FOCUS)
+        )
+        
+        // Modes that elderly users should never be switched to without explicit consent
+        private val ELDERLY_RESTRICTED_MODES = setOf(
+            ToggleMode.FAMILY // Family mode could enable surveillance
+        )
+    }
+    
+    private val _isLocked = MutableStateFlow(false)
+    val isLocked: StateFlow<Boolean> = _isLocked.asStateFlow()
+    
+    private val _currentSecurityLevel = MutableStateFlow(SecurityLevel.NORMAL)
+    val currentSecurityLevel: StateFlow<SecurityLevel> = _currentSecurityLevel.asStateFlow()
+    
+    /**
+     * Validate and authorize a mode switch request
+     */
+    suspend fun validateModeSwitch(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode,
+        requestedBy: String, // "user", caregiver ID, or "system"
+        userAge: Int? = null,
+        authenticationToken: String? = null
+    ): ModeSwitchValidation {
+        
+        // Check if system is locked due to suspicious activity
+        if (_isLocked.value) {
+            return ModeSwitchValidation.BLOCKED_SYSTEM_LOCKED
+        }
+        
+        // Check rate limiting
+        val recentSwitches = securityAuditDao.getModeSwitchesInLastHour()
+        if (recentSwitches >= MAX_MODE_SWITCHES_PER_HOUR) {
+            logSuspiciousActivity("Excessive mode switching detected", requestedBy)
+            return ModeSwitchValidation.BLOCKED_RATE_LIMITED
+        }
+        
+        // Validate requester permissions
+        val requesterValidation = validateRequester(requestedBy, requestedMode)
+        if (requesterValidation != RequesterValidation.AUTHORIZED) {
+            return ModeSwitchValidation.BLOCKED_UNAUTHORIZED
+        }
+        
+        // Check for protected transitions
+        if (isProtectedTransition(currentMode, requestedMode)) {
+            val protectionResult = validateProtectedTransition(
+                currentMode, requestedMode, requestedBy, authenticationToken
+            )
+            if (protectionResult != ProtectionValidation.APPROVED) {
+                return ModeSwitchValidation.REQUIRES_ADDITIONAL_AUTH
+            }
+        }
+        
+        // Elderly user protection
+        if (userAge != null && userAge >= 65) {
+            val elderlyProtection = validateElderlyModeSwitch(
+                currentMode, requestedMode, requestedBy
+            )
+            if (elderlyProtection != ElderlyProtection.SAFE) {
+                return ModeSwitchValidation.BLOCKED_ELDERLY_PROTECTION
+            }
+        }
+        
+        // Check for suspicious patterns
+        val suspiciousActivity = detectSuspiciousActivity(
+            currentMode, requestedMode, requestedBy
+        )
+        if (suspiciousActivity.isSuspicious) {
+            logSuspiciousActivity(suspiciousActivity.reason, requestedBy)
+            return ModeSwitchValidation.BLOCKED_SUSPICIOUS_ACTIVITY
+        }
+        
+        // Log successful validation
+        securityAuditDao.logModeSwitch(
+            fromMode = currentMode.name,
+            toMode = requestedMode.name,
+            requestedBy = requestedBy,
+            result = "APPROVED",
+            timestamp = System.currentTimeMillis()
+        )
+        
+        return ModeSwitchValidation.APPROVED
+    }
+    
+    /**
+     * Validate the requester's permissions for mode switching
+     */
+    private suspend fun validateRequester(
+        requestedBy: String,
+        requestedMode: ToggleMode
+    ): RequesterValidation {
+        
+        return when {
+            requestedBy == "user" -> RequesterValidation.AUTHORIZED
+            requestedBy == "system" -> RequesterValidation.AUTHORIZED
+            requestedBy.startsWith("caregiver_") -> {
+                val caregiverId = requestedBy.removePrefix("caregiver_")
+                val permissions = caregiverPermissionManager.getCaregiverPermissions(caregiverId)
+                
+                if (permissions?.remoteConfiguration == true) {
+                    RequesterValidation.AUTHORIZED
+                } else {
+                    RequesterValidation.INSUFFICIENT_PERMISSIONS
+                }
+            }
+            else -> RequesterValidation.UNKNOWN_REQUESTER
+        }
+    }
+    
+    /**
+     * Check if this is a protected transition requiring additional verification
+     */
+    private fun isProtectedTransition(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode
+    ): Boolean {
+        return PROTECTED_TRANSITIONS[currentMode]?.contains(requestedMode) == true
+    }
+    
+    /**
+     * Validate protected transitions with additional security checks
+     */
+    private suspend fun validateProtectedTransition(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode,
+        requestedBy: String,
+        authenticationToken: String?
+    ): ProtectionValidation {
+        
+        // Require authentication token for protected transitions
+        if (authenticationToken.isNullOrBlank()) {
+            return ProtectionValidation.REQUIRES_AUTHENTICATION
+        }
+        
+        // Validate authentication token (PIN, biometric, etc.)
+        val authValid = validateAuthenticationToken(authenticationToken, requestedBy)
+        if (!authValid) {
+            return ProtectionValidation.INVALID_AUTHENTICATION
+        }
+        
+        // Additional checks for caregiver-initiated protected transitions
+        if (requestedBy.startsWith("caregiver_")) {
+            val userConsent = securityAuditDao.hasUserConsentForModeSwitch(
+                requestedMode.name, 
+                System.currentTimeMillis() - (24 * 60 * 60 * 1000) // Last 24 hours
+            )
+            
+            if (!userConsent) {
+                return ProtectionValidation.REQUIRES_USER_CONSENT
+            }
+        }
+        
+        return ProtectionValidation.APPROVED
+    }
+    
+    /**
+     * Protect elderly users from inappropriate mode switches
+     */
+    private suspend fun validateElderlyModeSwitch(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode,
+        requestedBy: String
+    ): ElderlyProtection {
+        
+        // Block switches to restricted modes unless user-initiated
+        if (requestedMode in ELDERLY_RESTRICTED_MODES && requestedBy != "user") {
+            return ElderlyProtection.BLOCKED_RESTRICTED_MODE
+        }
+        
+        // Prevent regression to more complex modes without explicit consent
+        if (isComplexityIncrease(currentMode, requestedMode) && requestedBy != "user") {
+            val hasConsent = securityAuditDao.hasElderlyConsentForComplexity(requestedMode.name)
+            if (!hasConsent) {
+                return ElderlyProtection.REQUIRES_COMPLEXITY_CONSENT
+            }
+        }
+        
+        // Check for potential confusion patterns
+        if (detectElderlyConfusion(currentMode, requestedMode)) {
+            return ElderlyProtection.POTENTIAL_CONFUSION_DETECTED
+        }
+        
+        return ElderlyProtection.SAFE
+    }
+    
+    /**
+     * Detect suspicious activity patterns that might indicate abuse or hacking
+     */
+    private suspend fun detectSuspiciousActivity(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode,
+        requestedBy: String
+    ): SuspiciousActivityResult {
+        
+        val recentActivity = securityAuditDao.getRecentSecurityEvents(requestedBy)
+        
+        // Pattern 1: Rapid mode switching (potential confusion or malicious testing)
+        val rapidSwitching = recentActivity.count { 
+            it.eventType == "MODE_SWITCH" && 
+            it.timestamp > System.currentTimeMillis() - (15 * 60 * 1000) // Last 15 minutes
+        }
+        
+        if (rapidSwitching >= 3) {
+            return SuspiciousActivityResult(
+                isSuspicious = true,
+                reason = "Rapid mode switching detected",
+                riskLevel = RiskLevel.HIGH
+            )
+        }
+        
+        // Pattern 2: Unusual time patterns (middle of night switches by caregivers)
+        val currentHour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+        if (requestedBy.startsWith("caregiver_") && (currentHour < 6 || currentHour > 22)) {
+            return SuspiciousActivityResult(
+                isSuspicious = true,
+                reason = "Unusual time pattern for caregiver mode switch",
+                riskLevel = RiskLevel.MEDIUM
+            )
+        }
+        
+        // Pattern 3: Mode switches that enable surveillance after being disabled
+        if (currentMode == ToggleMode.FOCUS && requestedMode == ToggleMode.FAMILY) {
+            val recentEscapeActivation = securityAuditDao.hasRecentEmergencyEscape()
+            if (recentEscapeActivation) {
+                return SuspiciousActivityResult(
+                    isSuspicious = true,
+                    reason = "Attempting to re-enable surveillance after emergency escape",
+                    riskLevel = RiskLevel.CRITICAL
+                )
+            }
+        }
+        
+        return SuspiciousActivityResult(isSuspicious = false, reason = "", riskLevel = RiskLevel.LOW)
+    }
+    
+    /**
+     * Check if mode switch increases complexity (potentially confusing for elderly)
+     */
+    private fun isComplexityIncrease(currentMode: ToggleMode, requestedMode: ToggleMode): Boolean {
+        val complexityOrder = listOf(
+            ToggleMode.MINIMAL,   // Simplest
+            ToggleMode.FOCUS,
+            ToggleMode.COMFORT,
+            ToggleMode.FAMILY,    // Most complex
+            ToggleMode.WELCOME    // Special case
+        )
+        
+        val currentIndex = complexityOrder.indexOf(currentMode)
+        val requestedIndex = complexityOrder.indexOf(requestedMode)
+        
+        return requestedIndex > currentIndex
+    }
+    
+    /**
+     * Detect patterns that might indicate elderly user confusion
+     */
+    private suspend fun detectElderlyConfusion(
+        currentMode: ToggleMode,
+        requestedMode: ToggleMode
+    ): Boolean {
+        
+        // Check for back-and-forth switching pattern
+        val recentSwitches = securityAuditDao.getRecentModeSwitches(limit = 5)
+        val switchingPattern = recentSwitches.map { "${it.fromMode}->${it.toMode}" }
+        
+        // Detect oscillation pattern (A->B->A->B)
+        if (switchingPattern.size >= 4) {
+            val lastFour = switchingPattern.takeLast(4)
+            if (lastFour[0] == lastFour[2] && lastFour[1] == lastFour[3]) {
+                return true // Oscillation detected
+            }
+        }
+        
+        return false
+    }
+    
+    /**
+     * Validate authentication token (PIN, biometric, etc.)
+     */
+    private suspend fun validateAuthenticationToken(
+        token: String,
+        requestedBy: String
+    ): Boolean {
+        // Implementation would validate against stored PIN/biometric hash
+        // For now, return true for system/user requests, validate for caregivers
+        return when {
+            requestedBy == "user" || requestedBy == "system" -> true
+            requestedBy.startsWith("caregiver_") -> {
+                // Validate caregiver authentication token
+                securityAuditDao.validateCaregiverToken(requestedBy, token)
+            }
+            else -> false
+        }
+    }
+    
+    /**
+     * Log suspicious activity and potentially lock system
+     */
+    private suspend fun logSuspiciousActivity(reason: String, requestedBy: String) {
+        Log.w(TAG, "Suspicious activity detected: $reason by $requestedBy")
+        
+        securityAuditDao.logSecurityEvent(
+            eventType = "SUSPICIOUS_ACTIVITY",
+            requestedBy = requestedBy,
+            details = reason,
+            riskLevel = "HIGH",
+            timestamp = System.currentTimeMillis()
+        )
+        
+        // Check if we should lock the system
+        val recentSuspiciousEvents = securityAuditDao.getRecentSuspiciousEvents()
+        if (recentSuspiciousEvents >= SUSPICIOUS_ACTIVITY_THRESHOLD) {
+            lockSystem("Multiple suspicious activities detected")
+        }
+        
+        // Notify elder rights advocate if configured
+        notifyElderRightsAdvocate("Suspicious mode switching activity detected: $reason")
+    }
+    
+    /**
+     * Lock the system temporarily due to suspicious activity
+     */
+    private suspend fun lockSystem(reason: String) {
+        _isLocked.value = true
+        _currentSecurityLevel.value = SecurityLevel.HIGH
+        
+        securityAuditDao.logSecurityEvent(
+            eventType = "SYSTEM_LOCKED",
+            requestedBy = "system",
+            details = reason,
+            riskLevel = "CRITICAL",
+            timestamp = System.currentTimeMillis()
+        )
+        
+        // Auto-unlock after lockout duration
+        // In production, this would use a proper scheduler
+        kotlinx.coroutines.GlobalScope.launch {
+            kotlinx.coroutines.delay(LOCKOUT_DURATION_MINUTES * 60 * 1000L)
+            unlockSystem("Automatic unlock after timeout")
+        }
+    }
+    
+    /**
+     * Unlock the system
+     */
+    private suspend fun unlockSystem(reason: String) {
+        _isLocked.value = false
+        _currentSecurityLevel.value = SecurityLevel.NORMAL
+        
+        securityAuditDao.logSecurityEvent(
+            eventType = "SYSTEM_UNLOCKED",
+            requestedBy = "system",
+            details = reason,
+            riskLevel = "INFO",
+            timestamp = System.currentTimeMillis()
+        )
+    }
+    
+    private suspend fun notifyElderRightsAdvocate(message: String) {
+        // Implementation would notify configured elder rights advocate
+        // This is a critical safeguard against abuse
+    }
+}
+
+// Validation result enums
+enum class ModeSwitchValidation {
+    APPROVED,
+    BLOCKED_SYSTEM_LOCKED,
+    BLOCKED_RATE_LIMITED,
+    BLOCKED_UNAUTHORIZED,
+    BLOCKED_ELDERLY_PROTECTION,
+    BLOCKED_SUSPICIOUS_ACTIVITY,
+    REQUIRES_ADDITIONAL_AUTH
+}
+
+enum class RequesterValidation {
+    AUTHORIZED,
+    INSUFFICIENT_PERMISSIONS,
+    UNKNOWN_REQUESTER
+}
+
+enum class ProtectionValidation {
+    APPROVED,
+    REQUIRES_AUTHENTICATION,
+    INVALID_AUTHENTICATION,
+    REQUIRES_USER_CONSENT
+}
+
+enum class ElderlyProtection {
+    SAFE,
+    BLOCKED_RESTRICTED_MODE,
+    REQUIRES_COMPLEXITY_CONSENT,
+    POTENTIAL_CONFUSION_DETECTED
+}
+
+enum class SecurityLevel {
+    NORMAL,
+    ELEVATED,
+    HIGH,
+    CRITICAL
+}
+
+enum class RiskLevel {
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL
+}
+
+data class SuspiciousActivityResult(
+    val isSuspicious: Boolean,
+    val reason: String,
+    val riskLevel: RiskLevel
+)

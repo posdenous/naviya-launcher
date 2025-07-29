@@ -23,7 +23,8 @@ class LayoutManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val layoutEngine: LauncherLayoutEngine,
     private val layoutDao: LayoutDao,
-    private val gson: Gson
+    private val gson: Gson,
+    private val modeSwitchingSecurityManager: ModeSwitchingSecurityManager
 ) {
     
     companion object {
@@ -75,19 +76,62 @@ class LayoutManager @Inject constructor(
     }
     
     /**
-     * Switch to a different toggle mode
+     * Switch to a different toggle mode with security validation
      */
     suspend fun switchToMode(
         mode: ToggleMode,
         screenWidth: Int,
         screenHeight: Int,
-        userId: String = DEFAULT_USER_ID
+        userId: String = DEFAULT_USER_ID,
+        requestedBy: String = "user",
+        userAge: Int? = null,
+        authenticationToken: String? = null
     ): LayoutConfiguration? {
         try {
             _isLoading.value = true
             _layoutError.value = null
             
-            Log.i(TAG, "Switching to mode: $mode")
+            Log.i(TAG, "Switching to mode: $mode (requested by: $requestedBy)")
+            
+            // SECURITY VALIDATION: Check if mode switch is allowed
+            val currentMode = _currentMode.value
+            val securityValidation = modeSwitchingSecurityManager.validateModeSwitch(
+                currentMode = currentMode,
+                requestedMode = mode,
+                requestedBy = requestedBy,
+                userAge = userAge,
+                authenticationToken = authenticationToken
+            )
+            
+            when (securityValidation) {
+                ModeSwitchValidation.APPROVED -> {
+                    Log.i(TAG, "Mode switch approved by security manager")
+                }
+                ModeSwitchValidation.BLOCKED_SYSTEM_LOCKED -> {
+                    _layoutError.value = "System is temporarily locked due to suspicious activity"
+                    return null
+                }
+                ModeSwitchValidation.BLOCKED_RATE_LIMITED -> {
+                    _layoutError.value = "Too many mode switches. Please wait before trying again"
+                    return null
+                }
+                ModeSwitchValidation.BLOCKED_UNAUTHORIZED -> {
+                    _layoutError.value = "Unauthorized to perform this mode switch"
+                    return null
+                }
+                ModeSwitchValidation.BLOCKED_ELDERLY_PROTECTION -> {
+                    _layoutError.value = "Mode switch blocked for user protection"
+                    return null
+                }
+                ModeSwitchValidation.BLOCKED_SUSPICIOUS_ACTIVITY -> {
+                    _layoutError.value = "Mode switch blocked due to suspicious activity"
+                    return null
+                }
+                ModeSwitchValidation.REQUIRES_ADDITIONAL_AUTH -> {
+                    _layoutError.value = "Additional authentication required for this mode switch"
+                    return null
+                }
+            }
             
             // Check if we have a saved layout for this mode
             val savedLayout = layoutDao.getDefaultLayoutForMode(userId, mode.name)

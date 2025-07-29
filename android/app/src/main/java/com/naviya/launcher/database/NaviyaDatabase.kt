@@ -12,6 +12,8 @@ import com.naviya.launcher.abuse.data.*
 import com.naviya.launcher.elderrights.data.*
 import com.naviya.launcher.caregiver.data.*
 import com.naviya.launcher.onboarding.data.*
+import com.naviya.launcher.security.*
+import com.naviya.launcher.data.dao.SecurityAuditDao
 
 /**
  * Main Room database for Naviya Elder Protection System
@@ -39,9 +41,17 @@ import com.naviya.launcher.onboarding.data.*
         
         // Onboarding entities
         OnboardingProgress::class,
-        UserProfile::class
+        UserProfile::class,
+        
+        // Security Audit entities
+        ModeSwitchAudit::class,
+        SecurityEvent::class,
+        AuthenticationAttempt::class,
+        ElderlyConsentLog::class,
+        SystemLockoutLog::class,
+        CaregiverTokenValidation::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(
@@ -67,6 +77,9 @@ abstract class NaviyaDatabase : RoomDatabase() {
     // Onboarding DAOs
     abstract fun onboardingDao(): OnboardingDao
     
+    // Security Audit DAO
+    abstract fun securityAuditDao(): SecurityAuditDao
+    
     companion object {
         @Volatile
         private var INSTANCE: NaviyaDatabase? = null
@@ -78,7 +91,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
                     NaviyaDatabase::class.java,
                     "naviya_database"
                 )
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .fallbackToDestructiveMigration() // For development only
                 .build()
                 INSTANCE = instance
@@ -186,6 +199,133 @@ abstract class NaviyaDatabase : RoomDatabase() {
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_oversight_userId ON clinical_oversight(userId)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_userId ON clinical_assessment(userId)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_clinical_assessment_assessingPhysicianId ON clinical_assessment(assessingPhysicianId)")
+            }
+        }
+        
+        /**
+         * Migration from version 2 to 3 - adds security audit tables
+         */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create mode switch audit table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS mode_switch_audit (
+                        auditId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        fromMode TEXT NOT NULL,
+                        toMode TEXT NOT NULL,
+                        requestedBy TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        result TEXT NOT NULL,
+                        reason TEXT,
+                        userAge INTEGER,
+                        authenticationToken TEXT,
+                        ipAddress TEXT,
+                        deviceInfo TEXT
+                    )
+                """)
+                
+                // Create security events table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS security_events (
+                        eventId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        eventType TEXT NOT NULL,
+                        description TEXT NOT NULL,
+                        severity TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        requestedBy TEXT NOT NULL,
+                        resolved INTEGER NOT NULL,
+                        resolvedAt INTEGER,
+                        resolvedBy TEXT,
+                        metadata TEXT
+                    )
+                """)
+                
+                // Create authentication attempts table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS authentication_attempts (
+                        attemptId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        authType TEXT NOT NULL,
+                        success INTEGER NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        requestedBy TEXT NOT NULL,
+                        failureReason TEXT,
+                        ipAddress TEXT,
+                        deviceInfo TEXT
+                    )
+                """)
+                
+                // Create elderly consent log table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS elderly_consent_log (
+                        consentId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        consentType TEXT NOT NULL,
+                        consentGiven INTEGER NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        targetMode TEXT,
+                        witnessId TEXT,
+                        consentMethod TEXT NOT NULL,
+                        expiryTimestamp INTEGER,
+                        revokedAt INTEGER,
+                        revokedReason TEXT
+                    )
+                """)
+                
+                // Create system lockout log table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS system_lockout_log (
+                        lockoutId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        lockoutReason TEXT NOT NULL,
+                        lockoutStartTime INTEGER NOT NULL,
+                        lockoutEndTime INTEGER,
+                        unlockMethod TEXT,
+                        elderRightsNotified INTEGER NOT NULL,
+                        caregiverNotified INTEGER NOT NULL
+                    )
+                """)
+                
+                // Create caregiver token validation table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS caregiver_token_validation (
+                        validationId TEXT PRIMARY KEY NOT NULL,
+                        caregiverId TEXT NOT NULL,
+                        tokenHash TEXT NOT NULL,
+                        isValid INTEGER NOT NULL,
+                        validationTimestamp INTEGER NOT NULL,
+                        expiryTimestamp INTEGER NOT NULL,
+                        revokedAt INTEGER,
+                        revokedReason TEXT
+                    )
+                """)
+                
+                // Create indexes for security audit tables
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_userId ON mode_switch_audit(userId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_timestamp ON mode_switch_audit(timestamp)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_requestedBy ON mode_switch_audit(requestedBy)")
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_userId ON security_events(userId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_eventType ON security_events(eventType)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_timestamp ON security_events(timestamp)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_resolved ON security_events(resolved)")
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_userId ON authentication_attempts(userId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_timestamp ON authentication_attempts(timestamp)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_success ON authentication_attempts(success)")
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_userId ON elderly_consent_log(userId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_consentType ON elderly_consent_log(consentType)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_timestamp ON elderly_consent_log(timestamp)")
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_userId ON system_lockout_log(userId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_lockoutStartTime ON system_lockout_log(lockoutStartTime)")
+                
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_caregiverId ON caregiver_token_validation(caregiverId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_isValid ON caregiver_token_validation(isValid)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_expiryTimestamp ON caregiver_token_validation(expiryTimestamp)")
             }
         }
     }

@@ -1,0 +1,411 @@
+package com.naviya.launcher.ui.security
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naviya.launcher.R
+import com.naviya.launcher.layout.ToggleMode
+import com.naviya.launcher.security.ModeSwitchValidation
+
+/**
+ * Main Security Integration Screen
+ * Orchestrates all security features and provides unified elderly-friendly security interface
+ */
+@Composable
+fun SecurityIntegrationScreen(
+    onModeSwitch: (ToggleMode) -> Unit,
+    onEmergencyEscape: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SecurityIntegrationViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    // Security dialogs state
+    var showSecurityNotification by remember { mutableStateOf(false) }
+    var showAuthenticationDialog by remember { mutableStateOf(false) }
+    var pendingModeSwitch by remember { mutableStateOf<ToggleMode?>(null) }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Security Status Header
+        SecurityStatusHeader(
+            securityStatus = uiState.securityStatus,
+            emergencyEscapeActive = uiState.emergencyEscapeActive,
+            onEmergencyEscape = onEmergencyEscape
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Emergency Escape Widget
+            item {
+                EmergencyEscapeWidget(
+                    onEmergencyEscape = { method ->
+                        viewModel.activateEmergencyEscape(method)
+                        onEmergencyEscape()
+                    },
+                    isActive = uiState.emergencyEscapeActive
+                )
+            }
+
+            // Elder Rights Advocacy Widget
+            item {
+                ElderRightsAdvocacyWidget(
+                    isEmergencyMode = uiState.emergencyEscapeActive
+                )
+            }
+
+            // Security Events List
+            if (uiState.recentSecurityEvents.isNotEmpty()) {
+                item {
+                    SecurityEventsCard(
+                        events = uiState.recentSecurityEvents,
+                        onViewDetails = { event ->
+                            viewModel.viewSecurityEventDetails(event.eventId)
+                        }
+                    )
+                }
+            }
+
+            // Mode Switch Security Status
+            item {
+                ModeSwitchSecurityCard(
+                    currentMode = uiState.currentMode,
+                    availableModes = uiState.availableModes,
+                    onModeSwitch = { targetMode ->
+                        pendingModeSwitch = targetMode
+                        viewModel.validateModeSwitch(targetMode) { validation ->
+                            when (validation.validationResult) {
+                                ModeSwitchValidation.APPROVED -> {
+                                    onModeSwitch(targetMode)
+                                }
+                                ModeSwitchValidation.AUTHENTICATION_REQUIRED -> {
+                                    showAuthenticationDialog = true
+                                }
+                                else -> {
+                                    showSecurityNotification = true
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    // Security Notification Dialog
+    if (showSecurityNotification && uiState.lastValidationResult != null) {
+        SecurityNotificationDialog(
+            validationResult = uiState.lastValidationResult.validationResult,
+            reason = uiState.lastValidationResult.reason,
+            onDismiss = { 
+                showSecurityNotification = false
+                viewModel.clearValidationResult()
+            },
+            onContactElderRights = {
+                contactElderRightsAdvocate(context)
+            },
+            onEmergencyEscape = {
+                viewModel.activateEmergencyEscape("SECURITY_DIALOG")
+                onEmergencyEscape()
+                showSecurityNotification = false
+            },
+            showEmergencyOptions = uiState.lastValidationResult.validationResult in listOf(
+                ModeSwitchValidation.SUSPICIOUS_ACTIVITY,
+                ModeSwitchValidation.SYSTEM_LOCKED,
+                ModeSwitchValidation.INVALID_CAREGIVER_TOKEN
+            )
+        )
+    }
+
+    // Authentication Dialog
+    if (showAuthenticationDialog && pendingModeSwitch != null) {
+        SecurityAuthenticationDialog(
+            targetMode = pendingModeSwitch!!,
+            onAuthenticated = { authToken ->
+                viewModel.authenticateAndSwitchMode(pendingModeSwitch!!, authToken) { success ->
+                    if (success) {
+                        onModeSwitch(pendingModeSwitch!!)
+                    }
+                    showAuthenticationDialog = false
+                    pendingModeSwitch = null
+                }
+            },
+            onDismiss = {
+                showAuthenticationDialog = false
+                pendingModeSwitch = null
+            },
+            onBiometricAuth = {
+                // Handle biometric authentication
+                viewModel.authenticateWithBiometric(pendingModeSwitch!!) { success ->
+                    if (success) {
+                        onModeSwitch(pendingModeSwitch!!)
+                    }
+                    showAuthenticationDialog = false
+                    pendingModeSwitch = null
+                }
+            },
+            supportsBiometric = ElderlyBiometricAuth.isAvailable(context)
+        )
+    }
+}
+
+/**
+ * Security status header component
+ */
+@Composable
+private fun SecurityStatusHeader(
+    securityStatus: SecurityStatus,
+    emergencyEscapeActive: Boolean,
+    onEmergencyEscape: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = when (securityStatus) {
+                SecurityStatus.SECURE -> MaterialTheme.colorScheme.primaryContainer
+                SecurityStatus.WARNING -> MaterialTheme.colorScheme.errorContainer
+                SecurityStatus.EMERGENCY -> MaterialTheme.colorScheme.error
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(
+                        when (securityStatus) {
+                            SecurityStatus.SECURE -> R.drawable.ic_security_check
+                            SecurityStatus.WARNING -> R.drawable.ic_security_warning
+                            SecurityStatus.EMERGENCY -> R.drawable.ic_security_emergency
+                        }
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        text = stringResource(
+                            when (securityStatus) {
+                                SecurityStatus.SECURE -> R.string.security_status_secure
+                                SecurityStatus.WARNING -> R.string.security_status_warning
+                                SecurityStatus.EMERGENCY -> R.string.security_status_emergency
+                            }
+                        ),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    if (emergencyEscapeActive) {
+                        Text(
+                            text = stringResource(R.string.security_emergency_active),
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
+
+            if (securityStatus != SecurityStatus.SECURE) {
+                TextButton(
+                    onClick = onEmergencyEscape
+                ) {
+                    Text(stringResource(R.string.security_get_help))
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Security events card component
+ */
+@Composable
+private fun SecurityEventsCard(
+    events: List<SecurityEventUi>,
+    onViewDetails: (SecurityEventUi) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.security_recent_events),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            events.take(3).forEach { event ->
+                SecurityEventItem(
+                    event = event,
+                    onClick = { onViewDetails(event) }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
+
+/**
+ * Individual security event item
+ */
+@Composable
+private fun SecurityEventItem(
+    event: SecurityEventUi,
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(
+                    when (event.severity) {
+                        "HIGH", "CRITICAL" -> R.drawable.ic_security_warning
+                        else -> R.drawable.ic_info
+                    }
+                ),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = when (event.severity) {
+                    "HIGH", "CRITICAL" -> MaterialTheme.colorScheme.error
+                    else -> MaterialTheme.colorScheme.onSurfaceVariant
+                }
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = event.description,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = event.timeAgo,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Mode switch security card
+ */
+@Composable
+private fun ModeSwitchSecurityCard(
+    currentMode: ToggleMode,
+    availableModes: List<ToggleMode>,
+    onModeSwitch: (ToggleMode) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.security_mode_switch_title),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = stringResource(R.string.security_current_mode, currentMode.displayName),
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            availableModes.forEach { mode ->
+                if (mode != currentMode) {
+                    OutlinedButton(
+                        onClick = { onModeSwitch(mode) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.security_switch_to_mode, mode.displayName),
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * UI state data classes
+ */
+data class SecurityIntegrationUiState(
+    val securityStatus: SecurityStatus = SecurityStatus.SECURE,
+    val emergencyEscapeActive: Boolean = false,
+    val currentMode: ToggleMode = ToggleMode.COMFORT,
+    val availableModes: List<ToggleMode> = ToggleMode.values().toList(),
+    val recentSecurityEvents: List<SecurityEventUi> = emptyList(),
+    val lastValidationResult: SecurityValidationResult? = null,
+    val isLoading: Boolean = false
+)
+
+data class SecurityEventUi(
+    val eventId: String,
+    val eventType: String,
+    val description: String,
+    val severity: String,
+    val timeAgo: String,
+    val timestamp: Long
+)
+
+data class SecurityValidationResult(
+    val validationResult: ModeSwitchValidation,
+    val reason: String,
+    val requiresConsent: Boolean = false,
+    val elderRightsNotified: Boolean = false
+)
+
+enum class SecurityStatus {
+    SECURE, WARNING, EMERGENCY
+}

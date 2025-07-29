@@ -140,19 +140,20 @@ enum class TileType(
         )
     ),
 
-    PARENTAL_CONTROL(
-        displayName = "Parental Control",
-        description = "Family management and parental control apps",
+    ELDER_ADVOCACY(
+        displayName = "Elder Rights & Advocacy",
+        description = "Elder rights resources and advocacy support",
         allowedCategories = setOf(
-            "android.intent.category.APP_PARENTAL_CONTROL"
+            "android.intent.category.APP_ADVOCACY",
+            "android.intent.category.APP_SUPPORT"
         ),
         allowedPackagePatterns = setOf(
-            "com.google.android.apps.kids.familylink",
-            "com.qustodio.qustodioapp",
-            "com.screentime",
-            "com.kidslox.copilot",
-            "com.familytime.android",
-            "com.kiddle.android"
+            "org.elderrights.advocacy",
+            "com.ageuk.support",
+            "org.aarp.mobile",
+            "com.eldercare.helpline",
+            "org.alzheimers.support",
+            "com.seniorplanet.community"
         )
     ),
 

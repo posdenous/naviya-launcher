@@ -1,0 +1,361 @@
+package com.naviya.launcher.ui.security
+
+import android.content.Context
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.fragment.app.FragmentActivity
+import com.naviya.launcher.R
+import com.naviya.launcher.layout.ToggleMode
+
+/**
+ * Security authentication dialog for elderly-friendly secure mode switching
+ * Supports both PIN and biometric authentication with clear, accessible UI
+ */
+@Composable
+fun SecurityAuthenticationDialog(
+    targetMode: ToggleMode,
+    onAuthenticated: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onBiometricAuth: () -> Unit = {},
+    supportsBiometric: Boolean = false
+) {
+    var pin by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = false,
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Security Icon
+                Icon(
+                    painter = painterResource(R.drawable.ic_security_lock),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Title
+                Text(
+                    text = stringResource(R.string.auth_title),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Subtitle with target mode
+                Text(
+                    text = stringResource(R.string.auth_subtitle, getModeFriendlyName(targetMode)),
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // PIN Input Section
+                Text(
+                    text = stringResource(R.string.auth_pin_prompt),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                // PIN Input Field
+                OutlinedTextField(
+                    value = pin,
+                    onValueChange = { newPin ->
+                        if (newPin.length <= 6 && newPin.all { it.isDigit() }) {
+                            pin = newPin
+                            isError = false
+                            errorMessage = ""
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
+                    label = { Text(stringResource(R.string.auth_pin_label)) },
+                    placeholder = { Text("••••••") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.NumberPassword,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            if (pin.length >= 4) {
+                                onAuthenticated(pin)
+                            } else {
+                                isError = true
+                                errorMessage = context.getString(R.string.auth_pin_too_short)
+                            }
+                        }
+                    ),
+                    isError = isError,
+                    supportingText = if (isError) {
+                        { Text(errorMessage, color = MaterialTheme.colorScheme.error) }
+                    } else null,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                    )
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // Action Buttons
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // PIN Authentication Button
+                    Button(
+                        onClick = {
+                            if (pin.length >= 4) {
+                                onAuthenticated(pin)
+                            } else {
+                                isError = true
+                                errorMessage = context.getString(R.string.auth_pin_too_short)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        enabled = pin.length >= 4,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_pin),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.auth_use_pin),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
+                    // Biometric Authentication Button (if supported)
+                    if (supportsBiometric) {
+                        OutlinedButton(
+                            onClick = onBiometricAuth,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_fingerprint),
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.auth_use_biometric),
+                                fontSize = 18.sp
+                            )
+                        }
+                    }
+                    
+                    // Cancel Button
+                    TextButton(
+                        onClick = onDismiss,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.auth_cancel),
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Security Information
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_info),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(R.string.auth_security_info),
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    // Auto-focus PIN field when dialog opens
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+}
+
+/**
+ * Get user-friendly mode name for display
+ */
+@Composable
+private fun getModeFriendlyName(mode: ToggleMode): String {
+    return when (mode) {
+        ToggleMode.COMFORT -> stringResource(R.string.mode_comfort)
+        ToggleMode.FAMILY -> stringResource(R.string.mode_family)
+        ToggleMode.FOCUS -> stringResource(R.string.mode_focus)
+        ToggleMode.MINIMAL -> stringResource(R.string.mode_minimal)
+        ToggleMode.WELCOME -> stringResource(R.string.mode_welcome)
+    }
+}
+
+/**
+ * Biometric authentication helper for elderly users
+ */
+class ElderlyBiometricAuth(private val activity: FragmentActivity) {
+    
+    fun authenticate(
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit,
+        onCancel: () -> Unit
+    ) {
+        val biometricManager = BiometricManager.from(activity)
+        
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                showBiometricPrompt(onSuccess, onError, onCancel)
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                onError("Biometric authentication not available on this device")
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                onError("Biometric authentication currently unavailable")
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                onError("No biometric credentials enrolled")
+            }
+            else -> {
+                onError("Biometric authentication not available")
+            }
+        }
+    }
+    
+    private fun showBiometricPrompt(
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit,
+        onCancel: () -> Unit
+    ) {
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Secure Mode Access")
+            .setSubtitle("Use your fingerprint or face to access this mode")
+            .setDescription("This helps protect your privacy and security")
+            .setNegativeButtonText("Use PIN instead")
+            .setConfirmationRequired(true)
+            .build()
+        
+        val biometricPrompt = BiometricPrompt(activity,
+            androidx.core.content.ContextCompat.getMainExecutor(activity),
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    onSuccess("biometric_auth_token")
+                }
+                
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    if (errorCode == BiometricPrompt.ERROR_USER_CANCELED) {
+                        onCancel()
+                    } else {
+                        onError(errString.toString())
+                    }
+                }
+                
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    onError("Authentication failed. Please try again.")
+                }
+            }
+        )
+        
+        biometricPrompt.authenticate(promptInfo)
+    }
+    
+    companion object {
+        fun isAvailable(context: Context): Boolean {
+            val biometricManager = BiometricManager.from(context)
+            return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
+        }
+    }
+}
