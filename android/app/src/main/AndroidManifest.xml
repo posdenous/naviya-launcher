@@ -75,6 +75,7 @@
         android:required="false" />
 
     <application
+        android:name=".NaviyaApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -87,9 +88,9 @@
         android:supportsRtl="true"
         tools:targetApi="31">
 
-        <!-- Minimal Main Launcher Activity for Integration Testing -->
+        <!-- Simple Test Activity without Hilt dependencies -->
         <activity
-            android:name=".MinimalMainActivity"
+            android:name=".SimpleTestActivity"
             android:exported="true"
             android:theme="@style/Theme.NaviyaLauncher"
             android:launchMode="singleTask"

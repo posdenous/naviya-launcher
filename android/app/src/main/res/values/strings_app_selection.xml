@@ -6,7 +6,6 @@
     <string name="best_match">Best Match</string>
     <string name="all_other_apps">All Other Apps</string>
     <string name="perfect_for_this_tile">Perfect for this tile</string>
-    <string name="cancel">Cancel</string>
     
     <!-- Tile Type Descriptions (Elderly-Friendly) -->
     <string name="tile_type_communication_desc">Apps for calling, texting, and video chatting with family and friends</string>
