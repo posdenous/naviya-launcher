@@ -1,0 +1,35 @@
+flowchart TD
+    A[Wake Up] --> B{Check Phone}
+    B -->|Sees Naviya| C[Open Launcher]
+    C --> D{Emergency Needed?}
+    D -->|Yes| E[Press SOS Button]
+    D -->|No| F[Check Unread Tile]
+    
+    E --> E1[Select Emergency Level]
+    E1 --> E2[HELP/URGENT/EMERGENCY]
+    E2 --> E3[Multi-channel Alert Sent]
+    E3 --> E4[Wait for Response]
+    
+    F --> F1{Has Unread?}
+    F1 -->|Yes| F2[View Messages/Calls]
+    F1 -->|No| F3[Browse App Grid]
+    
+    F2 --> F4[Respond to Family]
+    F3 --> F5[Launch Familiar App]
+    F5 --> F6[Complete Task]
+    F6 --> G[Return to Launcher]
+    F4 --> G
+    E4 --> G
+    
+    G --> H{Feeling Confused?}
+    H -->|Yes| I[Triple-tap for Help]
+    H -->|No| J[Continue Normal Use]
+    
+    I --> I1[Panic Mode Activated]
+    I1 --> I2[Silent Help Sent]
+    I2 --> I3[Normal UI Maintained]
+    
+    style E fill:#ff6b6b
+    style I fill:#ff9999
+    style E3 fill:#4ecdc4
+    style I2 fill:#4ecdc4

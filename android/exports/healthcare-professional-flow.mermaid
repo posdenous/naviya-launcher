@@ -1,0 +1,39 @@
+flowchart TD
+    A[Receive Patient Referral] --> B[Access Professional Portal]
+    B --> C[Verify Credentials]
+    C --> D{Credentials Valid?}
+    D -->|No| E[Re-submit Documentation]
+    D -->|Yes| F[Schedule Patient Visit]
+    
+    E --> C
+    F --> G[Meet with Patient]
+    G --> H[Explain Naviya System]
+    H --> I{Patient Consents?}
+    I -->|No| J[Document Refusal]
+    I -->|Yes| K[Begin Installation]
+    
+    K --> L[Clinical Assessment]
+    L --> L1[Cognitive Test - MMSE]
+    L1 --> L2[Functional Assessment - ADL]
+    L2 --> L3[Social Assessment]
+    L3 --> L4[Risk Factor Evaluation]
+    L4 --> M{High Abuse Risk?}
+    
+    M -->|Yes| N[Enhanced Safety Protocols]
+    M -->|No| O[Standard Setup]
+    
+    N --> N1[Assign Elder Rights Advocate]
+    N1 --> N2[Setup Secret Panic Mode]
+    N2 --> N3[Enhanced Monitoring]
+    
+    O --> P[Configure Emergency Contacts]
+    N3 --> P
+    P --> Q[Setup Caregiver Access]
+    Q --> R[Final System Test]
+    R --> S[Patient Training]
+    S --> T[Documentation Complete]
+    
+    style M fill:#ff6b6b
+    style N fill:#ff9999
+    style N1 fill:#4ecdc4
+    style T fill:#51cf66

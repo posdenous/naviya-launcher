@@ -1,0 +1,37 @@
+flowchart TD
+    A[Receive Caregiver Invite] --> B[Download Caregiver App]
+    B --> C[Scan QR Code]
+    C --> D[Verify Identity]
+    D --> E{Elderly User Approves?}
+    E -->|No| F[Request Denied]
+    E -->|Yes| G[Access Granted]
+    
+    G --> H[View Dashboard]
+    H --> I{Emergency Alert?}
+    I -->|Yes| J[Emergency Response]
+    I -->|No| K[Check Daily Status]
+    
+    J --> J1[View Emergency Details]
+    J1 --> J2[Contact Emergency Services]
+    J2 --> J3[Coordinate Response]
+    J3 --> J4[Follow-up with User]
+    
+    K --> K1[App Usage Summary]
+    K1 --> K2[Communication Status]
+    K2 --> K3[Location Check]
+    K3 --> L{Concerning Patterns?}
+    
+    L -->|Yes| M[Review Detailed Logs]
+    L -->|No| N[Normal Monitoring]
+    
+    M --> M1{Abuse Indicators?}
+    M1 -->|Yes| M2[System Flags Alert]
+    M1 -->|No| M3[Continue Monitoring]
+    
+    M2 --> M4[Elder Rights Contacted]
+    M4 --> M5[Investigation Initiated]
+    
+    style J fill:#ff6b6b
+    style M2 fill:#ff9999
+    style M4 fill:#4ecdc4
+    style M5 fill:#51cf66

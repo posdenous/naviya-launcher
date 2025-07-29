@@ -1,0 +1,41 @@
+flowchart TD
+    A[Emergency Triggered] --> B{Trigger Method}
+    B -->|SOS Button| C[Visible Emergency]
+    B -->|Triple-tap| D[Panic Mode]
+    B -->|Voice Command| C
+    B -->|Shake Device| C
+    B -->|Secret SMS| D
+    
+    C --> C1[Emergency Level Selection]
+    C1 --> C2{Level Selected}
+    C2 -->|HELP| C3[Assistance Needed]
+    C2 -->|URGENT| C4[Medical Emergency]
+    C2 -->|EMERGENCY| C5[Call 911]
+    
+    D --> D1[Silent Mode Activated]
+    D1 --> D2[Background Location Sharing]
+    D2 --> D3[Stealth Evidence Recording]
+    D3 --> D4[Elder Rights Alert]
+    
+    C3 --> E[Notify Caregivers]
+    C4 --> F[Medical Alert + Caregivers]
+    C5 --> G[Emergency Services + All]
+    
+    E --> H[SMS + App Notification]
+    F --> I[Medical Services + SMS + App]
+    G --> J[911 Call + Location + Medical Info]
+    
+    D4 --> K[Silent SMS to Advocates]
+    K --> L[Covert Location Sharing]
+    L --> M[Evidence Preservation]
+    
+    H --> N[Caregiver Response]
+    I --> N
+    J --> O[Emergency Services Response]
+    M --> P[Advocate Investigation]
+    
+    style D fill:#ff9999
+    style D4 fill:#4ecdc4
+    style G fill:#ff6b6b
+    style O fill:#51cf66
+    style P fill:#51cf66
