@@ -1,6 +1,6 @@
 # Naviya Android Launcher
 
-A comprehensive Android launcher designed specifically for elderly users, featuring accessibility-first design, emergency functionality, and caregiver integration. Naviya transforms complex smartphones into simple, safe, and accessible devices that empower elderly users while providing peace of mind for their families.
+A comprehensive Android launcher designed specifically for elderly users, featuring accessibility-first design, emergency functionality, and caregiver integration. Naviya transforms complex smartphones into simple, safe, and accessible devices that empower elderly users whilst providing peace of mind for their families.
 
 ## 🎯 Target Users & Real-World Impact
 
@@ -13,11 +13,11 @@ A comprehensive Android launcher designed specifically for elderly users, featur
 ### Secondary Users
 - **Family caregivers**: Adult children monitoring elderly parents
 - **Professional caregivers**: Healthcare workers and social services
-- **NGOs & senior centers**: Organizations serving elderly populations
+- **NGOs & senior centres**: Organisations serving elderly populations
 
 ### Real-World Success Stories
 
-**🏥 Munich Senior Center (150 users)**
+**🏥 Munich Senior Centre (150 users)**
 - *Challenge*: Residents couldn't use smartphones for telehealth appointments
 - *Solution*: Naviya FOCUS mode with simplified interface
 - *Result*: 89% successfully completed video calls with doctors
@@ -92,7 +92,7 @@ Naviya automatically adapts to user capabilities and needs:
   - Special app sequence
 - **Immutable Audit Trail**: Blockchain-style logging of all caregiver actions
 - **Independent Oversight**: Built-in elder rights advocate (cannot be removed)
-- **Abuse Detection**: AI pattern recognition for suspicious behavior
+- **Abuse Detection**: AI pattern recognition for suspicious behaviour
 - **Protected Communication**: Secret channels to elder rights hotlines
 - **Data Minimization**: Location approximation only, no detailed tracking
 - **Monthly Consent Reconfirmation**: Regular permission validation
@@ -192,7 +192,7 @@ android/
 │   │   └── providers/                          # Content providers
 │   ├── src/main/res/
 │   │   ├── layout/                             # XML layouts
-│   │   ├── values/                             # Strings, colors, styles
+│   │   ├── values/                             # Strings, colours, styles
 │   │   ├── values-de/                          # German translations
 │   │   ├── values-tr/                          # Turkish translations
 │   │   ├── values-ar/                          # Arabic translations
@@ -215,121 +215,56 @@ android/
 - **Slow Animations**: Reduced motion for clarity
 
 ### Safety & Security
+
 - **Crash Recovery**: Safe mode after 3 crashes
 - **PIN Protection**: Settings locked behind PIN
 - **Emergency Access**: SOS always functional
 - **App Whitelist**: Controlled app installation
 - **Caregiver Oversight**: Remote assistance capability
-- **Mode Switch Security**: Rate limiting and authentication for mode changes
+
+### Security Architecture
+
+- **Mode Switching Security Manager**: Rate limiting and authentication validation for mode changes
 - **Ethical App Access**: Protection against surveillance and financial abuse
 - **Elder Rights Integration**: Protected advocacy contacts and resources
 - **Emergency Escape**: Multiple methods for immediate help access
 - **Abuse Prevention**: Immutable audit trails and suspicious activity detection
 
-### Multilingual Support
-- **5 Languages**: DE, EN, TR, AR, UA
-- **RTL Support**: Arabic text direction
-- **Cultural Adaptation**: Region-specific defaults
-- **TTS Languages**: Native pronunciation
-
-## 🔧 Development Setup
-
-### Prerequisites
-- Android Studio Hedgehog (2023.1.1) or later
-- JDK 8 or later
-- Android SDK 34
-- Firebase project setup
-
-### Build Commands
-```bash
-# Debug build for testing
-./gradlew assembleDebug
-
-# Release build
-./gradlew assembleRelease
-
-# Elderly user testing build
-./gradlew buildElderlyTestVersion
-
-# Caregiver demo build
-./gradlew buildCaregiverDemo
-
-# Run tests
-./gradlew test
-./gradlew connectedAndroidTest
-```
-
-### Firebase Setup
-1. Create Firebase project: `naviya-launcher`
-2. Add Android app with package: `com.naviya.launcher`
-3. Download `google-services.json` to `app/`
-4. Enable Firestore, Authentication, Analytics, Crashlytics
-
-## 🧪 Testing Strategy
-
-### Accessibility Testing
-- **TalkBack**: Screen reader compatibility
-- **Switch Access**: External switch support
-- **Voice Access**: Voice command testing
-- **Large Text**: Font scaling validation
-- **High Contrast**: Visual accessibility
-
-### Elderly User Testing
-- **Usability Sessions**: Real elderly users
-- **Caregiver Feedback**: Family member input
-- **NGO Partnerships**: Senior center testing
-- **Multilingual Testing**: Native speakers
-- **Device Compatibility**: Older Android devices
-
 ### Automated Testing
+
 - **Unit Tests**: Business logic validation (100+ security tests)
 - **Integration Tests**: Component interaction and security workflows
 - **UI Tests**: User flow automation with accessibility validation
 - **Accessibility Tests**: A11y compliance and elderly-friendly design
-- **Performance Tests**: Memory and battery optimization
-- **Security Tests**: Comprehensive abuse prevention and ethical controls
+- **Performance Tests**: Memory and battery optimisation
+
+### Testing Infrastructure
+
+- **100+ Security Tests**: Comprehensive abuse prevention validation and ethical controls
 - **Mode Switch Tests**: Rate limiting, authentication, and elderly protection
 - **Emergency Tests**: SOS functionality and escape mechanisms
 
 ## 🛡️ Security & Ethical Protection
 
-### Comprehensive Security Architecture
-
-Naviya implements enterprise-grade security specifically designed to protect vulnerable elderly users from abuse while maintaining their autonomy and dignity.
-
-#### Mode Switching Security
-- **Rate Limiting**: Maximum 3 mode switches per hour to prevent abuse
-- **Authentication Requirements**: PIN/biometric verification for sensitive modes
-- **Elderly Protection**: Age-based complexity restrictions and consent validation
-- **Caregiver Token Validation**: Secure authentication for caregiver access
-- **Suspicious Activity Detection**: AI-powered abuse pattern recognition
-- **System Lockout**: Automatic protection after multiple violations
-- **Immutable Audit Trails**: Blockchain-style logging of all security events
-
-#### Ethical App Access Controls
-- **Essential App Protection**: Phone, Emergency, Settings always accessible
-- **Surveillance Prevention**: Explicit consent required for monitoring apps
-- **Financial Protection**: Banking/payment apps blocked for caregivers
-- **User Preference Override**: Elderly users can override caregiver restrictions
-- **Emergency Escape**: Immediate access to help regardless of restrictions
-- **Elder Rights Integration**: Protected advocacy contacts unreachable by caregivers
-
-#### Emergency & Advocacy Features
-- **Triple-Tap Emergency**: Discrete emergency activation
-- **Voice Command Escape**: "Help me" voice recognition
-- **Long-Press SOS**: Physical button emergency access
-- **Elder Rights Widget**: Direct access to advocacy resources and helplines
 - **Protected Contacts**: Advocacy contacts immune to caregiver removal
 - **Automatic Notifications**: Elder rights advocates alerted to suspicious activity
 
 ### Security UI Components
-- **SecurityNotificationDialog**: Elderly-friendly security alerts with clear messaging
-- **SecurityAuthenticationDialog**: Accessible PIN/biometric authentication
-- **EmergencyEscapeWidget**: Multiple emergency access methods with feedback
-- **ElderRightsAdvocacyWidget**: Protected advocacy resources and helplines
-- **SecurityIntegrationScreen**: Unified security interface with real-time status
+
+- **Security Notification Dialog**: Elderly-friendly security alerts with clear messaging
+- **Security Authentication Dialog**: Accessible PIN/biometric authentication
+
+### Emergency & Safety Integration
+
+- **Emergency Escape Widget**: Triple-tap, voice command, long-press activation
+
+### Elder Rights Advocacy
+
+- **Elder Rights Advocacy Widget**: Protected advocacy contacts and resources and helplines
+- **Security Integration Screen**: Unified security interface with real-time status
 
 ### Abuse Prevention Safeguards
+
 1. **Surveillance Abuse**: Monitoring requires explicit consent, limited scope
 2. **Financial Abuse**: Payment apps blocked for caregivers, audit trails
 3. **Social Isolation**: Essential contacts protected, advocacy always accessible
@@ -339,31 +274,33 @@ Naviya implements enterprise-grade security specifically designed to protect vul
 ## 📊 Data Models & Schemas
 
 ### Core Data Models
-- **LauncherState** ↔ `launcher_state.mcp.yaml`
-- **NotificationState** ↔ `notification_state.mcp.yaml`
-- **CrashRecoveryState** ↔ `crash_recovery_state.mcp.yaml`
-- **PinSecurityState** ↔ `pin_security_state.mcp.yaml`
-- **AppWhitelistState** ↔ `app_whitelist_state.mcp.yaml`
+
+- **Launcher State** ↔ `launcher_state.mcp.yaml`
+- **Notification State** ↔ `notification_state.mcp.yaml`
+- **Crash Recovery State** ↔ `crash_recovery_state.mcp.yaml`
+- **Pin Security State** ↔ `pin_security_state.mcp.yaml`
+- **App Whitelist State** ↔ `app_whitelist_state.mcp.yaml`
 
 ### Security Data Models
-- **SecurityAuditEntity**: Immutable security event logging
-- **ModeSwitchAuditEntity**: Mode change tracking and validation
-- **AuthenticationAttemptEntity**: Login attempt monitoring
-- **ElderlyConsentEntity**: Consent management and validation
-- **SystemLockoutEntity**: Abuse prevention and system protection
-- **CaregiverTokenEntity**: Secure caregiver authentication
+
+- **Security Audit Entity**: Immutable audit trail with blockchain-style logging
+- **Mode Switch Audit Entity**: Mode change tracking and validation
+- **Authentication Attempt Entity**: Login attempt monitoring
+- **Elderly Consent Entity**: Consent management and validation
+- **System Lockout Entity**: Abuse prevention and system protection
+- **Caregiver Token Entity**: Secure caregiver authentication
 
 ### Database Integration
+
 - **Room Database**: Local-first data persistence with migration support
 - **Security Audit DAO**: Comprehensive security event querying
 - **Dependency Injection**: Hilt-based DI for security components
 - **Migration Support**: Database versioning for security schema updates
 
-This ensures consistency between AI assistant rules, security requirements, and Android implementation.
-
 ## 🚀 Deployment
 
 ### Release Process
+
 1. **Code Review**: Accessibility and safety focus
 2. **Testing**: Elderly user validation
 3. **Staging**: Caregiver preview
@@ -371,36 +308,41 @@ This ensures consistency between AI assistant rules, security requirements, and 
 5. **Monitoring**: Crash and usage analytics
 
 ### Distribution
+
 - **Google Play**: Primary distribution
 - **APK Direct**: For testing and NGOs
-- **Enterprise**: Caregiver organizations
-- **Localized**: Region-specific releases
+- **Enterprise**: Caregiver organisations
+- **Localised**: Region-specific releases
 
 ## 📈 Analytics & Monitoring
 
 ### Key Metrics
+
 - **Crash Rate**: < 0.1% for elderly safety
 - **Accessibility Usage**: TTS, large text adoption
 - **Emergency Usage**: SOS button effectiveness
-- **Caregiver Engagement**: Remote assistance usage
-- **App Whitelist**: Installation blocking success
+- **Caregiver Engagement**: Remote assistance utilisation
+- **App Allowlist**: Installation blocking success
 
 ### Privacy Compliance
+
 - **GDPR**: European elderly users
-- **Data Minimization**: Essential data only
+- **Data Minimisation**: Essential data only
 - **User Consent**: Clear permission requests
 - **Caregiver Transparency**: Visible data sharing
 
 ## 🤝 Contributing
 
 ### Code Standards
+
 - **Kotlin Style**: Official Kotlin coding conventions
 - **Accessibility**: WCAG 2.1 AA compliance
 - **Documentation**: Elderly user context
 - **Testing**: Accessibility test coverage
-- **Localization**: Translation-ready strings
+- **Localisation**: Translation-ready strings
 
 ### Pull Request Process
+
 1. **Accessibility Review**: Screen reader testing
 2. **Elderly User Impact**: Safety assessment
 3. **Caregiver Features**: Remote assistance validation
@@ -414,6 +356,42 @@ This ensures consistency between AI assistant rules, security requirements, and 
 - **Caregiver Support**: caregivers@naviya.com
 - **Translations**: i18n@naviya.com
 - **Emergency**: emergency@naviya.com
+
+## 📄 Licence
+
+Naviya Android Launcher is released under the **MIT Licence**.
+
+```text
+MIT Licence
+
+Copyright (c) 2025 posdenous
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicence, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+### Open Source Commitment
+
+- **Free Forever**: Core launcher and emergency features remain free
+- **Community Driven**: Open to contributions from developers worldwide
+- **Transparent Development**: All security and accessibility features are open source
+- **Ethical Technology**: No hidden surveillance or data harvesting
+- **Elder Rights**: Source code available for independent security audits
 
 ---
 
