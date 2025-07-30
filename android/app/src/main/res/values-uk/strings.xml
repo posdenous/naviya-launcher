@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Naviya Launcher</string>
+    
+    <!-- Analytics and logging -->
+    <string name="analytics_app_launch">Додаток запущено</string>
+    <string name="analytics_mode_change">Режим змінено</string>
+    <string name="analytics_emergency_activated">Надзвичайну ситуацію активовано</string>
+    
+    <!-- Main Launcher UI -->
+    <string name="current_mode">Поточний режим</string>
+    <string name="switch_mode">Змінити режим</string>
+    <string name="select_mode">Вибрати режим</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_service_description">Служба доступності Naviya Launcher для літніх користувачів</string>
+    
+    <!-- Emergency and Caregiver -->
+    <string name="emergency_sos_description">Екстрений SOS для негайної допомоги</string>
+    <string name="contact_caregiver">Зв\'язатися з доглядальником</string>
+    <string name="contact_caregiver_description">Зв\'яжіться з вашим доглядальником для допомоги</string>
+    <string name="cancel">Скасувати</string>
+    <string name="online">Онлайн</string>
+    <string name="offline">Офлайн</string>
+    
+    <!-- Mode Switch Messages -->
+    <string name="mode_switched_to">Переключено на режим %1$s</string>
+    <string name="mode_switch_failed">Не вдалося змінити режим</string>
+    
+    <!-- Emergency Messages -->
+    <string name="emergency_activated">Екстрений SOS активовано</string>
+    <string name="emergency_activation_failed">Не вдалося активувати надзвичайну ситуацію</string>
+    
+    <!-- Medical Emergency -->
+    <string name="medical_emergency">Медична надзвичайна ситуація</string>
+    <string name="navigate_back">Повернутися</string>
+    <string name="emergency_call">Екстрений виклик</string>
+    <string name="healthcare_professional_available">Медичний фахівець доступний</string>
+    <string name="no_healthcare_professional">Немає медичного фахівця</string>
+    <string name="select_emergency_type">Який тип надзвичайної ситуації?</string>
+    <string name="emergency_services_notified">Служби екстреного реагування повідомлені</string>
+    <string name="ok">ОК</string>
+    
+    <!-- Emergency Types -->
+    <string name="cardiac_emergency">Проблема з серцем</string>
+    <string name="cardiac_emergency_description">Біль у грудях, утруднене дихання, симптоми серцевого нападу</string>
+    <string name="fall_emergency">Падіння або травма</string>
+    <string name="fall_emergency_description">Я впав і можу бути травмований</string>
+    <string name="medication_emergency">Проблема з ліками</string>
+    <string name="medication_emergency_description">Неправильні ліки, передозування або реакція на ліки</string>
+    <string name="cognitive_emergency">Плутанина або пам\'ять</string>
+    <string name="cognitive_emergency_description">Сильна плутанина, дезорієнтація або проблеми з пам\'яттю</string>
+    <string name="general_medical_emergency">Інша медична</string>
+    <string name="general_medical_emergency_description">Загальна медична надзвичайна ситуація або погане самопочуття</string>
+    
+    <!-- Healthcare Professional Status -->
+    <string name="healthcare_professional_status">Медичний фахівець</string>
+    <string name="healthcare_professional_assigned">Медичного фахівця призначено</string>
+    <string name="no_healthcare_professional_assigned">Медичного фахівця не призначено</string>
+    <string name="compliance_check_in_progress">Перевірка відповідності в процесі</string>
+    
+    <!-- Emergency System Messages -->
+    <string name="emergency_system_test_successful">Тест системи надзвичайних ситуацій успішний\n• Медичний фахівець доступний\n• Відповідність підтверджена\n• Всі системи працюють</string>
+    <string name="emergency_system_test_completed">Тест системи надзвичайних ситуацій завершено\n⚠ Медичного фахівця не призначено\n• Базові функції надзвичайних ситуацій доступні\n• Розгляньте можливість додавання медичного фахівця</string>
+    <string name="emergency_system_test_failed">Тест системи надзвичайних ситуацій не вдався: %1$s</string>
+    <string name="emergency_services_activated">Служби екстреного реагування активовано</string>
+    <string name="emergency_activation_failed_message">Не вдалося активувати надзвичайну ситуацію: %1$s</string>
+    <string name="activating_emergency_response">Активація екстреного реагування...</string>
+    <string name="emergency_services_being_contacted">Зв\'язок зі службами екстреного реагування</string>
+    <string name="confirm_emergency">Підтвердити надзвичайну ситуацію</string>
+    <string name="you_selected">Ви вибрали: %1$s</string>
+    
+    <!-- Unread Tile Messages -->
+    <string name="unread">Непрочитано</string>
+    <string name="permission_required">Потрібен дозвіл</string>
+    <string name="no_unread_notifications">Немає непрочитаних сповіщень</string>
+    <string name="you_have_missed_calls_or_messages">У вас є пропущені дзвінки або повідомлення.</string>
+    <string name="caregiver_not_available">Доглядальник недоступний.</string>
+    <string name="permission_required_to_read_notifications">Потрібен дозвіл для читання сповіщень</string>
+    
+    <!-- Location and Emergency Services -->
+    <string name="location_not_available">Місцезнаходження: Недоступно</string>
+    <string name="location_format">Місцезнаходження: %1$s</string>
+    <string name="lat_lon_format">Широта: %1$s, Довгота: %2$s%3$s</string>
+    <string name="accuracy_format"> (±%1$dм)</string>
+    <string name="emergency_services">Служби екстреного реагування</string>
+    
+    <!-- Healthcare Professional Notifications -->
+    <string name="all_notification_channels_failed">Всі канали сповіщень не працюють</string>
+    <string name="unknown_error">Невідома помилка</string>
+    <string name="email_sent_successfully">Електронну пошту успішно надіслано</string>
+    <string name="email_sending_failed">Не вдалося надіслати електронну пошту</string>
+    <string name="push_notification_sent_successfully">Push-сповіщення успішно надіслано</string>
+    <string name="push_notification_failed">Push-сповіщення не вдалося</string>
+    <string name="patient_emergency_immediate_response">Пацієнт %1$s: %2$s. Потрібна негайна відповідь.</string>
+    <string name="dr_healthcare_professional">Д-р Медичний фахівець</string>
+    
+    <!-- Medical Emergency Types and Descriptions -->
+    <string name="cardiac_emergency_response_description">Серцева надзвичайна ситуація - потрібна негайна медична допомога</string>
+    <string name="fall_emergency_response_description">Падіння з можливою травмою - потрібна медична оцінка</string>
+    <string name="medication_emergency_response_description">Надзвичайна ситуація, пов\'язана з ліками - потрібна професійна консультація</string>
+    <string name="cognitive_emergency_response_description">Когнітивна криза - потрібна спеціалізована підтримка</string>
+    <string name="general_medical_emergency_response_description">Загальне медичне занепокоєння - стандартне екстрене реагування</string>
+    
+    <!-- Security and Authentication -->
+    <string name="biometric_not_available">Біометрична автентифікація недоступна на цьому пристрої</string>
+    <string name="biometric_currently_unavailable">Біометрична автентифікація наразі недоступна</string>
+    <string name="no_biometric_credentials">Немає зареєстрованих біометричних даних</string>
+    <string name="secure_mode_access">Доступ до безпечного режиму</string>
+    <string name="use_fingerprint_or_face">Використовуйте відбиток пальця або обличчя для доступу до цього режиму</string>
+    <string name="privacy_and_security_help">Це допомагає захистити вашу конфіденційність та безпеку</string>
+    <string name="use_pin_instead">Використовувати PIN замість цього</string>
+    <string name="authentication_failed_try_again">Автентифікація не вдалася. Спробуйте ще раз.</string>
+    
+    <!-- Emergency Escape and Monitoring -->
+    <string name="emergency_escape_activated">Екстрену втечу активовано. Моніторинг вимкнено.</string>
+    
+    <!-- App Selection and UI -->
+    <string name="add_app">Додати додаток</string>
+    <string name="tap_empty_tiles_to_add_apps">Торкніться порожніх плиток, щоб додати додатки</string>
+    
+    <!-- Loading and Status Messages -->
+    <string name="loading_message">Завантаження: %1$s</string>
+    <string name="error_message">Помилка: %1$s</string>
+    <string name="success_message">Успіх: %1$s</string>
+    
+    <!-- Compliance Dashboard -->
+    <string name="emergency_compliance_dashboard">Панель відповідності надзвичайних ситуацій</string>
+    <string name="system_status">Стан системи</string>
+    <string name="emergency_metrics">Метрики надзвичайних ситуацій</string>
+    <string name="healthcare_professionals">Медичні фахівці</string>
+    <string name="recent_events">Останні події</string>
+    <string name="compliance_alerts">Сповіщення про відповідність</string>
+    <string name="operational">Працює</string>
+    <string name="degraded">Погіршено</string>
+    <string name="total_emergencies">Загальна кількість надзвичайних ситуацій</string>
+    <string name="avg_response_time">Середній час відповіді</string>
+    <string name="success_rate">Рівень успіху</string>
+    <string name="available">Доступно</string>
+    <string name="unavailable">Недоступно</string>
+    <string name="no_recent_events">Немає останніх подій</string>
+    <string name="no_active_alerts">Немає активних сповіщень</string>
+    <string name="minutes_ago">%1$d хвилин тому</string>
+    <string name="hours_ago">%1$d годин тому</string>
+    <string name="days_ago">%1$d днів тому</string>
+    
+    <!-- Mode Names -->
+    <string name="mode_essential">Основний</string>
+    <string name="mode_comfort">Комфорт</string>
+    <string name="mode_connected">Підключений</string>
+    
+    <!-- Mode Descriptions -->
+    <string name="mode_essential_desc">Телефон, повідомлення, контакти - для користувачів з серйозними когнітивними порушеннями</string>
+    <string name="mode_comfort_desc">Телефон, повідомлення, камера, галерея - для звичайних літніх користувачів з творчою участю</string>
+    <string name="mode_connected_desc">Всі функції комфорту плюс погода та сімейне спілкування - для технічно грамотних літніх користувачів</string>
+    
+    <!-- Emergency SOS -->
+    <string name="emergency_sos">Екстрений SOS</string>
+    <string name="emergency_sos_desc">Натисніть і утримуйте для надзвичайної ситуації</string>
+    <string name="emergency_confirm">Підтвердити надзвичайну ситуацію</string>
+    <string name="emergency_cancel">Скасувати</string>
+    <string name="emergency_calling">Виклик служб екстреного реагування...</string>
+    <string name="emergency_notifying_caregivers">Повідомлення доглядальників...</string>
+</resources>

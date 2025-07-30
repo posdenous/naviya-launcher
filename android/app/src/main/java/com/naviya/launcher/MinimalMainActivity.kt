@@ -17,6 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naviya.launcher.ui.theme.NaviyaLauncherTheme
+import com.naviya.launcher.ui.emergency.SimpleMedicalEmergencyScreen
+import com.naviya.launcher.emergency.MedicalEmergencyType
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -40,9 +42,21 @@ class MinimalMainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MinimalLauncherScreen() {
-    val context = LocalContext.current
     var unreadCount by remember { mutableIntStateOf(0) }
     var isEmergencyMode by remember { mutableStateOf(false) }
+    var showMedicalEmergency by remember { mutableStateOf(false) }
+    
+    if (showMedicalEmergency) {
+        SimpleMedicalEmergencyScreen(
+            onNavigateBack = { showMedicalEmergency = false },
+            onEmergencyActivated = { _ ->
+                // Handle emergency activation
+                isEmergencyMode = true
+                showMedicalEmergency = false
+            }
+        )
+        return
+    }
     
     Column(
         modifier = Modifier
@@ -81,7 +95,7 @@ fun MinimalLauncherScreen() {
             }
         }
         
-        // Emergency SOS Button
+        // Emergency SOS Buttons
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -91,25 +105,52 @@ fun MinimalLauncherScreen() {
                     MaterialTheme.colorScheme.errorContainer
             )
         ) {
-            Button(
-                onClick = { 
-                    isEmergencyMode = !isEmergencyMode
-                    // Simulate emergency activation
-                },
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .heightIn(min = 80.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                )
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = if (isEmergencyMode) "EMERGENCY ACTIVE" else "EMERGENCY SOS",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onError
-                )
+                // Quick Emergency SOS
+                Button(
+                    onClick = { 
+                        isEmergencyMode = !isEmergencyMode
+                        // Simulate quick emergency activation
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 64.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text(
+                        text = if (isEmergencyMode) "EMERGENCY ACTIVE" else "QUICK EMERGENCY",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colorScheme.onError
+                    )
+                }
+                
+                // Medical Emergency (New)
+                Button(
+                    onClick = { 
+                        showMedicalEmergency = true
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 64.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary
+                    )
+                ) {
+                    Text(
+                        text = "MEDICAL EMERGENCY",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
+                }
             }
         }
         

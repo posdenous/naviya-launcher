@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Emergency SOS + Medical Compliance Production Configuration -->
+    
+    <!-- Emergency Response Timeouts (in milliseconds) -->
+    <integer name="emergency_activation_timeout">5000</integer>
+    <integer name="healthcare_professional_response_timeout">300000</integer> <!-- 5 minutes -->
+    <integer name="emergency_service_timeout">30000</integer> <!-- 30 seconds -->
+    <integer name="sms_notification_timeout">30000</integer>
+    <integer name="email_notification_timeout">60000</integer>
+    <integer name="push_notification_timeout">10000</integer>
+    
+    <!-- Emergency Priority Response Times (in seconds) -->
+    <integer name="critical_emergency_response_time">300</integer> <!-- 5 minutes -->
+    <integer name="high_emergency_response_time">600</integer> <!-- 10 minutes -->
+    <integer name="medium_emergency_response_time">1200</integer> <!-- 20 minutes -->
+    <integer name="low_emergency_response_time">2400</integer> <!-- 40 minutes -->
+    
+    <!-- Healthcare Professional Notification Configuration -->
+    <integer name="critical_sms_repeat_count">3</integer>
+    <integer name="high_sms_repeat_count">2</integer>
+    <integer name="medium_sms_repeat_count">1</integer>
+    <integer name="sms_repeat_delay_ms">2000</integer> <!-- 2 seconds between SMS -->
+    
+    <!-- Compliance Monitoring Configuration -->
+    <integer name="compliance_check_interval_hours">24</integer>
+    <integer name="certification_expiry_warning_days">30</integer>
+    <integer name="professional_review_overdue_days">90</integer>
+    <integer name="audit_log_retention_days">2555</integer> <!-- 7 years for HIPAA -->
+    
+    <!-- Emergency System Health Checks -->
+    <integer name="system_health_check_interval_minutes">15</integer>
+    <integer name="emergency_contact_validation_hours">168</integer> <!-- Weekly -->
+    <integer name="professional_availability_check_minutes">60</integer>
+    
+    <!-- Performance Monitoring Thresholds -->
+    <integer name="max_emergency_activation_time_ms">500</integer>
+    <integer name="max_notification_delivery_time_ms">5000</integer>
+    <integer name="min_system_availability_percentage">99</integer>
+    <integer name="max_acceptable_response_failures">2</integer>
+    
+    <!-- Security Configuration -->
+    <integer name="emergency_session_timeout_minutes">30</integer>
+    <integer name="max_failed_emergency_attempts">3</integer>
+    <integer name="security_lockout_duration_minutes">15</integer>
+    
+    <!-- Elderly User Interface Configuration -->
+    <dimen name="emergency_button_min_size">64dp</dimen>
+    <dimen name="emergency_text_min_size">18sp</dimen>
+    <dimen name="emergency_touch_target_padding">16dp</dimen>
+    <integer name="emergency_confirmation_timeout_seconds">10</integer>
+    <integer name="emergency_ui_auto_dismiss_seconds">30</integer>
+    
+    <!-- Multi-language Support -->
+    <string-array name="supported_emergency_languages">
+        <item>en</item> <!-- English -->
+        <item>de</item> <!-- German -->
+        <item>tr</item> <!-- Turkish -->
+        <item>ar</item> <!-- Arabic -->
+        <item>uk</item> <!-- Ukrainian -->
+    </string-array>
+    
+    <!-- Emergency Contact Validation -->
+    <integer name="min_emergency_contacts_required">1</integer>
+    <integer name="max_emergency_contacts_allowed">10</integer>
+    <integer name="emergency_contact_validation_timeout_ms">15000</integer>
+    
+    <!-- Healthcare Professional Requirements -->
+    <integer name="min_professional_training_hours">8</integer>
+    <integer name="professional_certification_validity_months">24</integer>
+    <integer name="background_check_validity_months">12</integer>
+    <integer name="ethics_training_validity_months">12</integer>
+    
+    <!-- Emergency Location Services -->
+    <integer name="location_accuracy_threshold_meters">50</integer>
+    <integer name="location_timeout_seconds">30</integer>
+    <integer name="location_retry_attempts">3</integer>
+    
+    <!-- Notification Delivery Configuration -->
+    <string name="emergency_sms_sender_id">NAVIYA_SOS</string>
+    <string name="emergency_email_sender">emergency@naviya.com</string>
+    <string name="emergency_notification_channel_id">naviya_emergency_channel</string>
+    
+    <!-- Production Environment Flags -->
+    <bool name="enable_emergency_system">true</bool>
+    <bool name="enable_medical_compliance">true</bool>
+    <bool name="enable_healthcare_professional_notifications">true</bool>
+    <bool name="enable_compliance_monitoring">true</bool>
+    <bool name="enable_audit_logging">true</bool>
+    <bool name="enable_performance_monitoring">true</bool>
+    <bool name="enable_offline_emergency_mode">true</bool>
+    
+    <!-- Debug and Testing Configuration (Production: false) -->
+    <bool name="enable_emergency_testing_mode">false</bool>
+    <bool name="enable_mock_emergency_services">false</bool>
+    <bool name="enable_debug_logging">false</bool>
+    <bool name="skip_emergency_confirmation">false</bool>
+    
+    <!-- Regulatory Compliance Settings -->
+    <bool name="enforce_hipaa_compliance">true</bool>
+    <bool name="enforce_gdpr_compliance">true</bool>
+    <bool name="enforce_uk_clinical_governance">true</bool>
+    <bool name="enforce_elder_protection_standards">true</bool>
+    <bool name="require_professional_validation">true</bool>
+    
+    <!-- Emergency Service Integration -->
+    <string name="primary_emergency_number">999</string> <!-- UK Emergency Services -->
+    <string name="secondary_emergency_number">112</string> <!-- European Emergency Number -->
+    <string name="emergency_service_identifier">UK_NHS_999</string>
+    
+    <!-- Healthcare Integration URLs (Production) -->
+    <string name="healthcare_professional_api_base_url">https://api.naviya.com/healthcare/v1</string>
+    <string name="compliance_monitoring_api_url">https://api.naviya.com/compliance/v1</string>
+    <string name="emergency_notification_api_url">https://api.naviya.com/emergency/v1</string>
+    <string name="audit_logging_api_url">https://api.naviya.com/audit/v1</string>
+    
+    <!-- API Configuration -->
+    <integer name="api_timeout_seconds">30</integer>
+    <integer name="api_retry_attempts">3</integer>
+    <integer name="api_retry_delay_ms">1000</integer>
+    
+    <!-- Data Retention and Privacy -->
+    <integer name="emergency_data_retention_days">2555</integer> <!-- 7 years -->
+    <integer name="personal_data_retention_days">1095</integer> <!-- 3 years -->
+    <integer name="audit_log_backup_interval_hours">24</integer>
+    <bool name="enable_data_encryption_at_rest">true</bool>
+    <bool name="enable_data_encryption_in_transit">true</bool>
+    
+    <!-- Monitoring and Analytics -->
+    <string name="analytics_endpoint">https://analytics.naviya.com/emergency</string>
+    <integer name="analytics_batch_size">50</integer>
+    <integer name="analytics_upload_interval_minutes">15</integer>
+    <bool name="enable_performance_analytics">true</bool>
+    <bool name="enable_usage_analytics">true</bool>
+    <bool name="enable_error_reporting">true</bool>
+</resources>

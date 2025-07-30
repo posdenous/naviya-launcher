@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Launcher - Multi-Mode Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .language-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .language-selector select {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .mode-language-selector {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .mode-language-selector select {
+            padding: 5px 10px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: #f8f9fa;
+            color: #333;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .mode-language-selector select:hover {
+            background: #e9ecef;
+        }
+
+        .modes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mode-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .mode-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .mode-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .mode-subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .grid-preview {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+        }
+
+        .grid-info {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .tile-grid {
+            display: grid;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .essential-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .comfort-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .connected-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 80px;
+        }
+
+        .tile:hover {
+            transform: scale(1.05);
+        }
+
+        .tile.phone { background: linear-gradient(135deg, #2196F3, #1976D2); }
+        .tile.messages { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .tile.contacts { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+        .tile.camera { background: linear-gradient(135deg, #607D8B, #455A64); }
+        .tile.gallery { background: linear-gradient(135deg, #E91E63, #C2185B); }
+        .tile.weather { background: linear-gradient(135deg, #00BCD4, #0097A7); }
+        .tile.family { background: linear-gradient(135deg, #FF5722, #D84315); }
+        .tile.emergency { background: linear-gradient(135deg, #F44336, #C62828); }
+
+        .tile-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .tile-label {
+            font-size: 0.9rem;
+        }
+
+        .essential-tile {
+            min-height: 100px;
+        }
+
+        .essential-tile .tile-icon {
+            font-size: 2.5rem;
+        }
+
+        .essential-tile .tile-label {
+            font-size: 1.1rem;
+        }
+
+        .features {
+            margin-top: 20px;
+        }
+
+        .features h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .features li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .emergency-banner {
+            background: linear-gradient(135deg, #F44336, #C62828);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .view-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid white;
+            border-radius: 25px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .view-btn.active {
+            background: white;
+            color: #333;
+        }
+
+        .caregiver-dashboard {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+        
+        .dashboard-header h2 {
+            color: #2196F3;
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+        
+        .dashboard-header p {
+            color: #666;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px 20px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 5px solid #2196F3;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .stat-card.warning {
+            border-left-color: #FF9800;
+        }
+
+        .stat-card.critical {
+            border-left-color: #F44336;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2196F3;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .monitoring-section {
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .monitoring-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .monitoring-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #2196F3;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .monitoring-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+
+        .monitoring-card h4 {
+            margin: 0 0 20px 0;
+            color: #2196F3;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 10px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e3f2fd;
+            transition: background-color 0.2s ease;
+        }
+        
+        .activity-item:hover {
+            background-color: rgba(33, 150, 243, 0.05);
+            border-radius: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); }
+        }
+
+        .status-indicator.warning {
+            background: #FF9800;
+            box-shadow: 0 0 8px rgba(255, 152, 0, 0.4);
+            animation: pulse-warning 2s infinite;
+        }
+        
+        @keyframes pulse-warning {
+            0% { box-shadow: 0 0 8px rgba(255, 152, 0, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(255, 152, 0, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(255, 152, 0, 0.4); }
+        }
+
+        .status-indicator.offline {
+            background: #F44336;
+            box-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+            animation: pulse-offline 2s infinite;
+        }
+        
+        @keyframes pulse-offline {
+            0% { box-shadow: 0 0 8px rgba(244, 67, 54, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(244, 67, 54, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(244, 67, 54, 0.4); }
+        }
+
+        .rtl {
+            direction: rtl;
+        }
+
+        .rtl .tile-grid {
+            direction: ltr;
+        }
+
+        @media (max-width: 768px) {
+            .modes-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .monitoring-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="main-title">Naviya Launcher - Multi-Mode System</h1>
+        <p id="main-subtitle">Elderly-Friendly Android Launcher with Emergency SOS + Medical Compliance</p>
+    </div>
+
+    <div class="controls">
+        <div class="language-selector">
+            <label style="color: white; margin-right: 10px;">Global Language:</label>
+            <select id="language-select" onchange="changeGlobalLanguage()">
+                <option value="en">🇬🇧 English</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="tr">🇹🇷 Türkçe</option>
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="uk">🇺🇦 Українська</option>
+            </select>
+        </div>
+        <div class="view-selector">
+            <button id="elderly-view-btn" class="view-btn active" onclick="showElderlyView()">👴 Elderly View</button>
+            <button id="caregiver-view-btn" class="view-btn" onclick="showCaregiverView()">👨‍⚕️ Caregiver Dashboard</button>
+        </div>
+    </div>
+
+    <div class="emergency-banner">
+        <h3 id="emergency-title">🚨 Emergency SOS Integration</h3>
+        <p id="emergency-desc">All modes include integrated Emergency SOS with medical compliance and healthcare professional notification</p>
+    </div>
+
+    <div class="modes-container">
+        <!-- Essential Mode -->
+        <div class="mode-card">
+            <div class="mode-header">
+                <div class="mode-language-selector">
+                    <select onchange="changeModeLanguage('essential', this.value)">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="tr">🇹🇷 Türkçe</option>
+                        <option value="ar">🇸🇦 العربية</option>
+                        <option value="uk">🇺🇦 Українська</option>
+                    </select>
+                </div>
+                <h2 class="mode-title" id="essential-title">Essential Mode</h2>
+                <p class="mode-subtitle" id="essential-subtitle">Only the most essential functions</p>
+                <p style="color: #888; font-style: italic;" id="essential-target">Severe cognitive impairment, dementia patients</p>
+            </div>
+            
+            <div class="grid-preview">
+                <div class="grid-info" id="essential-grid-info">1×3 Grid - 3 Large Tiles</div>
+                <div class="tile-grid essential-grid">
+                    <div class="tile phone essential-tile">
+                        <div class="tile-icon">📞</div>
+                        <div class="tile-label" id="tile-phone">Phone</div>
+                    </div>
+                    <div class="tile messages essential-tile">
+                        <div class="tile-icon">💬</div>
+                        <div class="tile-label" id="tile-messages">Messages</div>
+                    </div>
+                    <div class="tile emergency essential-tile">
+                        <div class="tile-icon">🚨</div>
+                        <div class="tile-label" id="tile-emergency">Emergency</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h4 id="essential-features-title">Key Features:</h4>
+                <ul>
+                    <li>Maximum 3 tiles for cognitive simplicity</li>
+                    <li>2.0x font scaling for vision impairment</li>
+                    <li>High contrast mode enabled by default</li>
+                    <li>1.8x icon scaling for motor difficulties</li>
+                    <li>Voice-guided navigation support</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Comfort Mode -->
+        <div class="mode-card">
+            <div class="mode-header">
+                <div class="mode-language-selector">
+                    <select onchange="changeModeLanguage('comfort', this.value)">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="tr">🇹🇷 Türkçe</option>
+                        <option value="ar">🇸🇦 العربية</option>
+                        <option value="uk">🇺🇦 Українська</option>
+                    </select>
+                </div>
+                <h2 class="mode-title" id="comfort-title">Comfort Mode</h2>
+                <p class="mode-subtitle" id="comfort-subtitle">Simple layout with creative engagement</p>
+                <p style="color: #888; font-style: italic;" id="comfort-target">Standard elderly users, daily activities</p>
+            </div>
+            
+            <div class="grid-preview">
+                <div class="grid-info" id="comfort-grid-info">2×2 Grid - 4 Large Tiles</div>
+                <div class="tile-grid comfort-grid">
+                    <div class="tile phone">
+                        <div class="tile-icon">📞</div>
+                        <div class="tile-label">Phone</div>
+                    </div>
+                    <div class="tile messages">
+                        <div class="tile-icon">💬</div>
+                        <div class="tile-label">Messages</div>
+                    </div>
+                    <div class="tile camera">
+                        <div class="tile-icon">📷</div>
+                        <div class="tile-label">Camera</div>
+                    </div>
+                    <div class="tile gallery">
+                        <div class="tile-icon">🖼️</div>
+                        <div class="tile-label">Gallery</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Balanced simplicity with creative engagement</li>
+                    <li>1.6x font scaling for elderly-friendly reading</li>
+                    <li>High contrast mode for better visibility</li>
+                    <li>Camera and Gallery for memory keeping</li>
+                    <li>Intuitive 2×2 grid layout</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Connected Mode -->
+        <div class="mode-card">
+            <div class="mode-header">
+                <div class="mode-language-selector">
+                    <select onchange="changeModeLanguage('connected', this.value)">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="tr">🇹🇷 Türkçe</option>
+                        <option value="ar">🇸🇦 العربية</option>
+                        <option value="uk">🇺🇦 Українська</option>
+                    </select>
+                </div>
+                <h2 class="mode-title" id="connected-title">Connected Mode</h2>
+                <p class="mode-subtitle" id="connected-subtitle">Enhanced communication and family features</p>
+                <p style="color: #888; font-style: italic;" id="connected-target">Tech-comfortable elderly with family support</p>
+            </div>
+            
+            <div class="grid-preview">
+                <div class="grid-info">2×3 Grid - 6 Tiles</div>
+                <div class="tile-grid connected-grid">
+                    <div class="tile phone">
+                        <div class="tile-icon">📞</div>
+                        <div class="tile-label">Phone</div>
+                    </div>
+                    <div class="tile messages">
+                        <div class="tile-icon">💬</div>
+                        <div class="tile-label">Messages</div>
+                    </div>
+                    <div class="tile camera">
+                        <div class="tile-icon">📷</div>
+                        <div class="tile-label">Camera</div>
+                    </div>
+                    <div class="tile gallery">
+                        <div class="tile-icon">🖼️</div>
+                        <div class="tile-label">Gallery</div>
+                    </div>
+                    <div class="tile weather">
+                        <div class="tile-icon">🌤️</div>
+                        <div class="tile-label">Weather</div>
+                    </div>
+                    <div class="tile family">
+                        <div class="tile-icon">👨‍👩‍👧‍👦</div>
+                        <div class="tile-label">Family</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Enhanced family communication features</li>
+                    <li>1.4x font scaling for comfortable reading</li>
+                    <li>Weather integration for daily planning</li>
+                    <li>Family tile for quick contact access</li>
+                    <li>6 tiles for expanded functionality</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Caregiver Dashboard -->
+    <div class="caregiver-dashboard" id="caregiver-dashboard">
+        <div class="dashboard-header">
+            <h2 id="dashboard-title">Caregiver Dashboard</h2>
+            <p id="dashboard-subtitle">Real-time monitoring and emergency management for elderly users</p>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label" id="stat-active-users">Active Users</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-number">1</div>
+                <div class="stat-label" id="stat-missed-calls">Missed Calls</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label" id="stat-unread-messages">Unread Messages</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="stat-number">0</div>
+                <div class="stat-label" id="stat-emergency-alerts">Emergency Alerts</div>
+            </div>
+        </div>
+
+        <div class="monitoring-section">
+            <div class="monitoring-grid">
+                <div class="monitoring-card">
+                    <h4>📱 <span id="device-status-title">Device Status</span></h4>
+                    <div class="activity-item">
+                        <span id="device-grandma">Grandma's Phone</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="activity-item">
+                        <span id="device-grandpa">Grandpa's Tablet</span>
+                        <div class="status-indicator warning"></div>
+                    </div>
+                    <div class="activity-item">
+                        <span id="device-aunt">Aunt Mary's Phone</span>
+                        <div class="status-indicator offline"></div>
+                    </div>
+                </div>
+
+                <div class="monitoring-card">
+                    <h4>🏥 <span id="medical-status-title">Medical Compliance</span></h4>
+                    <div class="activity-item">
+                        <span id="medical-professionals">Healthcare Professionals</span>
+                        <span style="color: #4CAF50; font-weight: bold;" id="medical-status-active">Active</span>
+                    </div>
+                    <div class="activity-item">
+                        <span id="medical-emergency">Emergency Response</span>
+                        <span style="color: #4CAF50; font-weight: bold;" id="medical-status-ready">Ready</span>
+                    </div>
+                    <div class="activity-item">
+                        <span id="medical-compliance">Compliance Score</span>
+                        <span style="color: #4CAF50; font-weight: bold;">95%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monitoring-section">
+            <div class="monitoring-card">
+                <h4>📊 <span id="recent-activity-title">Recent Activity</span></h4>
+                <div class="activity-item">
+                    <span id="activity-1">Grandma opened Camera app</span>
+                    <span style="color: #666; font-size: 0.8rem;">2 min ago</span>
+                </div>
+                <div class="activity-item">
+                    <span id="activity-2">Grandpa sent message to family</span>
+                    <span style="color: #666; font-size: 0.8rem;">15 min ago</span>
+                </div>
+                <div class="activity-item">
+                    <span id="activity-3">Aunt Mary missed call from Dr. Smith</span>
+                    <span style="color: #666; font-size: 0.8rem;">1 hour ago</span>
+                </div>
+                <div class="activity-item">
+                    <span id="activity-4">Emergency contact updated</span>
+                    <span style="color: #666; font-size: 0.8rem;">3 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                'main-title': 'Naviya Launcher - Multi-Mode System',
+                'main-subtitle': 'Elderly-Friendly Android Launcher with Emergency SOS + Medical Compliance',
+                'emergency-title': '🚨 Emergency SOS Integration',
+                'emergency-desc': 'All modes include integrated Emergency SOS with medical compliance and healthcare professional notification',
+                'essential-title': 'Essential Mode',
+                'essential-subtitle': 'Only the most essential functions',
+                'essential-target': 'Severe cognitive impairment, dementia patients',
+                'essential-grid-info': '1×3 Grid - 3 Large Tiles',
+                'essential-features-title': 'Key Features:',
+                'comfort-title': 'Comfort Mode',
+                'comfort-subtitle': 'Simple layout with creative engagement',
+                'comfort-target': 'Standard elderly users, daily activities',
+                'comfort-grid-info': '2×2 Grid - 4 Large Tiles',
+                'connected-title': 'Connected Mode',
+                'connected-subtitle': 'Enhanced communication and family features',
+                'connected-target': 'Tech-comfortable elderly with family support',
+                'connected-grid-info': '2×3 Grid - 6 Tiles',
+                'tile-phone': 'Phone',
+                'tile-messages': 'Messages',
+                'tile-emergency': 'Emergency',
+                'tile-camera': 'Camera',
+                'tile-gallery': 'Gallery',
+                'tile-weather': 'Weather',
+                'tile-family': 'Family',
+                'dashboard-title': 'Caregiver Dashboard',
+                'dashboard-subtitle': 'Real-time monitoring and emergency management for elderly users',
+                'stat-active-users': 'Active Users',
+                'stat-missed-calls': 'Missed Calls',
+                'stat-unread-messages': 'Unread Messages',
+                'stat-emergency-alerts': 'Emergency Alerts',
+                'device-status-title': 'Device Status',
+                'medical-status-title': 'Medical Compliance',
+                'recent-activity-title': 'Recent Activity',
+                'device-grandma': "Grandma's Phone",
+                'device-grandpa': "Grandpa's Tablet",
+                'device-aunt': "Aunt Mary's Phone",
+                'medical-professionals': 'Healthcare Professionals',
+                'medical-emergency': 'Emergency Response',
+                'medical-compliance': 'Compliance Score',
+                'medical-status-active': 'Active',
+                'medical-status-ready': 'Ready',
+                'activity-1': 'Grandma opened Camera app',
+                'activity-2': 'Grandpa sent message to family',
+                'activity-3': 'Aunt Mary missed call from Dr. Smith',
+                'activity-4': 'Emergency contact updated'
+            },
+            de: {
+                'main-title': 'Naviya Launcher - Multi-Modus-System',
+                'main-subtitle': 'Seniorenfreundlicher Android Launcher mit Notfall-SOS + Medizinische Compliance',
+                'emergency-title': '🚨 Notfall-SOS Integration',
+                'emergency-desc': 'Alle Modi enthalten integriertes Notfall-SOS mit medizinischer Compliance und Benachrichtigung von medizinischem Fachpersonal',
+                'essential-title': 'Basis Modus',
+                'essential-subtitle': 'Nur die wichtigsten Funktionen',
+                'essential-target': 'Schwere kognitive Beeinträchtigung, Demenzpatienten',
+                'essential-grid-info': '1×3 Raster - 3 Große Kacheln',
+                'essential-features-title': 'Hauptmerkmale:',
+                'comfort-title': 'Komfort Modus',
+                'comfort-subtitle': 'Einfaches Layout mit kreativer Beteiligung',
+                'comfort-target': 'Standard Senioren, tägliche Aktivitäten',
+                'comfort-grid-info': '2×2 Raster - 4 Große Kacheln',
+                'connected-title': 'Verbunden Modus',
+                'connected-subtitle': 'Erweiterte Kommunikation und Familienfunktionen',
+                'connected-target': 'Technikaffine Senioren mit Familienunterstützung',
+                'connected-grid-info': '2×3 Raster - 6 Kacheln',
+                'tile-phone': 'Telefon',
+                'tile-messages': 'Nachrichten',
+                'tile-emergency': 'Notfall',
+                'tile-camera': 'Kamera',
+                'tile-gallery': 'Galerie',
+                'tile-weather': 'Wetter',
+                'tile-family': 'Familie',
+                'dashboard-title': 'Betreuer-Dashboard',
+                'dashboard-subtitle': 'Echtzeitüberwachung und Notfallmanagement für ältere Benutzer',
+                'stat-active-users': 'Aktive Benutzer',
+                'stat-missed-calls': 'Verpasste Anrufe',
+                'stat-unread-messages': 'Ungelesene Nachrichten',
+                'stat-emergency-alerts': 'Notfallwarnungen',
+                'device-status-title': 'Gerätestatus',
+                'medical-status-title': 'Medizinische Compliance',
+                'recent-activity-title': 'Letzte Aktivität',
+                'device-grandma': 'Omas Telefon',
+                'device-grandpa': 'Opas Tablet',
+                'device-aunt': 'Tante Marias Telefon',
+                'medical-professionals': 'Gesundheitsfachkräfte',
+                'medical-emergency': 'Notfallreaktion',
+                'medical-compliance': 'Compliance-Score',
+                'medical-status-active': 'Aktiv',
+                'medical-status-ready': 'Bereit',
+                'activity-1': 'Oma hat Kamera-App geöffnet',
+                'activity-2': 'Opa hat Nachricht an Familie gesendet',
+                'activity-3': 'Tante Maria hat Anruf von Dr. Schmidt verpasst',
+                'activity-4': 'Notfallkontakt aktualisiert'
+            },
+            tr: {
+                'main-title': 'Naviya Launcher - Çoklu Mod Sistemi',
+                'main-subtitle': 'Yaşlı Dostu Android Launcher ile Acil Durum SOS + Tıbbi Uyumluluk',
+                'emergency-title': '🚨 Acil Durum SOS Entegrasyonu',
+                'emergency-desc': 'Tüm modlar tıbbi uyumluluk ve sağlık profesyoneli bildirimi ile entegre Acil Durum SOS içerir',
+                'essential-title': 'Temel Mod',
+                'essential-subtitle': 'Sadece en temel işlevler',
+                'essential-target': 'Ağır bilişsel bozukluk, demans hastaları',
+                'essential-grid-info': '1×3 Izgara - 3 Büyük Karo',
+                'essential-features-title': 'Ana Özellikler:',
+                'comfort-title': 'Konfor Modu',
+                'comfort-subtitle': 'Basit düzen ile rahat kullanım',
+                'comfort-target': 'Standart yaşlı kullanıcılar, günlük aktiviteler',
+                'comfort-grid-info': '2×2 Izgara - 4 Büyük Karo',
+                'connected-title': 'Bağlantılı Mod',
+                'connected-subtitle': 'Gelişmiş iletişim ve aile özellikleri',
+                'connected-target': 'Teknoloji kullanabilen yaşlılar, aile desteğiyle',
+                'connected-grid-info': '2×3 Izgara - 6 Karo',
+                'tile-phone': 'Telefon',
+                'tile-messages': 'Mesajlar',
+                'tile-emergency': 'Acil Durum',
+                'tile-camera': 'Kamera',
+                'tile-gallery': 'Galeri',
+                'tile-weather': 'Hava',
+                'tile-family': 'Aile',
+                'dashboard-title': 'Bakıcı Paneli',
+                'dashboard-subtitle': 'Yaşlı kullanıcılar için gerçek zamanlı izleme ve acil durum yönetimi',
+                'stat-active-users': 'Aktif Kullanıcılar',
+                'stat-missed-calls': 'Cevapsız Aramalar',
+                'stat-unread-messages': 'Okunmamış Mesajlar',
+                'stat-emergency-alerts': 'Acil Durum Uyarıları',
+                'device-status-title': 'Cihaz Durumu',
+                'medical-status-title': 'Tıbbi Uyumluluk',
+                'recent-activity-title': 'Son Aktivite',
+                'device-grandma': 'Büyükannenin Telefonu',
+                'device-grandpa': 'Büyükbabanın Tableti',
+                'device-aunt': 'Teyze Meryem\'in Telefonu',
+                'medical-professionals': 'Sağlık Profesyonelleri',
+                'medical-emergency': 'Acil Durum Müdahalesi',
+                'medical-compliance': 'Uyumluluk Skoru',
+                'medical-status-active': 'Aktif',
+                'medical-status-ready': 'Hazır',
+                'activity-1': 'Büyükanne Kamera uygulamasını açtı',
+                'activity-2': 'Büyükbaba aileye mesaj gönderdi',
+                'activity-3': 'Teyze Meryem Dr. Ahmet\'in aramasını kaçırdı',
+                'activity-4': 'Acil durum kişisi güncellendi'
+            },
+            ar: {
+                'main-title': 'نافيا لانشر - نظام متعدد الأوضاع',
+                'main-subtitle': 'لانشر أندرويد صديق للمسنين مع SOS الطوارئ + الامتثال الطبي',
+                'emergency-title': '🚨 تكامل SOS الطوارئ',
+                'emergency-desc': 'جميع الأوضاع تتضمن SOS الطوارئ المتكامل مع الامتثال الطبي وإشعار المهنيين الصحيين',
+                'essential-title': 'الوضع الأساسي',
+                'essential-subtitle': 'الوظائف الأساسية فقط',
+                'essential-target': 'ضعف إدراكي شديد، مرضى الخرف',
+                'essential-grid-info': 'شبكة 1×3 - 3 بلاطات كبيرة',
+                'essential-features-title': 'الميزات الرئيسية:',
+                'comfort-title': 'وضع الراحة',
+                'comfort-subtitle': 'تصميم بسيط مع المشاركة',
+                'comfort-target': 'كبار السن العاديين، الأنشطة اليومية',
+                'comfort-grid-info': 'شبكة 2×2 - 4 بلاطات كبيرة',
+                'connected-title': 'الوضع المتصل',
+                'connected-subtitle': 'تواصل متقدم وميزات عائلية',
+                'connected-target': 'كبار السن المهرة تقنياً مع دعم العائلة',
+                'connected-grid-info': 'شبكة 2×3 - 6 بلاطات',
+                'tile-phone': 'الهاتف',
+                'tile-messages': 'الرسائل',
+                'tile-emergency': 'طوارئ',
+                'tile-camera': 'الكاميرا',
+                'tile-gallery': 'المعرض',
+                'tile-weather': 'الطقس',
+                'tile-family': 'العائلة',
+                'dashboard-title': 'لوحة مقدم الرعاية',
+                'dashboard-subtitle': 'المراقبة في الوقت الفعلي وإدارة الطوارئ للمستخدمين المسنين',
+                'stat-active-users': 'المستخدمون النشطون',
+                'stat-missed-calls': 'المكالمات الفائتة',
+                'stat-unread-messages': 'الرسائل غير المقروءة',
+                'stat-emergency-alerts': 'تنبيهات الطوارئ',
+                'device-status-title': 'حالة الجهاز',
+                'medical-status-title': 'الامتثال الطبي',
+                'recent-activity-title': 'النشاط الأخير',
+                'device-grandma': 'هاتف الجدة',
+                'device-grandpa': 'جهاز الجد اللوحي',
+                'device-aunt': 'هاتف العمة مريم',
+                'medical-professionals': 'المهنيون الصحيون',
+                'medical-emergency': 'استجابة الطوارئ',
+                'medical-compliance': 'نقاط الامتثال',
+                'medical-status-active': 'نشط',
+                'medical-status-ready': 'جاهز',
+                'activity-1': 'الجدة فتحت تطبيق الكاميرا',
+                'activity-2': 'الجد أرسل رسالة للعائلة',
+                'activity-3': 'العمة مريم فاتتها مكالمة من د. أحمد',
+                'activity-4': 'تم تحديث جهة اتصال الطوارئ'
+            },
+            uk: {
+                'main-title': 'Naviya Launcher - Багаторежимна Система',
+                'main-subtitle': 'Android Launcher для Літніх Людей з Екстреним SOS + Медичною Відповідністю',
+                'emergency-title': '🚨 Інтеграція Екстреного SOS',
+                'emergency-desc': 'Усі режими включають інтегрований екстрений SOS з медичною відповідністю та сповіщенням медичних працівників',
+                'essential-title': 'Базовий Режим',
+                'essential-subtitle': 'Лише найнеобхідніші функції',
+                'essential-target': 'Серйозні когнітивні порушення, пацієнти з деменцією',
+                'essential-grid-info': 'Сітка 1×3 - 3 Великі Плитки',
+                'essential-features-title': 'Основні Особливості:',
+                'comfort-title': 'Режим Комфорту',
+                'comfort-subtitle': 'Простий макет з участю',
+                'comfort-target': 'Стандартні літні користувачі, щоденні активності',
+                'comfort-grid-info': 'Сітка 2×2 - 4 Великі Плитки',
+                'connected-title': 'Підключений Режим',
+                'connected-subtitle': 'Покращений зв’язок та сімейні функції',
+                'connected-target': 'Технологічно грамотні літні люди з підтримкою сім’ї',
+                'connected-grid-info': 'Сітка 2×3 - 6 Плиток',
+                'tile-phone': 'Телефон',
+                'tile-messages': 'Повідомлення',
+                'tile-emergency': 'Надзвичайна Ситуація',
+                'tile-camera': 'Камера',
+                'tile-gallery': 'Галерея',
+                'tile-weather': 'Погода',
+                'tile-family': 'Сім’я',
+                'dashboard-title': 'Панель Опікуна',
+                'dashboard-subtitle': 'Моніторинг у реальному часі та управління надзвичайними ситуаціями для літніх користувачів',
+                'stat-active-users': 'Активні Користувачі',
+                'stat-missed-calls': 'Пропущені Дзвінки',
+                'stat-unread-messages': 'Непрочитані Повідомлення',
+                'stat-emergency-alerts': 'Екстрені Сповіщення',
+                'device-status-title': 'Статус Пристрою',
+                'medical-status-title': 'Медична Відповідність',
+                'recent-activity-title': 'Остання Активність',
+                'device-grandma': 'Телефон Бабусі',
+                'device-grandpa': 'Планшет Дідуся',
+                'device-aunt': 'Телефон Тітки Марії',
+                'medical-professionals': 'Медичні Працівники',
+                'medical-emergency': 'Екстрена Відповідь',
+                'medical-compliance': 'Оцінка Відповідності',
+                'medical-status-active': 'Активний',
+                'medical-status-ready': 'Готовий',
+                'activity-1': 'Бабуся відкрила додаток Камера',
+                'activity-2': 'Дідусь надіслав повідомлення родині',
+                'activity-3': 'Тітка Марія пропустила дзвінок від Др. Петренка',
+                'activity-4': 'Екстрений контакт оновлено'
+            }
+        };
+
+        let modeLanguages = {
+            essential: 'en',
+            comfort: 'en',
+            connected: 'en'
+        };
+
+        function changeModeLanguage(mode, language) {
+            modeLanguages[mode] = language;
+            
+            // Update elements for this specific mode
+            const langData = translations[language];
+            
+            // Apply RTL for Arabic to the specific mode card
+            const modeCard = document.querySelector(`#${mode}-title`).closest('.mode-card');
+            if (language === 'ar') {
+                modeCard.classList.add('rtl');
+            } else {
+                modeCard.classList.remove('rtl');
+            }
+            
+            // Update mode-specific elements
+            const modeElements = {
+                essential: [
+                    'essential-title', 'essential-subtitle', 'essential-target', 
+                    'essential-grid-info', 'essential-features-title'
+                ],
+                comfort: [
+                    'comfort-title', 'comfort-subtitle', 'comfort-target', 
+                    'comfort-grid-info'
+                ],
+                connected: [
+                    'connected-title', 'connected-subtitle', 'connected-target', 
+                    'connected-grid-info'
+                ]
+            };
+            
+            // Update tiles for this mode
+            const tiles = modeCard.querySelectorAll('.tile-label');
+            tiles.forEach((tile, index) => {
+                const tileKeys = ['tile-phone', 'tile-messages', 'tile-emergency', 'tile-camera', 'tile-gallery', 'tile-weather', 'tile-family'];
+                if (tileKeys[index] && langData[tileKeys[index]]) {
+                    tile.textContent = langData[tileKeys[index]];
+                }
+            });
+            
+            // Update mode-specific text elements
+            if (modeElements[mode]) {
+                modeElements[mode].forEach(elementId => {
+                    const element = document.getElementById(elementId);
+                    if (element && langData[elementId]) {
+                        element.textContent = langData[elementId];
+                    }
+                });
+            }
+        }
+
+        function changeGlobalLanguage() {
+            const select = document.getElementById('language-select');
+            const language = select.value;
+            
+            // Apply RTL for Arabic globally
+            if (language === 'ar') {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
+            
+            // Update all global elements (header, emergency banner, caregiver dashboard)
+            const langData = translations[language];
+            for (const [key, value] of Object.entries(langData)) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+            
+            // Also update all mode selectors to match global language
+            const modeSelectors = document.querySelectorAll('.mode-language-selector select');
+            modeSelectors.forEach(selector => {
+                selector.value = language;
+            });
+            
+            // Update all modes to match global language
+            changeModeLanguage('essential', language);
+            changeModeLanguage('comfort', language);
+            changeModeLanguage('connected', language);
+        }
+
+        function showCaregiverView() {
+            console.log('showCaregiverView called');
+            try {
+                const modesContainer = document.getElementById('modes-container');
+                const caregiverDashboard = document.getElementById('caregiver-dashboard');
+                const elderlyBtn = document.getElementById('elderly-view-btn');
+                const caregiverBtn = document.getElementById('caregiver-view-btn');
+                
+                if (modesContainer) modesContainer.style.display = 'none';
+                if (caregiverDashboard) caregiverDashboard.style.display = 'block';
+                if (elderlyBtn) elderlyBtn.classList.remove('active');
+                if (caregiverBtn) caregiverBtn.classList.add('active');
+                
+                console.log('Dashboard should now be visible');
+                
+                // Start real-time updates when dashboard is shown
+                startDashboardUpdates();
+            } catch (error) {
+                console.error('Error in showCaregiverView:', error);
+            }
+        }
+        
+        function showElderlyView() {
+            console.log('showElderlyView called');
+            try {
+                const modesContainer = document.getElementById('modes-container');
+                const caregiverDashboard = document.getElementById('caregiver-dashboard');
+                const elderlyBtn = document.getElementById('elderly-view-btn');
+                const caregiverBtn = document.getElementById('caregiver-view-btn');
+                
+                if (modesContainer) modesContainer.style.display = 'grid';
+                if (caregiverDashboard) caregiverDashboard.style.display = 'none';
+                if (elderlyBtn) elderlyBtn.classList.add('active');
+                if (caregiverBtn) caregiverBtn.classList.remove('active');
+                
+                console.log('Elderly view should now be visible');
+                
+                // Stop real-time updates when dashboard is hidden
+                stopDashboardUpdates();
+            } catch (error) {
+                console.error('Error in showElderlyView:', error);
+            }
+        }
+        
+        let dashboardInterval;
+        
+        function startDashboardUpdates() {
+            // Simulate real-time updates every 30 seconds
+            dashboardInterval = setInterval(() => {
+                updateDashboardStats();
+            }, 30000);
+        }
+        
+        function stopDashboardUpdates() {
+            if (dashboardInterval) {
+                clearInterval(dashboardInterval);
+            }
+        }
+        
+        function updateDashboardStats() {
+            // Simulate random stat updates
+            const stats = {
+                'stat-active-users': Math.floor(Math.random() * 2) + 2, // 2-3
+                'stat-missed-calls': Math.floor(Math.random() * 3), // 0-2
+                'stat-unread-messages': Math.floor(Math.random() * 10) + 3, // 3-12
+                'stat-emergency-alerts': Math.floor(Math.random() * 2) // 0-1
+            };
+            
+            // Update stat numbers with animation
+            Object.entries(stats).forEach(([id, value]) => {
+                const element = document.querySelector(`#${id}`).parentElement.querySelector('.stat-number');
+                if (element) {
+                    element.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        element.textContent = value;
+                        element.style.transform = 'scale(1)';
+                    }, 150);
+                }
+            });
+            
+            // Add a subtle notification
+            showNotification('Dashboard updated with latest data');
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 1000;
+                font-size: 0.9rem;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Initialize with English
+        changeGlobalLanguage();
+        
+        // Debug: Test if elements exist
+        console.log('=== INITIALIZATION DEBUG ===');
+        console.log('modes-container:', document.getElementById('modes-container'));
+        console.log('caregiver-dashboard:', document.getElementById('caregiver-dashboard'));
+        console.log('elderly-view-btn:', document.getElementById('elderly-view-btn'));
+        console.log('caregiver-view-btn:', document.getElementById('caregiver-view-btn'));
+        console.log('showCaregiverView function:', typeof showCaregiverView);
+        console.log('showElderlyView function:', typeof showElderlyView);
+        console.log('=== END DEBUG ===');
+        
+        // Make functions globally available (just in case)
+        window.showCaregiverView = showCaregiverView;
+        window.showElderlyView = showElderlyView;
+    </script>
+</body>
+</html>

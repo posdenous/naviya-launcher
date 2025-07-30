@@ -35,6 +35,155 @@
     <string name="emergency_activated">Emergency SOS activated</string>
     <string name="emergency_activation_failed">Emergency activation failed</string>
     
+    <!-- Medical Emergency -->
+    <string name="medical_emergency">Medical Emergency</string>
+    <string name="navigate_back">Navigate Back</string>
+    <string name="emergency_call">Emergency Call</string>
+    <string name="healthcare_professional_available">Healthcare Professional Available</string>
+    <string name="no_healthcare_professional">No Healthcare Professional</string>
+    <string name="select_emergency_type">What type of emergency?</string>
+    <string name="emergency_services_notified">Emergency services have been notified</string>
+    <string name="ok">OK</string>
+    
+    <!-- Emergency Types -->
+    <string name="cardiac_emergency">Heart Problem</string>
+    <string name="cardiac_emergency_description">Chest pain, difficulty breathing, heart attack symptoms</string>
+    <string name="fall_emergency">Fall or Injury</string>
+    <string name="fall_emergency_description">I have fallen and may be injured</string>
+    <string name="medication_emergency">Medication Problem</string>
+    <string name="medication_emergency_description">Wrong medication, overdose, or medication reaction</string>
+    <string name="cognitive_emergency">Confusion or Memory</string>
+    <string name="cognitive_emergency_description">Severe confusion, disorientation, or memory problems</string>
+    <string name="general_medical_emergency">Other Medical</string>
+    <string name="general_medical_emergency_description">General medical emergency or feeling unwell</string>
+    
+    <!-- Healthcare Professional Status -->
+    <string name="healthcare_professional_status">Healthcare Professional</string>
+    <string name="healthcare_professional_assigned">Healthcare professional assigned</string>
+    <string name="no_healthcare_professional_assigned">No healthcare professional assigned</string>
+    <string name="compliance_check_in_progress">Compliance check in progress</string>
+    
+    <!-- Emergency System Messages -->
+    <string name="emergency_system_test_successful">Emergency system test successful\n• Healthcare professional available\n• Compliance validated\n• All systems operational</string>
+    <string name="emergency_system_test_completed">Emergency system test completed\n⚠ No healthcare professional assigned\n• Basic emergency functions available\n• Consider adding healthcare professional</string>
+    <string name="emergency_system_test_failed">Emergency system test failed: %1$s</string>
+    <string name="emergency_services_activated">Emergency services activated</string>
+    <string name="emergency_activation_failed_message">Emergency activation failed: %1$s</string>
+    <string name="activating_emergency_response">Activating Emergency Response...</string>
+    <string name="emergency_services_being_contacted">Emergency services are being contacted</string>
+    <string name="confirm_emergency">Confirm Emergency</string>
+    <string name="you_selected">You selected: %1$s</string>
+    
+    <!-- Unread Tile Messages -->
+    <string name="unread">Unread</string>
+    <string name="permission_required">Permission required</string>
+    <string name="no_unread_notifications">No unread notifications</string>
+    <string name="you_have_missed_calls_or_messages">You have missed calls or messages.</string>
+    <string name="caregiver_not_available">Caregiver not available.</string>
+    <string name="permission_required_to_read_notifications">Permission required to read notifications</string>
+    
+    <!-- Location and Emergency Services -->
+    <string name="location_not_available">Location: Not available</string>
+    <string name="location_format">Location: %1$s</string>
+    <string name="lat_lon_format">Lat: %1$s, Lon: %2$s%3$s</string>
+    <string name="accuracy_format"> (±%1$dm)</string>
+    <string name="emergency_services">Emergency Services</string>
+    <string name="notruf">Notruf</string>
+    <string name="acil_servis">Acil Servis</string>
+    
+    <!-- Healthcare Professional Notifications -->
+    <string name="all_notification_channels_failed">All notification channels failed</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="email_sent_successfully">Email sent successfully</string>
+    <string name="email_sending_failed">Email sending failed</string>
+    <string name="push_notification_sent_successfully">Push notification sent successfully</string>
+    <string name="push_notification_failed">Push notification failed</string>
+    <string name="patient_emergency_immediate_response">Patient %1$s: %2$s. Immediate response required.</string>
+    <string name="dr_healthcare_professional">Dr. Healthcare Professional</string>
+    
+    <!-- Medical Emergency Types and Descriptions -->
+    <string name="cardiac_emergency_response_description">Cardiac emergency - immediate medical attention required</string>
+    <string name="fall_emergency_response_description">Fall with potential injury - medical assessment needed</string>
+    <string name="medication_emergency_response_description">Medication-related emergency - professional consultation needed</string>
+    <string name="cognitive_emergency_response_description">Cognitive crisis - specialized support needed</string>
+    <string name="general_medical_emergency_response_description">General medical concern - standard emergency response</string>
+    
+    <!-- Security and Authentication -->
+    <string name="biometric_not_available">Biometric authentication not available on this device</string>
+    <string name="biometric_currently_unavailable">Biometric authentication currently unavailable</string>
+    <string name="no_biometric_credentials">No biometric credentials enrolled</string>
+    <string name="secure_mode_access">Secure Mode Access</string>
+    <string name="use_fingerprint_or_face">Use your fingerprint or face to access this mode</string>
+    <string name="privacy_and_security_help">This helps protect your privacy and security</string>
+    <string name="use_pin_instead">Use PIN instead</string>
+    <string name="authentication_failed_try_again">Authentication failed. Please try again.</string>
+    
+    <!-- Emergency Escape and Monitoring -->
+    <string name="emergency_escape_activated">Emergency escape activated. Monitoring disabled.</string>
+    
+    <!-- App Selection and UI -->
+    <string name="add_app">Add app</string>
+    <string name="tap_empty_tiles_to_add_apps">Tap empty tiles to add apps</string>
+    
+    <!-- Loading and Status Messages -->
+    <string name="loading_message">Loading: %1$s</string>
+    <string name="error_message">Error: %1$s</string>
+    <string name="success_message">Success: %1$s</string>
+    
+    <!-- Elder Rights and Advocacy -->
+    <string name="elder_rights_advocate_notified_successfully">Elder rights advocate notified successfully</string>
+    <string name="failed_to_notify_elder_rights_advocate">Failed to notify elder rights advocate</string>
+    <string name="error_notifying_elder_rights_advocate">Error notifying elder rights advocate: %1$s</string>
+    <string name="emergency_call_initiated_to">Emergency call initiated to %1$s</string>
+    <string name="phone_call_initiated_to">Phone call initiated to %1$s</string>
+    <string name="failed_to_initiate_phone_call">Failed to initiate phone call: %1$s</string>
+    <string name="emergency_sms_sent_to">Emergency SMS sent to %1$s</string>
+    <string name="failed_to_send_emergency_sms">Failed to send emergency SMS: %1$s</string>
+    <string name="naviya_alert_priority">Naviya Alert - %1$s Priority</string>
+    <string name="please_check_naviya_app">Please check Naviya app for details.</string>
+    <string name="failed_to_send_sms">Failed to send SMS: %1$s</string>
+    <string name="elder_abuse_alert_priority">Elder Abuse Alert - %1$s Priority</string>
+    <string name="push_notification_sent">Push notification sent</string>
+    <string name="failed_to_send_push_notification">Failed to send push notification: %1$s</string>
+    <string name="emergency_email_initiated">Emergency email initiated</string>
+    <string name="failed_to_send_emergency_email">Failed to send emergency email: %1$s</string>
+    <string name="email_initiated">Email initiated</string>
+    <string name="failed_to_send_email">Failed to send email: %1$s</string>
+    <string name="national_elder_abuse_hotline_contacted">National Elder Abuse Hotline contacted</string>
+    <string name="failed_to_contact_national_hotline">Failed to contact national hotline: %1$s</string>
+    <string name="elder_justice_hotline_contacted">Elder Justice Hotline contacted</string>
+    <string name="failed_to_contact_elder_justice_hotline">Failed to contact elder justice hotline: %1$s</string>
+    <string name="emergency_call_to_national_elder_abuse_hotline">Emergency call to National Elder Abuse Hotline</string>
+    <string name="failed_to_call_national_hotline">Failed to call national hotline: %1$s</string>
+    <string name="emergency_services_contacted_911">Emergency services contacted (911)</string>
+    <string name="failed_to_contact_emergency_services">Failed to contact emergency services: %1$s</string>
+    <string name="local_elder_rights_organization">Local Elder Rights Organization</string>
+    
+    <!-- Emergency SMS Templates -->
+    <string name="emergency_sms_template">User: %1$s\nPriority: %2$s\nAlert: %3$s\nTime: %4$s\nThis is an automated alert from Naviya Elder Protection System.</string>
+    <string name="sms_template">Naviya Alert - %1$s Priority\nUser: %2$s\n%3$s\nPlease check Naviya app for details.</string>
+    
+    <!-- Compliance Dashboard -->
+    <string name="emergency_compliance_dashboard">Emergency Compliance Dashboard</string>
+    <string name="system_status">System Status</string>
+    <string name="emergency_metrics">Emergency Metrics</string>
+    <string name="healthcare_professionals">Healthcare Professionals</string>
+    <string name="recent_events">Recent Events</string>
+    <string name="compliance_alerts">Compliance Alerts</string>
+    <string name="operational">Operational</string>
+    <string name="degraded">Degraded</string>
+    <string name="offline">Offline</string>
+    <string name="total_emergencies">Total Emergencies</string>
+    <string name="avg_response_time">Avg Response Time</string>
+    <string name="success_rate">Success Rate</string>
+    <string name="available">Available</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="no_recent_events">No recent events</string>
+    <string name="no_active_alerts">No active alerts</string>
+    <string name="minutes_ago">%1$d minutes ago</string>
+    <string name="hours_ago">%1$d hours ago</string>
+    <string name="days_ago">%1$d days ago</string>
+    
     <!-- App Launch Messages -->
     <string name="app_not_found">App not found</string>
     <string name="app_launch_failed">Failed to launch app</string>

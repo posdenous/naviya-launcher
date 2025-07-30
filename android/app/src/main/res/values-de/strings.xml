@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Naviya Launcher</string>
+    
+    <!-- Analytics and logging -->
+    <string name="analytics_app_launch">App gestartet</string>
+    <string name="analytics_mode_change">Modus geändert</string>
+    <string name="analytics_emergency_activated">Notfall aktiviert</string>
+    
+    <!-- Main Launcher UI -->
+    <string name="current_mode">Aktueller Modus</string>
+    <string name="switch_mode">Modus wechseln</string>
+    <string name="select_mode">Modus auswählen</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_service_description">Naviya Launcher Barrierefreiheitsdienst für ältere Nutzer</string>
+    
+    <!-- Emergency and Caregiver -->
+    <string name="emergency_sos_description">Notfall-SOS für sofortige Hilfe</string>
+    <string name="contact_caregiver">Betreuer kontaktieren</string>
+    <string name="contact_caregiver_description">Kontaktieren Sie Ihren Betreuer für Unterstützung</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    
+    <!-- Mode Switch Messages -->
+    <string name="mode_switched_to">Gewechselt zu %1$s Modus</string>
+    <string name="mode_switch_failed">Modus-Wechsel fehlgeschlagen</string>
+    
+    <!-- Emergency Messages -->
+    <string name="emergency_activated">Notfall-SOS aktiviert</string>
+    <string name="emergency_activation_failed">Notfall-Aktivierung fehlgeschlagen</string>
+    
+    <!-- Medical Emergency -->
+    <string name="medical_emergency">Medizinischer Notfall</string>
+    <string name="navigate_back">Zurück navigieren</string>
+    <string name="emergency_call">Notruf</string>
+    <string name="healthcare_professional_available">Medizinisches Fachpersonal verfügbar</string>
+    <string name="no_healthcare_professional">Kein medizinisches Fachpersonal</string>
+    <string name="select_emergency_type">Welche Art von Notfall?</string>
+    <string name="emergency_services_notified">Rettungsdienste wurden benachrichtigt</string>
+    <string name="ok">OK</string>
+    
+    <!-- Emergency Types -->
+    <string name="cardiac_emergency">Herzproblem</string>
+    <string name="cardiac_emergency_description">Brustschmerzen, Atembeschwerden, Herzinfarkt-Symptome</string>
+    <string name="fall_emergency">Sturz oder Verletzung</string>
+    <string name="fall_emergency_description">Ich bin gestürzt und könnte verletzt sein</string>
+    <string name="medication_emergency">Medikamentenproblem</string>
+    <string name="medication_emergency_description">Falsches Medikament, Überdosis oder Medikamentenreaktion</string>
+    <string name="cognitive_emergency">Verwirrung oder Gedächtnis</string>
+    <string name="cognitive_emergency_description">Schwere Verwirrung, Desorientierung oder Gedächtnisprobleme</string>
+    <string name="general_medical_emergency">Anderer medizinischer Notfall</string>
+    <string name="general_medical_emergency_description">Allgemeiner medizinischer Notfall oder Unwohlsein</string>
+    
+    <!-- Healthcare Professional Status -->
+    <string name="healthcare_professional_status">Medizinisches Fachpersonal</string>
+    <string name="healthcare_professional_assigned">Medizinisches Fachpersonal zugewiesen</string>
+    <string name="no_healthcare_professional_assigned">Kein medizinisches Fachpersonal zugewiesen</string>
+    <string name="compliance_check_in_progress">Compliance-Prüfung läuft</string>
+    
+    <!-- Emergency System Messages -->
+    <string name="emergency_system_test_successful">Notfallsystem-Test erfolgreich\n• Medizinisches Fachpersonal verfügbar\n• Compliance validiert\n• Alle Systeme betriebsbereit</string>
+    <string name="emergency_system_test_completed">Notfallsystem-Test abgeschlossen\n⚠ Kein medizinisches Fachpersonal zugewiesen\n• Grundlegende Notfallfunktionen verfügbar\n• Erwägen Sie die Hinzufügung von medizinischem Fachpersonal</string>
+    <string name="emergency_system_test_failed">Notfallsystem-Test fehlgeschlagen: %1$s</string>
+    <string name="emergency_services_activated">Rettungsdienste aktiviert</string>
+    <string name="emergency_activation_failed_message">Notfall-Aktivierung fehlgeschlagen: %1$s</string>
+    <string name="activating_emergency_response">Notfallreaktion wird aktiviert...</string>
+    <string name="emergency_services_being_contacted">Rettungsdienste werden kontaktiert</string>
+    <string name="confirm_emergency">Notfall bestätigen</string>
+    <string name="you_selected">Sie haben ausgewählt: %1$s</string>
+    
+    <!-- Unread Tile Messages -->
+    <string name="unread">Ungelesen</string>
+    <string name="permission_required">Berechtigung erforderlich</string>
+    <string name="no_unread_notifications">Keine ungelesenen Benachrichtigungen</string>
+    <string name="you_have_missed_calls_or_messages">Sie haben verpasste Anrufe oder Nachrichten.</string>
+    <string name="caregiver_not_available">Betreuer nicht verfügbar.</string>
+    <string name="permission_required_to_read_notifications">Berechtigung zum Lesen von Benachrichtigungen erforderlich</string>
+    
+    <!-- Location and Emergency Services -->
+    <string name="location_not_available">Standort: Nicht verfügbar</string>
+    <string name="location_format">Standort: %1$s</string>
+    <string name="lat_lon_format">Breitengrad: %1$s, Längengrad: %2$s%3$s</string>
+    <string name="accuracy_format"> (±%1$dm)</string>
+    <string name="emergency_services">Rettungsdienste</string>
+    <string name="notruf">Notruf</string>
+    
+    <!-- Healthcare Professional Notifications -->
+    <string name="all_notification_channels_failed">Alle Benachrichtigungskanäle fehlgeschlagen</string>
+    <string name="unknown_error">Unbekannter Fehler</string>
+    <string name="email_sent_successfully">E-Mail erfolgreich gesendet</string>
+    <string name="email_sending_failed">E-Mail-Versand fehlgeschlagen</string>
+    <string name="push_notification_sent_successfully">Push-Benachrichtigung erfolgreich gesendet</string>
+    <string name="push_notification_failed">Push-Benachrichtigung fehlgeschlagen</string>
+    <string name="patient_emergency_immediate_response">Patient %1$s: %2$s. Sofortige Reaktion erforderlich.</string>
+    <string name="dr_healthcare_professional">Dr. Medizinisches Fachpersonal</string>
+    
+    <!-- Medical Emergency Types and Descriptions -->
+    <string name="cardiac_emergency_response_description">Herznotfall - sofortige medizinische Behandlung erforderlich</string>
+    <string name="fall_emergency_response_description">Sturz mit möglicher Verletzung - medizinische Bewertung erforderlich</string>
+    <string name="medication_emergency_response_description">Medikamenten-Notfall - professionelle Beratung erforderlich</string>
+    <string name="cognitive_emergency_response_description">Kognitive Krise - spezialisierte Unterstützung erforderlich</string>
+    <string name="general_medical_emergency_response_description">Allgemeine medizinische Sorge - Standard-Notfallreaktion</string>
+    
+    <!-- Security and Authentication -->
+    <string name="biometric_not_available">Biometrische Authentifizierung auf diesem Gerät nicht verfügbar</string>
+    <string name="biometric_currently_unavailable">Biometrische Authentifizierung derzeit nicht verfügbar</string>
+    <string name="no_biometric_credentials">Keine biometrischen Anmeldedaten registriert</string>
+    <string name="secure_mode_access">Sicherer Modus-Zugang</string>
+    <string name="use_fingerprint_or_face">Verwenden Sie Ihren Fingerabdruck oder Ihr Gesicht für den Zugang zu diesem Modus</string>
+    <string name="privacy_and_security_help">Dies hilft, Ihre Privatsphäre und Sicherheit zu schützen</string>
+    <string name="use_pin_instead">Stattdessen PIN verwenden</string>
+    <string name="authentication_failed_try_again">Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
+    
+    <!-- Emergency Escape and Monitoring -->
+    <string name="emergency_escape_activated">Notfall-Flucht aktiviert. Überwachung deaktiviert.</string>
+    
+    <!-- App Selection and UI -->
+    <string name="add_app">App hinzufügen</string>
+    <string name="tap_empty_tiles_to_add_apps">Tippen Sie auf leere Kacheln, um Apps hinzuzufügen</string>
+    
+    <!-- Loading and Status Messages -->
+    <string name="loading_message">Laden: %1$s</string>
+    <string name="error_message">Fehler: %1$s</string>
+    <string name="success_message">Erfolg: %1$s</string>
+    
+    <!-- Compliance Dashboard -->
+    <string name="emergency_compliance_dashboard">Notfall-Compliance-Dashboard</string>
+    <string name="system_status">Systemstatus</string>
+    <string name="emergency_metrics">Notfall-Metriken</string>
+    <string name="healthcare_professionals">Medizinisches Fachpersonal</string>
+    <string name="recent_events">Aktuelle Ereignisse</string>
+    <string name="compliance_alerts">Compliance-Warnungen</string>
+    <string name="operational">Betriebsbereit</string>
+    <string name="degraded">Beeinträchtigt</string>
+    <string name="total_emergencies">Gesamte Notfälle</string>
+    <string name="avg_response_time">Durchschnittliche Reaktionszeit</string>
+    <string name="success_rate">Erfolgsrate</string>
+    <string name="available">Verfügbar</string>
+    <string name="unavailable">Nicht verfügbar</string>
+    <string name="no_recent_events">Keine aktuellen Ereignisse</string>
+    <string name="no_active_alerts">Keine aktiven Warnungen</string>
+    <string name="minutes_ago">vor %1$d Minuten</string>
+    <string name="hours_ago">vor %1$d Stunden</string>
+    <string name="days_ago">vor %1$d Tagen</string>
+    
+    <!-- Mode Names -->
+    <string name="mode_essential">Wesentlich</string>
+    <string name="mode_comfort">Komfort</string>
+    <string name="mode_connected">Verbunden</string>
+    
+    <!-- Mode Descriptions -->
+    <string name="mode_essential_desc">Telefon, Nachrichten, Kontakte - für Nutzer mit schweren kognitiven Beeinträchtigungen</string>
+    <string name="mode_comfort_desc">Telefon, Nachrichten, Kamera, Galerie - für Standard-Senioren mit kreativer Beteiligung</string>
+    <string name="mode_connected_desc">Alle Komfortfunktionen plus Wetter und Familienkommunikation - für technikaffine Senioren</string>
+    
+    <!-- Emergency SOS -->
+    <string name="emergency_sos">Notfall-SOS</string>
+    <string name="emergency_sos_desc">Drücken und halten für Notfall</string>
+    <string name="emergency_confirm">Notfall bestätigen</string>
+    <string name="emergency_cancel">Abbrechen</string>
+    <string name="emergency_calling">Rettungsdienste werden gerufen...</string>
+    <string name="emergency_notifying_caregivers">Betreuer werden benachrichtigt...</string>
+</resources>

@@ -1,0 +1,95 @@
+id: code_review_production_ready
+description: >
+  Guide for refactoring and reviewing prototype code to make it production-ready, 
+  maintainable, and understandable by the wider team. Intended for senior developers, 
+  but review requested by a non-technical product lead.
+
+match:
+  - "Review this feature for production readiness"
+  - "Check this code for maintainability and clarity"
+  - "Run a full code audit for long-term support"
+  - "Refactor this prototype before merging"
+  - "Review this code for scalability, testability, and maintainability"
+  - "It may catch patterns or smell tests"
+
+response:
+  - "🧠 **Purpose Check**: Is this still exploratory? If yes, flag and isolate from production."
+  - "🧱 **Structure Check**: Break into clear, testable functions. Avoid deep nesting and unclear flow."
+  - "🧪 **Testing Check**: Highlight gaps in test coverage. Suggest or add unit tests for core logic."
+  - "🔁 **Reusability Check**: Consolidate repeated logic. Move shared logic into common modules."
+  - "⚠️ **Risk Check**: Identify unsafe actions (e.g. raw DB writes, no error handling). Add fallbacks or logs."
+  - "📦 **Packaging Check**: Clean up unused code. Add comments for non-obvious logic. Rename unclear files/modules."
+
+output:
+  - "✅ Summary of what changed and why"
+  - "🧩 Before/After snippets for complex parts"
+  - "🔮 Suggestions for future improvements or tech debt to track"
+
+# Code Review Checklist for Production Readiness
+
+## 🎯 Purpose & Scope
+- [ ] Code purpose is clearly defined and documented
+- [ ] Exploratory/prototype code is flagged and isolated
+- [ ] Feature requirements are met and testable
+- [ ] Business logic is separated from presentation logic
+
+## 🏗️ Architecture & Structure
+- [ ] Functions are small, focused, and testable (< 20 lines ideally)
+- [ ] Deep nesting is avoided (max 3 levels)
+- [ ] Control flow is clear and predictable
+- [ ] Dependencies are injected, not hard-coded
+- [ ] Single Responsibility Principle is followed
+
+## 🧪 Testing & Quality
+- [ ] Unit tests cover core business logic (>80% coverage)
+- [ ] Edge cases and error scenarios are tested
+- [ ] Integration tests validate key workflows
+- [ ] Performance tests for critical paths
+- [ ] Tests are fast, reliable, and independent
+
+## 🔄 Reusability & DRY
+- [ ] Duplicated logic is consolidated
+- [ ] Common functionality is extracted to shared modules
+- [ ] Configuration is externalized
+- [ ] Magic numbers/strings are replaced with constants
+- [ ] Utility functions are reusable across components
+
+## ⚠️ Risk & Safety
+- [ ] Error handling is comprehensive and graceful
+- [ ] Input validation is thorough
+- [ ] Security best practices are followed
+- [ ] Database operations are safe and transactional
+- [ ] Logging is appropriate (not too verbose, not too sparse)
+- [ ] Fallback mechanisms exist for critical operations
+
+## 📦 Code Quality & Maintainability
+- [ ] Unused/dead code is removed
+- [ ] Variable and function names are descriptive
+- [ ] Complex logic has explanatory comments
+- [ ] Code follows team style guidelines
+- [ ] Documentation is up-to-date
+- [ ] API contracts are well-defined
+
+## 🚀 Production Readiness
+- [ ] Configuration management for different environments
+- [ ] Monitoring and observability hooks
+- [ ] Performance is acceptable under load
+- [ ] Memory usage is optimized
+- [ ] Graceful degradation under failure
+- [ ] Rollback strategy is defined
+
+## 🔮 Future Considerations
+- [ ] Technical debt is documented
+- [ ] Scalability limitations are noted
+- [ ] Potential improvements are tracked
+- [ ] Breaking changes are flagged
+- [ ] Migration paths are considered
+
+tags:
+  - qa
+  - code-review
+  - maintainability
+  - winds-checklist
+  - production-ready
+  - testing
+  - architecture

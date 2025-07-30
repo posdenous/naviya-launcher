@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Naviya Launcher</string>
+    
+    <!-- Analytics and logging -->
+    <string name="analytics_app_launch">Uygulama başlatıldı</string>
+    <string name="analytics_mode_change">Mod değiştirildi</string>
+    <string name="analytics_emergency_activated">Acil durum etkinleştirildi</string>
+    
+    <!-- Main Launcher UI -->
+    <string name="current_mode">Mevcut Mod</string>
+    <string name="switch_mode">Mod Değiştir</string>
+    <string name="select_mode">Mod Seç</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_service_description">Yaşlı kullanıcılar için Naviya Launcher erişilebilirlik hizmeti</string>
+    
+    <!-- Emergency and Caregiver -->
+    <string name="emergency_sos_description">Acil yardım için Acil Durum SOS</string>
+    <string name="contact_caregiver">Bakıcıyla İletişim</string>
+    <string name="contact_caregiver_description">Yardım için bakıcınızla iletişime geçin</string>
+    <string name="cancel">İptal</string>
+    <string name="online">Çevrimiçi</string>
+    <string name="offline">Çevrimdışı</string>
+    
+    <!-- Mode Switch Messages -->
+    <string name="mode_switched_to">%1$s moduna geçildi</string>
+    <string name="mode_switch_failed">Mod değiştirme başarısız</string>
+    
+    <!-- Emergency Messages -->
+    <string name="emergency_activated">Acil Durum SOS etkinleştirildi</string>
+    <string name="emergency_activation_failed">Acil durum etkinleştirme başarısız</string>
+    
+    <!-- Medical Emergency -->
+    <string name="medical_emergency">Tıbbi Acil Durum</string>
+    <string name="navigate_back">Geri Git</string>
+    <string name="emergency_call">Acil Çağrı</string>
+    <string name="healthcare_professional_available">Sağlık Profesyoneli Mevcut</string>
+    <string name="no_healthcare_professional">Sağlık Profesyoneli Yok</string>
+    <string name="select_emergency_type">Ne tür bir acil durum?</string>
+    <string name="emergency_services_notified">Acil servisler bilgilendirildi</string>
+    <string name="ok">Tamam</string>
+    
+    <!-- Emergency Types -->
+    <string name="cardiac_emergency">Kalp Sorunu</string>
+    <string name="cardiac_emergency_description">Göğüs ağrısı, nefes alma güçlüğü, kalp krizi belirtileri</string>
+    <string name="fall_emergency">Düşme veya Yaralanma</string>
+    <string name="fall_emergency_description">Düştüm ve yaralanmış olabilirim</string>
+    <string name="medication_emergency">İlaç Sorunu</string>
+    <string name="medication_emergency_description">Yanlış ilaç, aşırı doz veya ilaç reaksiyonu</string>
+    <string name="cognitive_emergency">Karışıklık veya Hafıza</string>
+    <string name="cognitive_emergency_description">Ciddi karışıklık, oryantasyon bozukluğu veya hafıza sorunları</string>
+    <string name="general_medical_emergency">Diğer Tıbbi</string>
+    <string name="general_medical_emergency_description">Genel tıbbi acil durum veya kendini kötü hissetme</string>
+    
+    <!-- Healthcare Professional Status -->
+    <string name="healthcare_professional_status">Sağlık Profesyoneli</string>
+    <string name="healthcare_professional_assigned">Sağlık profesyoneli atandı</string>
+    <string name="no_healthcare_professional_assigned">Sağlık profesyoneli atanmadı</string>
+    <string name="compliance_check_in_progress">Uyumluluk kontrolü devam ediyor</string>
+    
+    <!-- Emergency System Messages -->
+    <string name="emergency_system_test_successful">Acil durum sistemi testi başarılı\n• Sağlık profesyoneli mevcut\n• Uyumluluk doğrulandı\n• Tüm sistemler çalışıyor</string>
+    <string name="emergency_system_test_completed">Acil durum sistemi testi tamamlandı\n⚠ Sağlık profesyoneli atanmadı\n• Temel acil durum işlevleri mevcut\n• Sağlık profesyoneli eklemeyi düşünün</string>
+    <string name="emergency_system_test_failed">Acil durum sistemi testi başarısız: %1$s</string>
+    <string name="emergency_services_activated">Acil servisler etkinleştirildi</string>
+    <string name="emergency_activation_failed_message">Acil durum etkinleştirme başarısız: %1$s</string>
+    <string name="activating_emergency_response">Acil Durum Yanıtı Etkinleştiriliyor...</string>
+    <string name="emergency_services_being_contacted">Acil servislerle iletişime geçiliyor</string>
+    <string name="confirm_emergency">Acil Durumu Onayla</string>
+    <string name="you_selected">Seçtiğiniz: %1$s</string>
+    
+    <!-- Unread Tile Messages -->
+    <string name="unread">Okunmamış</string>
+    <string name="permission_required">İzin gerekli</string>
+    <string name="no_unread_notifications">Okunmamış bildirim yok</string>
+    <string name="you_have_missed_calls_or_messages">Cevapsız aramalarınız veya mesajlarınız var.</string>
+    <string name="caregiver_not_available">Bakıcı mevcut değil.</string>
+    <string name="permission_required_to_read_notifications">Bildirimleri okumak için izin gerekli</string>
+    
+    <!-- Location and Emergency Services -->
+    <string name="location_not_available">Konum: Mevcut değil</string>
+    <string name="location_format">Konum: %1$s</string>
+    <string name="lat_lon_format">Enlem: %1$s, Boylam: %2$s%3$s</string>
+    <string name="accuracy_format"> (±%1$dm)</string>
+    <string name="emergency_services">Acil Servisler</string>
+    <string name="acil_servis">Acil Servis</string>
+    
+    <!-- Healthcare Professional Notifications -->
+    <string name="all_notification_channels_failed">Tüm bildirim kanalları başarısız</string>
+    <string name="unknown_error">Bilinmeyen hata</string>
+    <string name="email_sent_successfully">E-posta başarıyla gönderildi</string>
+    <string name="email_sending_failed">E-posta gönderimi başarısız</string>
+    <string name="push_notification_sent_successfully">Push bildirimi başarıyla gönderildi</string>
+    <string name="push_notification_failed">Push bildirimi başarısız</string>
+    <string name="patient_emergency_immediate_response">Hasta %1$s: %2$s. Acil müdahale gerekli.</string>
+    <string name="dr_healthcare_professional">Dr. Sağlık Profesyoneli</string>
+    
+    <!-- Medical Emergency Types and Descriptions -->
+    <string name="cardiac_emergency_response_description">Kalp acil durumu - acil tıbbi müdahale gerekli</string>
+    <string name="fall_emergency_response_description">Olası yaralanmalı düşme - tıbbi değerlendirme gerekli</string>
+    <string name="medication_emergency_response_description">İlaçla ilgili acil durum - profesyonel danışmanlık gerekli</string>
+    <string name="cognitive_emergency_response_description">Bilişsel kriz - uzman desteği gerekli</string>
+    <string name="general_medical_emergency_response_description">Genel tıbbi endişe - standart acil durum yanıtı</string>
+    
+    <!-- Security and Authentication -->
+    <string name="biometric_not_available">Bu cihazda biyometrik kimlik doğrulama mevcut değil</string>
+    <string name="biometric_currently_unavailable">Biyometrik kimlik doğrulama şu anda mevcut değil</string>
+    <string name="no_biometric_credentials">Kayıtlı biyometrik kimlik bilgisi yok</string>
+    <string name="secure_mode_access">Güvenli Mod Erişimi</string>
+    <string name="use_fingerprint_or_face">Bu moda erişmek için parmak izinizi veya yüzünüzü kullanın</string>
+    <string name="privacy_and_security_help">Bu, gizliliğinizi ve güvenliğinizi korumaya yardımcı olur</string>
+    <string name="use_pin_instead">Bunun yerine PIN kullan</string>
+    <string name="authentication_failed_try_again">Kimlik doğrulama başarısız. Lütfen tekrar deneyin.</string>
+    
+    <!-- Emergency Escape and Monitoring -->
+    <string name="emergency_escape_activated">Acil kaçış etkinleştirildi. İzleme devre dışı bırakıldı.</string>
+    
+    <!-- App Selection and UI -->
+    <string name="add_app">Uygulama ekle</string>
+    <string name="tap_empty_tiles_to_add_apps">Uygulama eklemek için boş kutucuklara dokunun</string>
+    
+    <!-- Loading and Status Messages -->
+    <string name="loading_message">Yükleniyor: %1$s</string>
+    <string name="error_message">Hata: %1$s</string>
+    <string name="success_message">Başarılı: %1$s</string>
+    
+    <!-- Compliance Dashboard -->
+    <string name="emergency_compliance_dashboard">Acil Durum Uyumluluk Panosu</string>
+    <string name="system_status">Sistem Durumu</string>
+    <string name="emergency_metrics">Acil Durum Metrikleri</string>
+    <string name="healthcare_professionals">Sağlık Profesyonelleri</string>
+    <string name="recent_events">Son Olaylar</string>
+    <string name="compliance_alerts">Uyumluluk Uyarıları</string>
+    <string name="operational">Çalışır durumda</string>
+    <string name="degraded">Bozulmuş</string>
+    <string name="total_emergencies">Toplam Acil Durumlar</string>
+    <string name="avg_response_time">Ortalama Yanıt Süresi</string>
+    <string name="success_rate">Başarı Oranı</string>
+    <string name="available">Mevcut</string>
+    <string name="unavailable">Mevcut değil</string>
+    <string name="no_recent_events">Son olay yok</string>
+    <string name="no_active_alerts">Aktif uyarı yok</string>
+    <string name="minutes_ago">%1$d dakika önce</string>
+    <string name="hours_ago">%1$d saat önce</string>
+    <string name="days_ago">%1$d gün önce</string>
+    
+    <!-- Mode Names -->
+    <string name="mode_essential">Temel</string>
+    <string name="mode_comfort">Konfor</string>
+    <string name="mode_connected">Bağlı</string>
+    
+    <!-- Mode Descriptions -->
+    <string name="mode_essential_desc">Telefon, mesajlar, kişiler - ciddi bilişsel bozukluğu olan kullanıcılar için</string>
+    <string name="mode_comfort_desc">Telefon, mesajlar, kamera, galeri - yaratıcı katılımla standart yaşlı kullanıcılar için</string>
+    <string name="mode_connected_desc">Tüm konfor özellikleri artı hava durumu ve aile iletişimi - teknoloji dostu yaşlı kullanıcılar için</string>
+    
+    <!-- Emergency SOS -->
+    <string name="emergency_sos">Acil Durum SOS</string>
+    <string name="emergency_sos_desc">Acil durum için basılı tutun</string>
+    <string name="emergency_confirm">Acil Durumu Onayla</string>
+    <string name="emergency_cancel">İptal</string>
+    <string name="emergency_calling">Acil servisler aranıyor...</string>
+    <string name="emergency_notifying_caregivers">Bakıcılar bilgilendiriliyor...</string>
+</resources>

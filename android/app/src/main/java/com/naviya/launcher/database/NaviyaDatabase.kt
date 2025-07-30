@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import android.content.Context
 import java.util.concurrent.Executors
 import com.naviya.launcher.healthcare.data.*
+import com.naviya.launcher.healthcare.compliance.*
 import com.naviya.launcher.abuse.data.*
 import com.naviya.launcher.elderrights.data.*
 import com.naviya.launcher.caregiver.data.*
@@ -28,6 +29,13 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
         ProfessionalInstallation::class,
         ClinicalOversight::class,
         ClinicalAssessment::class,
+        
+        // Medical Compliance entities
+        HipaaComplianceLog::class,
+        PatientConsentRecord::class,
+        ClinicalGovernanceAudit::class,
+        ElderProtectionAssessment::class,
+        RegulatoryComplianceCheck::class,
         
         // Abuse Detection entities
         AbuseDetectionEvent::class,
@@ -53,7 +61,7 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
         SystemLockoutLog::class,
         CaregiverTokenValidation::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 // TypeConverters will be added as needed for specific data types
@@ -61,6 +69,9 @@ abstract class NaviyaDatabase : RoomDatabase() {
     
     // Healthcare Professional DAOs
     abstract fun healthcareProfessionalDao(): HealthcareProfessionalDao
+    
+    // Medical Compliance DAO
+    abstract fun medicalComplianceDao(): MedicalComplianceDao
     
     // Abuse Detection DAOs
     abstract fun abuseDetectionDao(): AbuseDetectionDao
