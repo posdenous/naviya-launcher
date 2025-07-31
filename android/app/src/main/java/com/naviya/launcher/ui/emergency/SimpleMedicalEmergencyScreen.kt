@@ -409,7 +409,6 @@ private data class SimpleEmergencyTypeInfo(
     val priorityText: String
 )
 
-@Composable
 private fun getSimpleEmergencyTypes(): List<SimpleEmergencyTypeInfo> {
     return listOf(
         SimpleEmergencyTypeInfo(

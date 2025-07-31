@@ -121,6 +121,51 @@
     <!-- Emergency Escape and Monitoring -->
     <string name="emergency_escape_activated">Emergency escape activated. Monitoring disabled.</string>
     
+    <!-- Security Notification Dialog -->
+    <string name="security_dialog_understood">I Understand</string>
+    <string name="security_emergency_escape">Emergency Escape</string>
+    <string name="security_contact_advocate">Contact Advocate</string>
+    <string name="security_help_available">Help is available if you need it</string>
+    
+    <!-- Security Titles -->
+    <string name="security_title_suspicious">Suspicious Activity Detected</string>
+    <string name="security_title_locked">System Locked</string>
+    <string name="security_title_auth_required">Authentication Required</string>
+    <string name="security_title_invalid_caregiver">Invalid Caregiver Access</string>
+    <string name="security_title_protection">Protection Mode Active</string>
+    <string name="security_title_emergency_active">Emergency Mode Active</string>
+    <string name="security_title_rate_limited">Too Many Attempts</string>
+    <string name="security_title_general">Security Notice</string>
+    
+    <!-- Security Messages -->
+    <string name="security_message_suspicious">We noticed unusual activity. Your device is being protected.</string>
+    <string name="security_message_locked">The system is temporarily locked for your safety.</string>
+    <string name="security_message_auth_required">Please verify your identity to continue.</string>
+    <string name="security_message_invalid_caregiver">The caregiver access token is not valid.</string>
+    <string name="security_message_protection">Protection features are active to keep you safe.</string>
+    <string name="security_message_emergency_active">Emergency mode is currently active.</string>
+    <string name="security_message_rate_limited">Please wait before trying again.</string>
+    
+    <!-- Additional Security UI Strings -->
+    <string name="security_status_secure">System Secure</string>
+    <string name="security_status_warning">Security Warning</string>
+    <string name="security_status_emergency">Emergency Mode</string>
+    <string name="security_emergency_active">Emergency mode is currently active</string>
+    <string name="security_get_help">Get Help</string>
+    <string name="security_recent_events">Recent Security Events</string>
+    <string name="security_mode_switch_title">Mode Switch Security</string>
+    <string name="security_current_mode">Current Mode</string>
+    <string name="security_switch_to_mode">Switch to %1$s Mode</string>
+    
+    <!-- Authentication Strings -->
+    <string name="auth_pin_too_short">PIN must be at least 4 digits</string>
+    <string name="auth_use_pin">Use PIN</string>
+    <string name="auth_use_biometric">Use Fingerprint</string>
+    <string name="auth_cancel">Cancel</string>
+    <string name="auth_security_info">This helps protect your privacy and security</string>
+    
+
+    
     <!-- App Selection and UI -->
     <string name="add_app">Add app</string>
     <string name="tap_empty_tiles_to_add_apps">Tap empty tiles to add apps</string>
@@ -172,7 +217,6 @@
     <string name="compliance_alerts">Compliance Alerts</string>
     <string name="operational">Operational</string>
     <string name="degraded">Degraded</string>
-    <string name="offline">Offline</string>
     <string name="total_emergencies">Total Emergencies</string>
     <string name="avg_response_time">Avg Response Time</string>
     <string name="success_rate">Success Rate</string>
@@ -236,7 +280,6 @@
     <string name="unread_calls_and_messages">Unread</string>
     <string name="missed_calls">%1$d missed calls</string>
     <string name="unread_messages">%1$d unread messages</string>
-    <string name="caregiver_not_available">Caregiver not available</string>
     
     <!-- Settings and Configuration -->
     <string name="settings">Settings</string>
@@ -247,7 +290,6 @@
     <string name="caregiver_settings">Caregiver Settings</string>
     
     <!-- Common Actions -->
-    <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="retry">Retry</string>

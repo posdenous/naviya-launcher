@@ -2,6 +2,7 @@ package com.naviya.launcher.layout
 
 import android.content.pm.PackageManager
 import android.content.pm.ApplicationInfo
+import com.naviya.launcher.toggle.ToggleMode
 
 /**
  * Tile Type System for Naviya Launcher

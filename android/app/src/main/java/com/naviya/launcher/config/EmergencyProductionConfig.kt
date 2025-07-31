@@ -5,15 +5,15 @@ import androidx.annotation.StringRes
 import androidx.annotation.IntegerRes
 import androidx.annotation.BoolRes
 import com.naviya.launcher.R
-import javax.inject.Inject
-import javax.inject.Singleton
+// import javax.inject.Inject // DISABLED
+// import javax.inject.Singleton // DISABLED
 
 /**
  * Production Configuration Manager for Emergency SOS + Medical Compliance System
  * Centralises all production settings, timeouts, and feature flags
  */
-@Singleton
-class EmergencyProductionConfig @Inject constructor(
+// @Singleton // DISABLED
+class EmergencyProductionConfig(
     private val context: Context
 ) {
     

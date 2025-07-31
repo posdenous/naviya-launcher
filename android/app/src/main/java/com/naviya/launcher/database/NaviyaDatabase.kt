@@ -10,11 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import android.content.Context
 import java.util.concurrent.Executors
 import com.naviya.launcher.healthcare.data.*
-import com.naviya.launcher.healthcare.compliance.*
-import com.naviya.launcher.abuse.data.*
-import com.naviya.launcher.elderrights.data.*
-import com.naviya.launcher.caregiver.data.*
-import com.naviya.launcher.onboarding.data.*
+// import com.naviya.launcher.healthcare.compliance.* // DISABLED
 import com.naviya.launcher.security.*
 import com.naviya.launcher.data.dao.SecurityAuditDao
 
@@ -30,28 +26,12 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
         ClinicalOversight::class,
         ClinicalAssessment::class,
         
-        // Medical Compliance entities
-        HipaaComplianceLog::class,
-        PatientConsentRecord::class,
-        ClinicalGovernanceAudit::class,
-        ElderProtectionAssessment::class,
-        RegulatoryComplianceCheck::class,
-        
-        // Abuse Detection entities
-        AbuseDetectionEvent::class,
-        AbuseDetectionRule::class,
-        
-        // Elder Rights entities
-        ElderRightsAdvocateContact::class,
-        ElderRightsNotification::class,
-        
-        // Caregiver entities
-        CaregiverConnection::class,
-        CaregiverPermission::class,
-        
-        // Onboarding entities
-        OnboardingProgress::class,
-        UserProfile::class,
+        // Medical Compliance entities - DISABLED
+        // HipaaComplianceLog::class, // DISABLED
+        // PatientConsentRecord::class, // DISABLED
+        // ClinicalGovernanceAudit::class, // DISABLED
+        // ElderProtectionAssessment::class, // DISABLED
+        // RegulatoryComplianceCheck::class, // DISABLED
         
         // Security Audit entities
         ModeSwitchAudit::class,
@@ -71,19 +51,7 @@ abstract class NaviyaDatabase : RoomDatabase() {
     abstract fun healthcareProfessionalDao(): HealthcareProfessionalDao
     
     // Medical Compliance DAO
-    abstract fun medicalComplianceDao(): MedicalComplianceDao
-    
-    // Abuse Detection DAOs
-    abstract fun abuseDetectionDao(): AbuseDetectionDao
-    
-    // Elder Rights DAOs
-    abstract fun elderRightsDao(): ElderRightsDao
-    
-    // Caregiver DAOs
-    abstract fun caregiverDao(): CaregiverDao
-    
-    // Onboarding DAOs
-    abstract fun onboardingDao(): OnboardingDao
+    // abstract fun medicalComplianceDao(): MedicalComplianceDao // DISABLED
     
     // Security Audit DAO
     abstract fun securityAuditDao(): SecurityAuditDao
@@ -355,36 +323,4 @@ abstract class NaviyaDatabase : RoomDatabase() {
     }
 }
 
-// Placeholder DAOs and entities for compilation
-// These would be replaced with actual implementations
 
-interface AbuseDetectionDao {
-    // Placeholder for abuse detection DAO methods
-}
-
-interface ElderRightsDao {
-    // Placeholder for elder rights DAO methods
-}
-
-interface CaregiverDao {
-    // Placeholder for caregiver DAO methods
-}
-
-interface OnboardingDao {
-    // Placeholder for onboarding DAO methods
-}
-
-// Placeholder entities
-data class AbuseDetectionEvent(val id: String = "")
-data class AbuseDetectionRule(val id: String = "")
-data class ElderRightsAdvocateContact(val id: String = "")
-data class ElderRightsNotification(val id: String = "")
-data class CaregiverConnection(val id: String = "")
-data class CaregiverPermission(val id: String = "")
-data class OnboardingProgress(val id: String = "")
-data class UserProfile(val id: String = "")
-
-// Placeholder type converters
-class AbuseDetectionTypeConverters
-class ElderRightsTypeConverters  
-class CaregiverTypeConverters

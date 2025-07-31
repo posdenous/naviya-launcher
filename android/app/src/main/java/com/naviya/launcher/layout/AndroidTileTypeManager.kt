@@ -198,6 +198,11 @@ class AndroidTileTypeManager(private val context: Context) {
                 perms.contains("android.permission.BIND_ACCESSIBILITY_SERVICE") -> {
                     types.add(TileType.ACCESSIBILITY_TOOLS)
                 }
+                
+                else -> {
+                    // Default case for apps without specific permissions
+                    types.add(TileType.PRODUCTIVITY_WORK)
+                }
             }
         }
         

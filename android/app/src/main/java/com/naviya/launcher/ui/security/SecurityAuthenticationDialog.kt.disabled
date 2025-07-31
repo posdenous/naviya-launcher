@@ -30,7 +30,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.fragment.app.FragmentActivity
 import com.naviya.launcher.R
-import com.naviya.launcher.layout.ToggleMode
+import com.naviya.launcher.toggle.ToggleMode
 
 /**
  * Security authentication dialog for elderly-friendly secure mode switching
@@ -273,11 +273,9 @@ fun SecurityAuthenticationDialog(
 @Composable
 private fun getModeFriendlyName(mode: ToggleMode): String {
     return when (mode) {
+        ToggleMode.ESSENTIAL -> stringResource(R.string.mode_essential)
         ToggleMode.COMFORT -> stringResource(R.string.mode_comfort)
-        ToggleMode.FAMILY -> stringResource(R.string.mode_family)
-        ToggleMode.FOCUS -> stringResource(R.string.mode_focus)
-        ToggleMode.MINIMAL -> stringResource(R.string.mode_minimal)
-        ToggleMode.WELCOME -> stringResource(R.string.mode_welcome)
+        ToggleMode.CONNECTED -> stringResource(R.string.mode_connected)
     }
 }
 
