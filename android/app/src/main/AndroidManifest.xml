@@ -75,7 +75,7 @@
         android:required="false" />
 
     <application
-        android:name=".NaviyaApplication"
+        android:name=".TestNaviyaApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -88,9 +88,9 @@
         android:supportsRtl="true"
         tools:targetApi="31">
 
-        <!-- Simple Test Activity without Hilt dependencies -->
+        <!-- Test Launcher Activity for emulator testing -->
         <activity
-            android:name=".SimpleTestActivity"
+            android:name=".TestLauncherActivity"
             android:exported="true"
             android:theme="@style/Theme.NaviyaLauncher"
             android:launchMode="singleTask"
@@ -146,6 +146,7 @@
             android:screenOrientation="portrait" />
 
         <!-- Test Main Launcher Integration Activity -->
+        <!-- Disabled: TestMainLauncherActivity not implemented
         <activity
             android:name=".integration.TestMainLauncherActivity"
             android:exported="true"
@@ -156,6 +157,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
 
         <!-- Main Activity (Our integrated launcher) -->
         <activity
@@ -286,12 +288,14 @@
         <!-- Content Providers -->
         
         <!-- Secure data provider for caregiver access -->
+        <!-- Disabled: NaviyaDataProvider not implemented yet
         <provider
             android:name=".providers.NaviyaDataProvider"
             android:authorities="com.naviya.launcher.provider"
             android:enabled="true"
             android:exported="false"
             android:grantUriPermissions="true" />
+        -->
 
         <!-- Work Manager initialization -->
         <provider
