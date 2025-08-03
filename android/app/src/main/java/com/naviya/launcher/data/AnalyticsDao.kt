@@ -26,7 +26,7 @@ interface AnalyticsDao {
      * Insert emergency activation event for safety analytics
      */
     @Insert
-    suspend fun insertEmergencyEvent(event: EmergencyEvent)
+    suspend fun insertEmergencyEvent(event: AnalyticsEmergencyEvent)
     
     /**
      * Get app launch events for a specific time period
@@ -44,7 +44,7 @@ interface AnalyticsDao {
      * Get emergency events for safety monitoring
      */
     @Query("SELECT * FROM emergency_events WHERE timestamp >= :startTime ORDER BY timestamp DESC")
-    suspend fun getEmergencyEvents(startTime: Long): List<EmergencyEvent>
+    suspend fun getEmergencyEvents(startTime: Long): List<AnalyticsEmergencyEvent>
     
     /**
      * Get most frequently used apps
@@ -67,7 +67,7 @@ interface AnalyticsDao {
     @Query("DELETE FROM mode_change_events WHERE timestamp < :cutoffTime")
     suspend fun cleanupOldModeChangeEvents(cutoffTime: Long)
     
-    @Query("DELETE FROM emergency_events WHERE timestamp < :cutoffTime")
+    @Query("DELETE FROM analytics_emergency_events WHERE timestamp < :cutoffTime")
     suspend fun cleanupOldEmergencyEvents(cutoffTime: Long)
     
     /**
@@ -91,6 +91,19 @@ interface AnalyticsDao {
             ModeChangeEvent(
                 fromMode = fromMode,
                 toMode = toMode,
+                timestamp = timestamp
+            )
+        )
+    }
+    
+    /**
+     * Helper method to insert emergency event with current timestamp
+     */
+    suspend fun insertEmergencyEvent(eventType: String, triggerSource: String, timestamp: Long) {
+        insertEmergencyEvent(
+            AnalyticsEmergencyEvent(
+                eventType = eventType,
+                triggerSource = triggerSource,
                 timestamp = timestamp
             )
         )
@@ -136,8 +149,8 @@ data class ModeChangeEvent(
 /**
  * Emergency event entity for safety monitoring
  */
-@Entity(tableName = "emergency_events")
-data class EmergencyEvent(
+@Entity(tableName = "analytics_emergency_events")
+data class AnalyticsEmergencyEvent(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     

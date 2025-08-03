@@ -12,14 +12,19 @@ import com.naviya.launcher.toggle.ToggleMode
 data class OnboardingState(
     @PrimaryKey
     val userId: String,
-    val currentStep: OnboardingStep,
-    val selectedMode: ToggleMode? = null,
-    val isCompleted: Boolean = false,
-    val startTimestamp: Long = System.currentTimeMillis(),
+    val currentStep: String,
+    val onboardingCompleted: Boolean = false,
+    val setupStartTime: Long = System.currentTimeMillis(),
     val completionTimestamp: Long? = null,
     val emergencyContactsAdded: Int = 0,
     val caregiverConfigured: Boolean = false,
-    val accessibilitySettingsConfigured: Boolean = false
+    val accessibilitySettingsConfigured: Boolean = false,
+    val professionalInstallationSkipped: Boolean = false,
+    val skipReason: String = "",
+    val familyAssistedSetup: Boolean = false,
+    val hasErrors: Boolean = false,
+    val lastError: String = "",
+    val updatedAt: Long = System.currentTimeMillis()
 )
 
 /**
@@ -28,10 +33,12 @@ data class OnboardingState(
 enum class OnboardingStep {
     WELCOME,
     MODE_SELECTION,
+    BASIC_PREFERENCES,
     EMERGENCY_CONTACTS,
-    CAREGIVER_SETUP,
-    ACCESSIBILITY_SETUP,
-    COMPLETED
+    OPTIONAL_CAREGIVER,
+    SKIP_PROFESSIONAL,
+    COMPLETION,
+    LAUNCHER_READY
 }
 
 /**

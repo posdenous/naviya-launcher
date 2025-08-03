@@ -64,7 +64,6 @@ data class ComplianceAlert(
 // ==================== HIPAA COMPLIANCE MODELS ====================
 
 @Entity(tableName = "hipaa_compliance_logs")
-@TypeConverters(MedicalComplianceConverters::class)
 data class HipaaComplianceLog(
     @PrimaryKey
     val logId: String,
@@ -84,7 +83,6 @@ data class HipaaComplianceLog(
 )
 
 @Entity(tableName = "patient_consent_records")
-@TypeConverters(MedicalComplianceConverters::class)
 data class PatientConsentRecord(
     @PrimaryKey
     val consentId: String,
@@ -109,7 +107,6 @@ data class PatientConsentRecord(
 // ==================== CLINICAL GOVERNANCE MODELS ====================
 
 @Entity(tableName = "clinical_governance_audits")
-@TypeConverters(MedicalComplianceConverters::class)
 data class ClinicalGovernanceAudit(
     @PrimaryKey
     val auditId: String,
@@ -143,7 +140,6 @@ data class GovernanceFinding(
 // ==================== ELDER PROTECTION COMPLIANCE MODELS ====================
 
 @Entity(tableName = "elder_protection_assessments")
-@TypeConverters(MedicalComplianceConverters::class)
 data class ElderProtectionAssessment(
     @PrimaryKey
     val assessmentId: String,
@@ -191,7 +187,6 @@ data class SafeguardingPlan(
 // ==================== REGULATORY COMPLIANCE MODELS ====================
 
 @Entity(tableName = "regulatory_compliance_checks")
-@TypeConverters(MedicalComplianceConverters::class)
 data class RegulatoryComplianceCheck(
     @PrimaryKey
     val checkId: String,

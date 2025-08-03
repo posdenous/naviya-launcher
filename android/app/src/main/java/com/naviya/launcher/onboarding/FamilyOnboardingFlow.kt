@@ -417,9 +417,11 @@ class FamilyOnboardingFlow @Inject constructor(
             
             // Save mode selection to database
             onboardingDao.updateOnboardingState(
-                _setupProgress.value.userId,
-                OnboardingStep.BASIC_PREFERENCES.name,
-                mapOf("selectedMode" to mode.name)
+                userId = _setupProgress.value.userId,
+                updates = mapOf(
+                    "currentStep" to OnboardingStep.BASIC_PREFERENCES.name,
+                    "selectedMode" to mode.name
+                )
             )
             
             OnboardingResult.Success("Mode ${mode.displayName} selected successfully")

@@ -5,53 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 import java.util.UUID
 
-/**
- * Onboarding state tracking for family-assisted setup
- */
-@Entity(tableName = "onboarding_state")
-data class OnboardingState(
-    @PrimaryKey
-    val onboardingId: String = UUID.randomUUID().toString(),
-    
-    val userId: String,
-    val currentStep: String, // OnboardingStep as string
-    val isAssistedSetup: Boolean = false,
-    val assistantName: String? = null,
-    val assistantRelationship: String? = null,
-    
-    // Setup timing and progress
-    val setupStartTime: Long = System.currentTimeMillis(),
-    val lastStepTimestamp: Long = System.currentTimeMillis(),
-    val estimatedCompletionTime: Long? = null,
-    
-    // Family-friendly setup flags
-    val familyAssistedSetup: Boolean = false,
-    val professionalInstallationSkipped: Boolean = false,
-    val skipReason: String? = null,
-    
-    // Consent and witness tracking
-    val userConsentGiven: Boolean = false,
-    val consentWitnessName: String? = null,
-    val consentTimestamp: Long? = null,
-    
-    // Completion tracking
-    val onboardingCompleted: Boolean = false,
-    val completionTimestamp: Long? = null,
-    val setupMethod: String = "family_assisted", // family_assisted, professional, self_service
-    
-    // Error handling
-    val hasErrors: Boolean = false,
-    val lastError: String? = null,
-    val errorCount: Int = 0,
-    
-    // Metadata
-    val deviceInfo: String? = null,
-    val appVersion: String? = null,
-    val androidVersion: String? = null,
-    
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
-)
+// OnboardingState moved to separate file to avoid duplication
 
 /**
  * Family setup session for tracking multi-person setup

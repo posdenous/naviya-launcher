@@ -6,11 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
+import com.naviya.launcher.database.SharedTypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import android.content.Context
 import java.util.concurrent.Executors
 import com.naviya.launcher.healthcare.data.*
-// import com.naviya.launcher.healthcare.compliance.* // DISABLED
+import com.naviya.launcher.healthcare.compliance.*
 import com.naviya.launcher.security.*
 import com.naviya.launcher.data.dao.SecurityAuditDao
 
@@ -26,12 +27,12 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
         ClinicalOversight::class,
         ClinicalAssessment::class,
         
-        // Medical Compliance entities - DISABLED
-        // HipaaComplianceLog::class, // DISABLED
-        // PatientConsentRecord::class, // DISABLED
-        // ClinicalGovernanceAudit::class, // DISABLED
-        // ElderProtectionAssessment::class, // DISABLED
-        // RegulatoryComplianceCheck::class, // DISABLED
+        // Medical Compliance entities
+        HipaaComplianceLog::class,
+        PatientConsentRecord::class,
+        ClinicalGovernanceAudit::class,
+        ElderProtectionAssessment::class,
+        RegulatoryComplianceCheck::class,
         
         // Security Audit entities
         ModeSwitchAudit::class,
@@ -44,14 +45,14 @@ import com.naviya.launcher.data.dao.SecurityAuditDao
     version = 4,
     exportSchema = true
 )
-// TypeConverters will be added as needed for specific data types
+@TypeConverters(SharedTypeConverters::class)
 abstract class NaviyaDatabase : RoomDatabase() {
     
     // Healthcare Professional DAOs
     abstract fun healthcareProfessionalDao(): HealthcareProfessionalDao
     
     // Medical Compliance DAO
-    // abstract fun medicalComplianceDao(): MedicalComplianceDao // DISABLED
+    abstract fun medicalComplianceDao(): MedicalComplianceDao
     
     // Security Audit DAO
     abstract fun securityAuditDao(): SecurityAuditDao

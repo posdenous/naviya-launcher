@@ -6,7 +6,7 @@
     <!-- Analytics and logging -->
     <string name="analytics_app_launch">تم تشغيل التطبيق</string>
     <string name="analytics_mode_change">تم تغيير الوضع</string>
-    <string name="analytics_emergency_activated">تم تفعيل الطوارئ</string>
+    <string name="analytics_emergency_activated">تم تفعيل حالة الطوارئ</string>
     
     <!-- Main Launcher UI -->
     <string name="current_mode">الوضع الحالي</string>
@@ -17,9 +17,9 @@
     <string name="accessibility_service_description">خدمة إمكانية الوصول لـ Naviya Launcher للمستخدمين المسنين</string>
     
     <!-- Emergency and Caregiver -->
-    <string name="emergency_sos_description">استغاثة طوارئ للمساعدة الفورية</string>
+    <string name="emergency_sos_description">نداء استغاثة طارئ للمساعدة الفورية</string>
     <string name="contact_caregiver">الاتصال بمقدم الرعاية</string>
-    <string name="contact_caregiver_description">اتصل بمقدم الرعاية للحصول على المساعدة</string>
+    <string name="contact_caregiver_description">اتصل بمقدم الرعاية الخاص بك للحصول على المساعدة</string>
     <string name="cancel">إلغاء</string>
     <string name="online">متصل</string>
     <string name="offline">غير متصل</string>
@@ -29,8 +29,8 @@
     <string name="mode_switch_failed">فشل في تبديل الوضع</string>
     
     <!-- Emergency Messages -->
-    <string name="emergency_activated">تم تفعيل استغاثة الطوارئ</string>
-    <string name="emergency_activation_failed">فشل في تفعيل الطوارئ</string>
+    <string name="emergency_activated">تم تفعيل نداء الاستغاثة الطارئ</string>
+    <string name="emergency_activation_failed">فشل في تفعيل حالة الطوارئ</string>
     
     <!-- Medical Emergency -->
     <string name="medical_emergency">طوارئ طبية</string>
@@ -48,118 +48,87 @@
     <string name="fall_emergency">سقوط أو إصابة</string>
     <string name="fall_emergency_description">لقد سقطت وقد أكون مصاباً</string>
     <string name="medication_emergency">مشكلة في الدواء</string>
-    <string name="medication_emergency_description">دواء خاطئ، جرعة زائدة، أو تفاعل دوائي</string>
+    <string name="medication_emergency_description">دواء خاطئ، جرعة زائدة، أو رد فعل للدواء</string>
     <string name="cognitive_emergency">ارتباك أو ذاكرة</string>
     <string name="cognitive_emergency_description">ارتباك شديد، فقدان الاتجاه، أو مشاكل في الذاكرة</string>
     <string name="general_medical_emergency">طبي آخر</string>
     <string name="general_medical_emergency_description">طوارئ طبية عامة أو الشعور بالتوعك</string>
     
-    <!-- Healthcare Professional Status -->
-    <string name="healthcare_professional_status">أخصائي الرعاية الصحية</string>
-    <string name="healthcare_professional_assigned">تم تعيين أخصائي رعاية صحية</string>
-    <string name="no_healthcare_professional_assigned">لم يتم تعيين أخصائي رعاية صحية</string>
-    <string name="compliance_check_in_progress">فحص الامتثال قيد التقدم</string>
+    <!-- Legal and Privacy Strings -->
+    <string name="data_protection">حماية البيانات</string>
+    <string name="privacy_settings">إعدادات الخصوصية</string>
+    <string name="consent_management">إدارة الموافقة</string>
+    <string name="withdraw_consent">سحب الموافقة</string>
+    <string name="data_export">تصدير البيانات</string>
+    <string name="data_deletion">حذف البيانات</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="terms_of_service">شروط الخدمة</string>
+    <string name="cookie_policy">سياسة ملفات تعريف الارتباط</string>
+    <string name="legal_notices">الإشعارات القانونية</string>
     
-    <!-- Emergency System Messages -->
-    <string name="emergency_system_test_successful">اختبار نظام الطوارئ ناجح\n• أخصائي رعاية صحية متاح\n• تم التحقق من الامتثال\n• جميع الأنظمة تعمل</string>
-    <string name="emergency_system_test_completed">اكتمل اختبار نظام الطوارئ\n⚠ لم يتم تعيين أخصائي رعاية صحية\n• وظائف الطوارئ الأساسية متاحة\n• فكر في إضافة أخصائي رعاية صحية</string>
-    <string name="emergency_system_test_failed">فشل اختبار نظام الطوارئ: %1$s</string>
-    <string name="emergency_services_activated">تم تفعيل خدمات الطوارئ</string>
-    <string name="emergency_activation_failed_message">فشل في تفعيل الطوارئ: %1$s</string>
-    <string name="activating_emergency_response">جاري تفعيل استجابة الطوارئ...</string>
-    <string name="emergency_services_being_contacted">جاري الاتصال بخدمات الطوارئ</string>
-    <string name="confirm_emergency">تأكيد الطوارئ</string>
-    <string name="you_selected">لقد اخترت: %1$s</string>
+    <!-- GDPR Rights -->
+    <string name="your_data_rights">حقوق البيانات الخاصة بك</string>
+    <string name="right_to_access">الحق في الوصول</string>
+    <string name="right_to_rectification">الحق في التصحيح</string>
+    <string name="right_to_erasure">الحق في المحو</string>
+    <string name="right_to_portability">الحق في نقل البيانات</string>
+    <string name="right_to_restrict">الحق في تقييد المعالجة</string>
+    <string name="right_to_object">الحق في الاعتراض</string>
+    <string name="right_to_withdraw_consent">الحق في سحب الموافقة</string>
     
-    <!-- Unread Tile Messages -->
-    <string name="unread">غير مقروء</string>
-    <string name="permission_required">إذن مطلوب</string>
-    <string name="no_unread_notifications">لا توجد إشعارات غير مقروءة</string>
-    <string name="you_have_missed_calls_or_messages">لديك مكالمات فائتة أو رسائل.</string>
-    <string name="caregiver_not_available">مقدم الرعاية غير متاح.</string>
-    <string name="permission_required_to_read_notifications">إذن مطلوب لقراءة الإشعارات</string>
+    <!-- Consent Types -->
+    <string name="essential_services_consent">الخدمات الأساسية</string>
+    <string name="emergency_services_consent">خدمات الطوارئ</string>
+    <string name="location_services_consent">خدمات الموقع</string>
+    <string name="caregiver_integration_consent">تكامل مقدم الرعاية</string>
+    <string name="health_data_consent">معالجة البيانات الصحية</string>
+    <string name="analytics_consent">التحليلات والتحسين</string>
+    <string name="marketing_consent">التواصل التسويقي</string>
     
-    <!-- Location and Emergency Services -->
-    <string name="location_not_available">الموقع: غير متاح</string>
-    <string name="location_format">الموقع: %1$s</string>
-    <string name="lat_lon_format">خط العرض: %1$s، خط الطول: %2$s%3$s</string>
-    <string name="accuracy_format"> (±%1$dم)</string>
-    <string name="emergency_services">خدمات الطوارئ</string>
+    <!-- Healthcare Compliance -->
+    <string name="healthcare_professional_compliance">امتثال أخصائي الرعاية الصحية</string>
+    <string name="clinical_governance">الحوكمة السريرية</string>
+    <string name="medical_device_compliance">امتثال الأجهزة الطبية</string>
+    <string name="elder_protection">حماية المسنين</string>
+    <string name="professional_licensing">الترخيص المهني</string>
+    <string name="clinical_supervision">الإشراف السريري</string>
+    <string name="medical_liability">المسؤولية الطبية</string>
     
-    <!-- Healthcare Professional Notifications -->
-    <string name="all_notification_channels_failed">فشلت جميع قنوات الإشعار</string>
-    <string name="unknown_error">خطأ غير معروف</string>
-    <string name="email_sent_successfully">تم إرسال البريد الإلكتروني بنجاح</string>
-    <string name="email_sending_failed">فشل في إرسال البريد الإلكتروني</string>
-    <string name="push_notification_sent_successfully">تم إرسال الإشعار الفوري بنجاح</string>
-    <string name="push_notification_failed">فشل الإشعار الفوري</string>
-    <string name="patient_emergency_immediate_response">المريض %1$s: %2$s. استجابة فورية مطلوبة.</string>
-    <string name="dr_healthcare_professional">د. أخصائي الرعاية الصحية</string>
+    <!-- Data Processing Information -->
+    <string name="data_controller">مراقب البيانات</string>
+    <string name="data_processor">معالج البيانات</string>
+    <string name="lawful_basis">الأساس القانوني</string>
+    <string name="processing_purpose">غرض المعالجة</string>
+    <string name="retention_period">فترة الاحتفاظ</string>
+    <string name="data_recipients">مستقبلو البيانات</string>
+    <string name="international_transfers">النقل الدولي</string>
     
-    <!-- Medical Emergency Types and Descriptions -->
-    <string name="cardiac_emergency_response_description">طوارئ قلبية - عناية طبية فورية مطلوبة</string>
-    <string name="fall_emergency_response_description">سقوط مع إصابة محتملة - تقييم طبي مطلوب</string>
-    <string name="medication_emergency_response_description">طوارئ متعلقة بالأدوية - استشارة مهنية مطلوبة</string>
-    <string name="cognitive_emergency_response_description">أزمة معرفية - دعم متخصص مطلوب</string>
-    <string name="general_medical_emergency_response_description">قلق طبي عام - استجابة طوارئ قياسية</string>
+    <!-- Elderly User Protections -->
+    <string name="vulnerable_user_protections">حماية المستخدمين المعرضين للخطر</string>
+    <string name="guardian_consent">موافقة الوصي</string>
+    <string name="capacity_assessment">تقييم القدرة</string>
+    <string name="elder_abuse_prevention">منع إساءة معاملة المسنين</string>
+    <string name="advocacy_services">خدمات المناصرة</string>
+    <string name="emergency_escape">هروب طارئ</string>
     
-    <!-- Security and Authentication -->
-    <string name="biometric_not_available">المصادقة البيومترية غير متاحة على هذا الجهاز</string>
-    <string name="biometric_currently_unavailable">المصادقة البيومترية غير متاحة حالياً</string>
-    <string name="no_biometric_credentials">لا توجد بيانات اعتماد بيومترية مسجلة</string>
-    <string name="secure_mode_access">الوصول للوضع الآمن</string>
-    <string name="use_fingerprint_or_face">استخدم بصمة إصبعك أو وجهك للوصول إلى هذا الوضع</string>
-    <string name="privacy_and_security_help">هذا يساعد في حماية خصوصيتك وأمانك</string>
-    <string name="use_pin_instead">استخدم الرقم السري بدلاً من ذلك</string>
-    <string name="authentication_failed_try_again">فشلت المصادقة. يرجى المحاولة مرة أخرى.</string>
+    <!-- Compliance Status -->
+    <string name="compliance_status">حالة الامتثال</string>
+    <string name="gdpr_compliant">متوافق مع اللائحة العامة لحماية البيانات</string>
+    <string name="hipaa_compliant">متوافق مع HIPAA</string>
+    <string name="accessibility_compliant">متوافق مع إمكانية الوصول</string>
+    <string name="regulatory_compliant">متوافق تنظيمياً</string>
     
-    <!-- Emergency Escape and Monitoring -->
-    <string name="emergency_escape_activated">تم تفعيل الهروب الطارئ. تم إيقاف المراقبة.</string>
+    <!-- Contact Information -->
+    <string name="privacy_officer">مسؤول الخصوصية</string>
+    <string name="data_protection_officer">مسؤول حماية البيانات</string>
+    <string name="customer_support">دعم العملاء</string>
+    <string name="legal_department">القسم القانوني</string>
+    <string name="compliance_team">فريق الامتثال</string>
     
-    <!-- App Selection and UI -->
-    <string name="add_app">إضافة تطبيق</string>
-    <string name="tap_empty_tiles_to_add_apps">اضغط على البلاطات الفارغة لإضافة التطبيقات</string>
-    
-    <!-- Loading and Status Messages -->
-    <string name="loading_message">جاري التحميل: %1$s</string>
-    <string name="error_message">خطأ: %1$s</string>
-    <string name="success_message">نجح: %1$s</string>
-    
-    <!-- Compliance Dashboard -->
-    <string name="emergency_compliance_dashboard">لوحة معلومات امتثال الطوارئ</string>
-    <string name="system_status">حالة النظام</string>
-    <string name="emergency_metrics">مقاييس الطوارئ</string>
-    <string name="healthcare_professionals">أخصائيو الرعاية الصحية</string>
-    <string name="recent_events">الأحداث الأخيرة</string>
-    <string name="compliance_alerts">تنبيهات الامتثال</string>
-    <string name="operational">تشغيلي</string>
-    <string name="degraded">متدهور</string>
-    <string name="total_emergencies">إجمالي الطوارئ</string>
-    <string name="avg_response_time">متوسط وقت الاستجابة</string>
-    <string name="success_rate">معدل النجاح</string>
-    <string name="available">متاح</string>
-    <string name="unavailable">غير متاح</string>
-    <string name="no_recent_events">لا توجد أحداث حديثة</string>
-    <string name="no_active_alerts">لا توجد تنبيهات نشطة</string>
-    <string name="minutes_ago">منذ %1$d دقيقة</string>
-    <string name="hours_ago">منذ %1$d ساعة</string>
-    <string name="days_ago">منذ %1$d يوم</string>
-    
-    <!-- Mode Names -->
-    <string name="mode_essential">أساسي</string>
-    <string name="mode_comfort">راحة</string>
-    <string name="mode_connected">متصل</string>
-    
-    <!-- Mode Descriptions -->
-    <string name="mode_essential_desc">هاتف، رسائل، جهات اتصال - للمستخدمين ذوي الإعاقة المعرفية الشديدة</string>
-    <string name="mode_comfort_desc">هاتف، رسائل، كاميرا، معرض - لكبار السن العاديين مع المشاركة الإبداعية</string>
-    <string name="mode_connected_desc">جميع ميزات الراحة بالإضافة إلى الطقس والتواصل العائلي - لكبار السن المتقنين للتكنولوجيا</string>
-    
-    <!-- Emergency SOS -->
-    <string name="emergency_sos">استغاثة طوارئ</string>
-    <string name="emergency_sos_desc">اضغط مع الاستمرار للطوارئ</string>
-    <string name="emergency_confirm">تأكيد الطوارئ</string>
-    <string name="emergency_cancel">إلغاء</string>
-    <string name="emergency_calling">جاري الاتصال بخدمات الطوارئ...</string>
-    <string name="emergency_notifying_caregivers">جاري إخطار مقدمي الرعاية...</string>
+    <!-- User-Friendly Explanations -->
+    <string name="privacy_simplified">نحن نحمي معلوماتك الشخصية</string>
+    <string name="consent_simplified">أنت تختار ما يمكننا فعله ببياناتك</string>
+    <string name="rights_simplified">يمكنك رؤية معلوماتك أو تغييرها أو حذفها في أي وقت</string>
+    <string name="security_simplified">يتم الاحتفاظ بمعلوماتك آمنة ومحمية</string>
+    <string name="emergency_sharing_simplified">نشارك معلوماتك فقط للمساعدة في حالات الطوارئ</string>
 </resources>

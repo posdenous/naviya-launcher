@@ -34,6 +34,8 @@ import com.naviya.launcher.unread.UnreadTile
 import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
 import javax.inject.Inject
+import android.content.Context
+import com.naviya.launcher.ui.onboarding.OnboardingActivity
 
 /**
  * Main launcher activity that integrates Emergency SOS System and Launcher Layout Engine
@@ -52,6 +54,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     
+    companion object {
+        private const val PREF_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val PREFS_NAME = "naviya_launcher_prefs"
+    }
+    
     @Inject
     lateinit var emergencyService: EmergencyService
     
@@ -66,6 +73,34 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Check if onboarding is needed before showing main UI
+        checkOnboardingStatus()
+    }
+    
+    /**
+     * Check if user needs onboarding and route accordingly
+     */
+    private fun checkOnboardingStatus() {
+        // Check if onboarding is completed
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val isOnboardingCompleted = prefs.getBoolean(PREF_ONBOARDING_COMPLETED, false)
+        
+        if (!isOnboardingCompleted) {
+            // Launch onboarding activity
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent)
+            finish() // Close MainActivity so user can't go back
+            return
+        } else {
+            showMainLauncher()
+        }
+    }
+    
+
+    /**
+     * Show the main launcher UI after onboarding is completed
+     */
+    private fun showMainLauncher() {
         // Initialize emergency service
         emergencyService.initialize()
         

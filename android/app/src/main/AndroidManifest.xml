@@ -116,9 +116,9 @@
 
         <!-- Onboarding Activity -->
         <activity
-            android:name=".ui.onboarding.OnboardingActivity"
+            android:name=".ui.onboarding.OnboardingActivityMinimal"
             android:exported="false"
-            android:theme="@style/Theme.NaviyaLauncher.Onboarding"
+            android:theme="@style/Theme.NaviyaLauncher"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
@@ -161,7 +161,7 @@
 
         <!-- Main Activity (Our integrated launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivitySimplified"
             android:exported="true"
             android:theme="@style/Theme.NaviyaLauncher"
             android:screenOrientation="portrait" />

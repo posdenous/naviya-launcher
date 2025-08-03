@@ -6,7 +6,85 @@
     <!-- Analytics and logging -->
     <string name="analytics_app_launch">App gestartet</string>
     <string name="analytics_mode_change">Modus geändert</string>
-    <string name="analytics_emergency_activated">Notfall aktiviert</string>
+    <string name="security_emergency_active">Notfallmodus ist derzeit aktiv</string>
+    
+    <!-- Legal and Privacy Strings -->
+    <string name="data_protection">Datenschutz</string>
+    <string name="privacy_settings">Datenschutz-Einstellungen</string>
+    <string name="consent_management">Einverständnisverwaltung</string>
+    <string name="withdraw_consent">Einverständnis widerrufen</string>
+    <string name="data_export">Datenexport</string>
+    <string name="data_deletion">Datenlöschung</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
+    <string name="terms_of_service">Nutzungsbedingungen</string>
+    <string name="cookie_policy">Cookie-Richtlinie</string>
+    <string name="legal_notices">Rechtliche Hinweise</string>
+    
+    <!-- GDPR Rights -->
+    <string name="your_data_rights">Ihre Datenrechte</string>
+    <string name="right_to_access">Auskunftsrecht</string>
+    <string name="right_to_rectification">Berichtigungsrecht</string>
+    <string name="right_to_erasure">Recht auf Löschung</string>
+    <string name="right_to_portability">Recht auf Datenübertragbarkeit</string>
+    <string name="right_to_restrict">Recht auf Einschränkung der Verarbeitung</string>
+    <string name="right_to_object">Widerspruchsrecht</string>
+    <string name="right_to_withdraw_consent">Recht auf Widerruf der Einwilligung</string>
+    
+    <!-- Consent Types -->
+    <string name="essential_services_consent">Grundlegende Dienste</string>
+    <string name="emergency_services_consent">Notfalldienste</string>
+    <string name="location_services_consent">Standortdienste</string>
+    <string name="caregiver_integration_consent">Betreuer-Integration</string>
+    <string name="health_data_consent">Gesundheitsdatenverarbeitung</string>
+    <string name="analytics_consent">Analyse und Verbesserung</string>
+    <string name="marketing_consent">Marketing-Kommunikation</string>
+    
+    <!-- Healthcare Compliance -->
+    <string name="healthcare_professional_compliance">Medizinische Fachkraft-Compliance</string>
+    <string name="clinical_governance">Klinische Führung</string>
+    <string name="medical_device_compliance">Medizinprodukte-Compliance</string>
+    <string name="elder_protection">Schutz älterer Menschen</string>
+    <string name="professional_licensing">Berufliche Zulassung</string>
+    <string name="clinical_supervision">Klinische Supervision</string>
+    <string name="medical_liability">Medizinische Haftung</string>
+    
+    <!-- Data Processing Information -->
+    <string name="data_controller">Datenverantwortlicher</string>
+    <string name="data_processor">Auftragsverarbeiter</string>
+    <string name="lawful_basis">Rechtsgrundlage</string>
+    <string name="processing_purpose">Verarbeitungszweck</string>
+    <string name="retention_period">Aufbewahrungsdauer</string>
+    <string name="data_recipients">Datenempfänger</string>
+    <string name="international_transfers">Internationale Übermittlungen</string>
+    
+    <!-- Elderly User Protections -->
+    <string name="vulnerable_user_protections">Schutz schutzbedürftiger Nutzer</string>
+    <string name="guardian_consent">Vormund-Einwilligung</string>
+    <string name="capacity_assessment">Geschäftsfähigkeitsprüfung</string>
+    <string name="elder_abuse_prevention">Prävention von Altenmissbrauch</string>
+    <string name="advocacy_services">Beratungsdienste</string>
+    <string name="emergency_escape">Notfall-Ausstieg</string>
+    
+    <!-- Compliance Status -->
+    <string name="compliance_status">Compliance-Status</string>
+    <string name="gdpr_compliant">DSGVO-konform</string>
+    <string name="hipaa_compliant">HIPAA-konform</string>
+    <string name="accessibility_compliant">Barrierefreiheits-konform</string>
+    <string name="regulatory_compliant">Regulatorisch konform</string>
+    
+    <!-- Contact Information -->
+    <string name="privacy_officer">Datenschutzbeauftragter</string>
+    <string name="data_protection_officer">Datenschutzbeauftragter</string>
+    <string name="customer_support">Kundensupport</string>
+    <string name="legal_department">Rechtsabteilung</string>
+    <string name="compliance_team">Compliance-Team</string>
+    
+    <!-- User-Friendly Explanations -->
+    <string name="privacy_simplified">Wir schützen Ihre persönlichen Informationen</string>
+    <string name="consent_simplified">Sie entscheiden, was wir mit Ihren Daten machen dürfen</string>
+    <string name="rights_simplified">Sie können Ihre Informationen jederzeit einsehen, ändern oder löschen</string>
+    <string name="security_simplified">Ihre Informationen werden sicher und geschützt aufbewahrt</string>
+    <string name="emergency_sharing_simplified">Wir teilen Ihre Informationen nur, um in Notfällen zu helfen</string>
     
     <!-- Main Launcher UI -->
     <string name="current_mode">Aktueller Modus</string>

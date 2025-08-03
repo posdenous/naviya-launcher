@@ -148,6 +148,164 @@
     
     <!-- Additional Security UI Strings -->
     <string name="security_status_secure">System Secure</string>
+    <string name="healthcare_community_resources">Community Resources</string>
+    
+    <!-- Caregiver Onboarding Strings -->
+    <string name="caregiver_phone">Caregiver Phone</string>
+    <string name="caregiver_relationship">Relationship</string>
+    <string name="caregiver_relationship_hint">Enter relationship to caregiver</string>
+    <string name="caregiver_consent_text">I consent to share my information with this caregiver</string>
+    <string name="skip_caregiver">Skip for now</string>
+    <string name="add_caregiver">Add Caregiver</string>
+    <string name="primary_emergency_contact">Primary Emergency Contact</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="contact_name_hint">Enter contact name</string>
+    <string name="contact_phone">Contact Phone</string>
+    <string name="contact_phone_hint">Enter phone number</string>
+    <string name="contact_relationship">Relationship</string>
+    <string name="contact_relationship_hint">Enter relationship</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="setting_up">Setting up…</string>
+    <string name="Security">Security</string>
+    
+    <!-- Basic Onboarding Strings -->
+    <string name="basic_preferences_title">Basic Preferences</string>
+    <string name="basic_preferences_description">Adjust basic accessibility settings</string>
+    <string name="font_size">Font Size</string>
+    <string name="font_size_description">Adjust text size for better readability</string>
+    <string name="current_size">Current: %1$s</string>
+    <string name="icon_size">Icon Size</string>
+    <string name="icon_size_description">Adjust app icon sizes</string>
+    <string name="high_contrast">High Contrast Mode</string>
+    <string name="high_contrast_description">Improve visibility with high contrast</string>
+    
+    <!-- OnboardingActivity Strings -->
+    <string name="onboarding_complete_success">Setup complete! Welcome to your new launcher.</string>
+    <string name="onboarding_exit_prevented">Please complete the setup for your safety and security.</string>
+    <string name="onboarding_loading">Setting up your launcher…</string>
+    <string name="onboarding_loading_subtitle">This will only take a moment</string>
+    <string name="haptic_feedback">Haptic Feedback</string>
+    <string name="haptic_feedback_description">Enable vibration feedback for interactions</string>
+    <string name="slow_animations">Slow Animations</string>
+    <string name="slow_animations_description">Reduce animation speed for better comprehension</string>
+    <string name="save_preferences">Save Preferences</string>
+    <string name="professional_installation_title">Professional Installation</string>
+    <string name="family_setup_sufficient_title">Family Setup is Sufficient</string>
+    <string name="family_setup_sufficient_content">Your family setup provides adequate support</string>
+    <string name="professional_when_needed_title">Professional When Needed</string>
+    <string name="professional_when_needed_content">Professional help available when required</string>
+    <string name="continue_with_family_setup">Continue with Family Setup</string>
+    <string name="schedule_professional_later">Schedule Professional Later</string>
+    <string name="setup_almost_complete">Setup Almost Complete</string>
+    <string name="ready_to_use_title">Ready to Use</string>
+    <string name="ready_to_use_content">Your launcher is ready to use</string>
+    <string name="complete_setup">Complete Setup</string>
+    <string name="welcome_to_naviya_launcher">Welcome to Naviya Launcher</string>
+    <string name="launcher_ready_description">Your launcher is ready and configured</string>
+    <string name="getting_started_title">Getting Started</string>
+    <string name="getting_started_content">Learn how to use your new launcher</string>
+    <string name="emergency_button_reminder_title">Emergency Button Reminder</string>
+    <string name="emergency_button_reminder_content">Emergency button is always available</string>
+    <string name="start_using_launcher">Start Using Launcher</string>
+    <string name="setup_summary">Setup Summary</string>
+    <string name="user_name">User Name</string>
+    <string name="family_assistant">Family Assistant</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="contacts_count">%1$d contacts</string>
+    <string name="caregiver_status">Caregiver Status</string>
+    <string name="caregiver_paired">Caregiver Paired</string>
+    <string name="no_caregiver_independent">No Caregiver (Independent)</string>
+    <string name="setup_time">Setup Time</string>
+    <string name="minutes_elapsed">%1$d minutes</string>
+    <string name="welcome_to_naviya">Welcome to Naviya</string>
+    <string name="family_setup_description">Family setup description</string>
+    <string name="elderly_user_name">Elderly User Name</string>
+    <string name="elderly_name_hint">Enter elderly user name</string>
+    <string name="family_member_name">Family Member Name</string>
+    <string name="onboarding_progress_title">Onboarding Progress</string>
+    <string name="complete">Complete</string>
+    <string name="app_not_found">App not found</string>
+    <string name="app_launch_failed">App launch failed</string>
+    <string name="refresh_dashboard">Refresh Dashboard</string>
+    <string name="protection_overview">Protection Overview</string>
+    
+    <!-- Legal and Privacy Strings -->
+    <string name="data_protection">Data Protection</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="consent_management">Consent Management</string>
+    <string name="withdraw_consent">Withdraw Consent</string>
+    <string name="data_export">Data Export</string>
+    <string name="data_deletion">Data Deletion</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="cookie_policy">Cookie Policy</string>
+    <string name="legal_notices">Legal Notices</string>
+    
+    <!-- GDPR Rights -->
+    <string name="your_data_rights">Your Data Rights</string>
+    <string name="right_to_access">Right to Access</string>
+    <string name="right_to_rectification">Right to Rectification</string>
+    <string name="right_to_erasure">Right to Erasure</string>
+    <string name="right_to_portability">Right to Data Portability</string>
+    <string name="right_to_restrict">Right to Restrict Processing</string>
+    <string name="right_to_object">Right to Object</string>
+    <string name="right_to_withdraw_consent">Right to Withdraw Consent</string>
+    
+    <!-- Consent Types -->
+    <string name="essential_services_consent">Essential Services</string>
+    <string name="emergency_services_consent">Emergency Services</string>
+    <string name="location_services_consent">Location Services</string>
+    <string name="caregiver_integration_consent">Caregiver Integration</string>
+    <string name="health_data_consent">Health Data Processing</string>
+    <string name="analytics_consent">Analytics and Improvement</string>
+    <string name="marketing_consent">Marketing Communications</string>
+    
+    <!-- Healthcare Compliance -->
+    <string name="healthcare_professional_compliance">Healthcare Professional Compliance</string>
+    <string name="clinical_governance">Clinical Governance</string>
+    <string name="medical_device_compliance">Medical Device Compliance</string>
+    <string name="elder_protection">Elder Protection</string>
+    <string name="professional_licensing">Professional Licensing</string>
+    <string name="clinical_supervision">Clinical Supervision</string>
+    <string name="medical_liability">Medical Liability</string>
+    
+    <!-- Data Processing Information -->
+    <string name="data_controller">Data Controller</string>
+    <string name="data_processor">Data Processor</string>
+    <string name="lawful_basis">Lawful Basis</string>
+    <string name="processing_purpose">Processing Purpose</string>
+    <string name="retention_period">Retention Period</string>
+    <string name="data_recipients">Data Recipients</string>
+    <string name="international_transfers">International Transfers</string>
+    
+    <!-- Elderly User Protections -->
+    <string name="vulnerable_user_protections">Vulnerable User Protections</string>
+    <string name="guardian_consent">Guardian Consent</string>
+    <string name="capacity_assessment">Capacity Assessment</string>
+    <string name="elder_abuse_prevention">Elder Abuse Prevention</string>
+    <string name="advocacy_services">Advocacy Services</string>
+    <string name="emergency_escape">Emergency Escape</string>
+    
+    <!-- Compliance Status -->
+    <string name="compliance_status">Compliance Status</string>
+    <string name="gdpr_compliant">GDPR Compliant</string>
+    <string name="hipaa_compliant">HIPAA Compliant</string>
+    <string name="accessibility_compliant">Accessibility Compliant</string>
+    <string name="regulatory_compliant">Regulatory Compliant</string>
+    
+    <!-- Contact Information -->
+    <string name="privacy_officer">Privacy Officer</string>
+    <string name="data_protection_officer">Data Protection Officer</string>
+    <string name="customer_support">Customer Support</string>
+    <string name="legal_department">Legal Department</string>
+    <string name="compliance_team">Compliance Team</string>
+    
+    <!-- User-Friendly Explanations -->
+    <string name="privacy_simplified">We protect your personal information</string>
+    <string name="consent_simplified">You choose what we can do with your data</string>
+    <string name="rights_simplified">You can see, change, or delete your information anytime</string>
+    <string name="security_simplified">Your information is kept safe and secure</string>
+    <string name="emergency_sharing_simplified">We only share your information to help in emergencies</string>
     <string name="security_status_warning">Security Warning</string>
     <string name="security_status_emergency">Emergency Mode</string>
     <string name="security_emergency_active">Emergency mode is currently active</string>
@@ -157,284 +315,48 @@
     <string name="security_current_mode">Current Mode</string>
     <string name="security_switch_to_mode">Switch to %1$s Mode</string>
     
-    <!-- Authentication Strings -->
-    <string name="auth_pin_too_short">PIN must be at least 4 digits</string>
-    <string name="auth_use_pin">Use PIN</string>
-    <string name="auth_use_biometric">Use Fingerprint</string>
-    <string name="auth_cancel">Cancel</string>
-    <string name="auth_security_info">This helps protect your privacy and security</string>
-    
-
-    
-    <!-- App Selection and UI -->
-    <string name="add_app">Add app</string>
-    <string name="tap_empty_tiles_to_add_apps">Tap empty tiles to add apps</string>
-    
-    <!-- Loading and Status Messages -->
-    <string name="loading_message">Loading: %1$s</string>
-    <string name="error_message">Error: %1$s</string>
-    <string name="success_message">Success: %1$s</string>
-    
-    <!-- Elder Rights and Advocacy -->
-    <string name="elder_rights_advocate_notified_successfully">Elder rights advocate notified successfully</string>
-    <string name="failed_to_notify_elder_rights_advocate">Failed to notify elder rights advocate</string>
-    <string name="error_notifying_elder_rights_advocate">Error notifying elder rights advocate: %1$s</string>
-    <string name="emergency_call_initiated_to">Emergency call initiated to %1$s</string>
-    <string name="phone_call_initiated_to">Phone call initiated to %1$s</string>
-    <string name="failed_to_initiate_phone_call">Failed to initiate phone call: %1$s</string>
-    <string name="emergency_sms_sent_to">Emergency SMS sent to %1$s</string>
-    <string name="failed_to_send_emergency_sms">Failed to send emergency SMS: %1$s</string>
-    <string name="naviya_alert_priority">Naviya Alert - %1$s Priority</string>
-    <string name="please_check_naviya_app">Please check Naviya app for details.</string>
-    <string name="failed_to_send_sms">Failed to send SMS: %1$s</string>
-    <string name="elder_abuse_alert_priority">Elder Abuse Alert - %1$s Priority</string>
-    <string name="push_notification_sent">Push notification sent</string>
-    <string name="failed_to_send_push_notification">Failed to send push notification: %1$s</string>
-    <string name="emergency_email_initiated">Emergency email initiated</string>
-    <string name="failed_to_send_emergency_email">Failed to send emergency email: %1$s</string>
-    <string name="email_initiated">Email initiated</string>
-    <string name="failed_to_send_email">Failed to send email: %1$s</string>
-    <string name="national_elder_abuse_hotline_contacted">National Elder Abuse Hotline contacted</string>
-    <string name="failed_to_contact_national_hotline">Failed to contact national hotline: %1$s</string>
-    <string name="elder_justice_hotline_contacted">Elder Justice Hotline contacted</string>
-    <string name="failed_to_contact_elder_justice_hotline">Failed to contact elder justice hotline: %1$s</string>
-    <string name="emergency_call_to_national_elder_abuse_hotline">Emergency call to National Elder Abuse Hotline</string>
-    <string name="failed_to_call_national_hotline">Failed to call national hotline: %1$s</string>
-    <string name="emergency_services_contacted_911">Emergency services contacted (911)</string>
-    <string name="failed_to_contact_emergency_services">Failed to contact emergency services: %1$s</string>
-    <string name="local_elder_rights_organization">Local Elder Rights Organization</string>
-    
-    <!-- Emergency SMS Templates -->
-    <string name="emergency_sms_template">User: %1$s\nPriority: %2$s\nAlert: %3$s\nTime: %4$s\nThis is an automated alert from Naviya Elder Protection System.</string>
-    <string name="sms_template">Naviya Alert - %1$s Priority\nUser: %2$s\n%3$s\nPlease check Naviya app for details.</string>
-    
-    <!-- Compliance Dashboard -->
-    <string name="emergency_compliance_dashboard">Emergency Compliance Dashboard</string>
-    <string name="system_status">System Status</string>
-    <string name="emergency_metrics">Emergency Metrics</string>
-    <string name="healthcare_professionals">Healthcare Professionals</string>
-    <string name="recent_events">Recent Events</string>
-    <string name="compliance_alerts">Compliance Alerts</string>
-    <string name="operational">Operational</string>
-    <string name="degraded">Degraded</string>
-    <string name="total_emergencies">Total Emergencies</string>
-    <string name="avg_response_time">Avg Response Time</string>
-    <string name="success_rate">Success Rate</string>
-    <string name="available">Available</string>
-    <string name="unavailable">Unavailable</string>
-    <string name="no_recent_events">No recent events</string>
-    <string name="no_active_alerts">No active alerts</string>
-    <string name="minutes_ago">%1$d minutes ago</string>
-    <string name="hours_ago">%1$d hours ago</string>
-    <string name="days_ago">%1$d days ago</string>
-    
-    <!-- App Launch Messages -->
-    <string name="app_not_found">App not found</string>
-    <string name="app_launch_failed">Failed to launch app</string>
-    
-    <!-- Toggle Mode Names (3-Mode System) -->
-    <string name="mode_essential">Essential</string>
+    <!-- Essential missing strings -->
     <string name="mode_comfort">Comfort</string>
+    <string name="mode_switch_accessibility_desc">Switch between launcher modes</string>
+    <string name="initializing_launcher">Initializing launcher...</string>
+    <string name="emergency_sos">Emergency SOS</string>
+    <string name="mode_essential">Essential</string>
     <string name="mode_connected">Connected</string>
-    
-    <!-- Toggle Mode Descriptions (3-Mode System) -->
     <string name="mode_essential_desc">Phone, messages, contacts - for users with severe cognitive impairment</string>
     <string name="mode_comfort_desc">Phone, messages, camera, gallery - for standard elderly users with creative engagement</string>
     <string name="mode_connected_desc">All comfort features plus weather and family communication - for tech-comfortable elderly users</string>
-    
-    <!-- Mode Selection Onboarding -->
-    <string name="mode_selection_title">Choose Your Launcher Mode</string>
-    <string name="mode_selection_subtitle">Select the mode that best fits your needs</string>
-    <string name="mode_essential_title">Essential Mode</string>
-    <string name="mode_comfort_title">Comfort Mode</string>
-    <string name="mode_connected_title">Connected Mode</string>
-    
-    <!-- Emergency SOS -->
-    <string name="emergency_sos">Emergency SOS</string>
     <string name="emergency_sos_desc">Press and hold for emergency</string>
     <string name="emergency_confirm">Confirm Emergency</string>
     <string name="emergency_cancel">Cancel</string>
     <string name="emergency_calling">Calling emergency services...</string>
     <string name="emergency_notifying_caregivers">Notifying caregivers...</string>
     
-    <!-- Accessibility -->
-    <string name="launcher_accessibility_desc">Naviya Launcher main screen</string>
-    <string name="mode_switch_accessibility_desc">Switch between launcher modes</string>
-    <string name="emergency_button_accessibility_desc">Emergency SOS button - press and hold to activate</string>
-    <string name="app_tile_accessibility_desc">App tile for %1$s</string>
-    <string name="unread_indicator_accessibility_desc">%1$d unread notifications</string>
-    <string name="connectivity_indicator_accessibility_desc">Connection status: %1$s</string>
+    <!-- Onboarding UI Strings -->
+    <string name="privacy_first_title">Privacy First</string>
+    <string name="privacy_first_content">Your data stays on your device. We prioritize your privacy and security.</string>
+    <string name="continue_setup">Continue Setup</string>
+    <string name="emergency_contacts_title">Emergency Contacts</string>
+    <string name="emergency_contacts_description">Add trusted contacts for emergency situations</string>
+    <string name="add_emergency_contact">Add Emergency Contact</string>
+    <string name="save_emergency_contacts">Save Emergency Contacts</string>
+    <string name="optional_caregiver_title">Optional Caregiver</string>
+    <string name="caregiver_optional_title">Caregiver Setup (Optional)</string>
+    <string name="caregiver_optional_content">Connect with a family member or caregiver for additional support</string>
+    <string name="caregiver_name">Caregiver Name</string>
+    <string name="caregiver_name_hint">Enter caregiver name</string>
+    <string name="caregiver_email">Caregiver Email</string>
+    <string name="caregiver_email_hint">Enter caregiver email</string>
+    <string name="caregiver_phone_hint">Enter caregiver phone</string>
+    <string name="emergency_contact">Emergency Contact</string>
+    <string name="remove">Remove</string>
     
-    <!-- Error Messages -->
-    <string name="error_loading_layout">Failed to load layout</string>
-    <string name="error_loading_apps">Failed to load apps</string>
-    <string name="error_network_unavailable">Network unavailable</string>
-    <string name="error_emergency_service_unavailable">Emergency service unavailable</string>
-    
-    <!-- Loading States -->
-    <string name="loading_layout">Loading layout...</string>
-    <string name="loading_apps">Loading apps...</string>
-    <string name="initializing_launcher">Initializing launcher...</string>
-    
-    <!-- Unread Notifications -->
-    <string name="unread_calls_and_messages">Unread</string>
-    <string name="missed_calls">%1$d missed calls</string>
-    <string name="unread_messages">%1$d unread messages</string>
-    
-    <!-- Settings and Configuration -->
-    <string name="settings">Settings</string>
-    <string name="preferences">Preferences</string>
-    <string name="language">Language</string>
-    <string name="accessibility_settings">Accessibility</string>
-    <string name="emergency_contacts">Emergency Contacts</string>
-    <string name="caregiver_settings">Caregiver Settings</string>
-    
-    <!-- Common Actions -->
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="retry">Retry</string>
-    <string name="refresh">Refresh</string>
-    <string name="close">Close</string>
-    <string name="back">Back</string>
-    <string name="next">Next</string>
-    <string name="done">Done</string>
-    
-    <!-- Time and Date -->
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="time_format">%1$s:%2$s</string>
-    <string name="date_format">%1$s %2$d, %3$d</string>
-    
-    <!-- Healthcare Professional Strings -->
-    <string name="healthcare_professional_registration">Professional Registration</string>
-    <string name="healthcare_registration_description">Register healthcare professional credentials and authorization</string>
-    <string name="healthcare_professional_installation">Professional Installation</string>
-    <string name="healthcare_clinical_assessment">Clinical Assessment</string>
-    <string name="healthcare_personal_information">Personal Information</string>
-    <string name="healthcare_professional_id">Professional ID</string>
-    <string name="healthcare_professional_id_hint">Enter your professional ID</string>
-    <string name="healthcare_first_name">First Name</string>
-    <string name="healthcare_first_name_hint">Enter your first name</string>
-    <string name="healthcare_last_name">Last Name</string>
-    <string name="healthcare_last_name_hint">Enter your last name</string>
-    <string name="healthcare_professional_type">Professional Type</string>
-    <string name="healthcare_select_professional_type">Select your professional type</string>
-    <string name="healthcare_specializations">Specializations</string>
-    <string name="healthcare_add_specialization">Add Specialization</string>
-    <string name="healthcare_specialization_hint">Enter specialization</string>
-    <string name="healthcare_remove_specialization">Remove %1$s</string>
-    <string name="healthcare_contact_information">Contact Information</string>
-    <string name="healthcare_primary_phone">Primary Phone</string>
-    <string name="healthcare_phone_hint">Enter phone number</string>
-    <string name="healthcare_email">Email Address</string>
-    <string name="healthcare_email_hint">Enter email address</string>
-    <string name="healthcare_office_address">Office Address</string>
-    <string name="healthcare_address_hint">Enter office address</string>
-    <string name="healthcare_emergency_contact">Emergency Contact</string>
-    <string name="healthcare_emergency_contact_hint">Enter emergency contact</string>
-    <string name="healthcare_experience">Experience</string>
-    <string name="healthcare_years_experience">Years of Experience</string>
-    <string name="healthcare_elder_care_experience">Elder Care Experience</string>
-    <string name="healthcare_institution_affiliation">Institution Affiliation</string>
-    <string name="healthcare_institution_optional">Institution affiliation is optional</string>
-    <string name="healthcare_institution_name">Institution Name</string>
-    <string name="healthcare_institution_name_hint">Enter institution name</string>
-    <string name="healthcare_institution_address">Institution Address</string>
-    <string name="healthcare_institution_address_hint">Enter institution address</string>
-    <string name="healthcare_credentials">Credentials</string>
-    <string name="healthcare_license_numbers">License Numbers</string>
-    <string name="healthcare_license_numbers_hint">Enter license numbers (comma separated)</string>
-    <string name="healthcare_board_certifications">Board Certifications</string>
-    <string name="healthcare_board_certifications_hint">Enter certifications (comma separated)</string>
-    <string name="healthcare_malpractice_insurance">Malpractice Insurance</string>
-    <string name="healthcare_malpractice_insurance_hint">Enter insurance information</string>
-    <string name="healthcare_register_professional">Register Professional</string>
-    <string name="healthcare_registering_professional">Registering professional...</string>
-    <string name="healthcare_installation_details">Installation Details</string>
-    <string name="healthcare_professional_name">Professional: %1$s</string>
-    <string name="healthcare_patient_name">Patient: %1$s</string>
-    <string name="healthcare_installation_progress">Installation Progress</string>
-    <string name="healthcare_step_progress">Step %1$d of %2$d</string>
-    <string name="healthcare_authorization_verification">Authorization Verification</string>
-    <string name="healthcare_patient_consent">Patient Consent</string>
-    <string name="healthcare_clinical_context">Clinical Context</string>
-    <string name="healthcare_system_configuration">System Configuration</string>
-    <string name="healthcare_safety_protocols">Safety Protocols</string>
-    <string name="healthcare_final_review">Final Review</string>
-    <string name="healthcare_authorization_description">Verify professional authorization and credentials</string>
-    <string name="healthcare_professional_authorization">Professional Authorization</string>
-    <string name="healthcare_institution_verification">Institution Verification</string>
-    <string name="healthcare_credentials_verification">Credentials Verification</string>
-    <string name="healthcare_proceed_to_consent">Proceed to Consent</string>
-    <string name="healthcare_authorization_pending">Authorization verification pending</string>
-    <string name="healthcare_consent_description">Obtain and record patient consent</string>
-    <string name="healthcare_consent_method">Consent Method</string>
-    <string name="healthcare_consent_agreement">Consent Agreement</string>
-    <string name="healthcare_consent_confirmation">I confirm that the patient has provided informed consent</string>
-    <string name="healthcare_witness_name">Witness Name</string>
-    <string name="healthcare_witness_name_hint">Enter witness name</string>
-    <string name="healthcare_consent_confirmed">Consent Confirmed</string>
-    <string name="healthcare_processing_installation">Processing installation...</string>
-    <string name="healthcare_complete_installation">Complete Installation</string>
-    <string name="healthcare_assessment_details">Assessment Details</string>
-    <string name="healthcare_assessing_professional">Assessing Professional: %1$s</string>
-    <string name="healthcare_assessment_date">Assessment Date: %1$s</string>
-    <string name="healthcare_cognitive_assessment">Cognitive Assessment</string>
-    <string name="healthcare_cognitive_assessment_description">Evaluate cognitive function and decision-making capacity</string>
-    <string name="healthcare_assessment_score">Assessment Score</string>
-    <string name="healthcare_score_hint">Enter numerical score</string>
-    <string name="healthcare_interpretation">Interpretation</string>
-    <string name="healthcare_interpretation_hint">Enter assessment interpretation</string>
-    <string name="healthcare_functional_assessment">Functional Assessment</string>
-    <string name="healthcare_functional_assessment_description">Evaluate activities of daily living and mobility</string>
-    <string name="healthcare_activities_daily_living">Activities of Daily Living</string>
-    <string name="healthcare_bathing">Bathing</string>
-    <string name="healthcare_dressing">Dressing</string>
-    <string name="healthcare_eating">Eating</string>
-    <string name="healthcare_toileting">Toileting</string>
-    <string name="healthcare_transferring">Transferring</string>
-    <string name="healthcare_continence">Continence</string>
-    <string name="healthcare_instrumental_activities">Instrumental Activities of Daily Living</string>
-    <string name="healthcare_medication_management">Medication Management</string>
-    <string name="healthcare_financial_management">Financial Management</string>
-    <string name="healthcare_transportation">Transportation</string>
-    <string name="healthcare_shopping">Shopping</string>
-    <string name="healthcare_housekeeping">Housekeeping</string>
-    <string name="healthcare_meal_preparation">Meal Preparation</string>
-    <string name="healthcare_social_assessment">Social Assessment</string>
-    <string name="healthcare_social_assessment_description">Evaluate social support and community connections</string>
-    <string name="healthcare_family_dynamics">Family Dynamics</string>
-    <string name="healthcare_family_dynamics_hint">Describe family relationships and dynamics</string>
-    <string name="healthcare_caregiver_relationships">Caregiver Relationships</string>
-    <string name="healthcare_caregiver_relationships_hint">Describe relationships with caregivers</string>
-    <string name="healthcare_community_resources">Community Resources</string>
-    <string name="healthcare_add_resource">Add Resource</string>
-    <string name="healthcare_resource_hint">Enter community resource</string>
-    <string name="healthcare_remove_resource">Remove %1$s</string>
-    <string name="healthcare_risk_factor_assessment">Risk Factor Assessment</string>
-    <string name="healthcare_risk_assessment_description">Evaluate abuse, neglect, and exploitation risk factors</string>
-    <string name="healthcare_abuse_risk_factors">Abuse Risk Factors</string>
-    <string name="healthcare_neglect_risk_factors">Neglect Risk Factors</string>
-    <string name="healthcare_exploitation_risk_factors">Exploitation Risk Factors</string>
-    <string name="healthcare_protective_factors">Protective Factors</string>
-    <string name="healthcare_add_protective_factor">Add Protective Factor</string>
-    <string name="healthcare_protective_factor_hint">Enter protective factor</string>
-    <string name="healthcare_remove_protective_factor">Remove %1$s</string>
-    <string name="healthcare_caregiver_assessment">Caregiver Assessment</string>
-    <string name="healthcare_caregiver_assessment_description">Evaluate caregiver capacity and support needs</string>
-    <string name="healthcare_clinical_notes">Clinical Notes</string>
-    <string name="healthcare_clinical_notes_description">Additional observations and recommendations</string>
-    <string name="healthcare_additional_observations">Additional Observations</string>
-    <string name="healthcare_clinical_notes_hint">Enter clinical observations and notes</string>
-    <string name="healthcare_risk_summary">Risk Summary</string>
-    <string name="healthcare_overall_risk">Overall Risk Level</string>
-    <string name="healthcare_abuse_risk">Abuse Risk Level</string>
-    <string name="healthcare_recommendations">Recommendations</string>
-    <string name="healthcare_save_draft">Save Draft</string>
-    <string name="healthcare_complete_assessment">Complete Assessment</string>
-    <string name="healthcare_processing_assessment">Processing assessment...</string>
-    <string name="add">Add</string>
-    <string name="previous">Previous</string>
-    <string name="continue_button">Continue</string>
-    <string name="dismiss_error">Dismiss</string>
+    <!-- Missing onboarding strings -->
+    <string name="family_name_hint">Enter family member name</string>
+    <string name="relationship">Relationship</string>
+    <string name="relationship_hint">e.g., Son, Daughter, Spouse</string>
+    <string name="start_setup">Start Setup</string>
+    <string name="hello_family_title">Hello Family!</string>
+    <string name="family_setup_benefits_title">Family Setup Benefits</string>
+    <string name="family_setup_benefits_content">Setting up together ensures everything works perfectly and gives everyone peace of mind.</string>
+
 </resources>

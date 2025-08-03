@@ -18,11 +18,11 @@
     
     <!-- Emergency and Caregiver -->
     <string name="emergency_sos_description">Екстрений SOS для негайної допомоги</string>
-    <string name="contact_caregiver">Зв\'язатися з доглядальником</string>
-    <string name="contact_caregiver_description">Зв\'яжіться з вашим доглядальником для допомоги</string>
+    <string name="contact_caregiver">Зв\'язатися з опікуном</string>
+    <string name="contact_caregiver_description">Зв\'яжіться з вашим опікуном для допомоги</string>
     <string name="cancel">Скасувати</string>
-    <string name="online">Онлайн</string>
-    <string name="offline">Офлайн</string>
+    <string name="online">В мережі</string>
+    <string name="offline">Поза мережею</string>
     
     <!-- Mode Switch Messages -->
     <string name="mode_switched_to">Переключено на режим %1$s</string>
@@ -34,13 +34,13 @@
     
     <!-- Medical Emergency -->
     <string name="medical_emergency">Медична надзвичайна ситуація</string>
-    <string name="navigate_back">Повернутися</string>
+    <string name="navigate_back">Повернутися назад</string>
     <string name="emergency_call">Екстрений виклик</string>
     <string name="healthcare_professional_available">Медичний фахівець доступний</string>
     <string name="no_healthcare_professional">Немає медичного фахівця</string>
     <string name="select_emergency_type">Який тип надзвичайної ситуації?</string>
     <string name="emergency_services_notified">Служби екстреного реагування повідомлені</string>
-    <string name="ok">ОК</string>
+    <string name="ok">Гаразд</string>
     
     <!-- Emergency Types -->
     <string name="cardiac_emergency">Проблема з серцем</string>
@@ -54,112 +54,81 @@
     <string name="general_medical_emergency">Інша медична</string>
     <string name="general_medical_emergency_description">Загальна медична надзвичайна ситуація або погане самопочуття</string>
     
-    <!-- Healthcare Professional Status -->
-    <string name="healthcare_professional_status">Медичний фахівець</string>
-    <string name="healthcare_professional_assigned">Медичного фахівця призначено</string>
-    <string name="no_healthcare_professional_assigned">Медичного фахівця не призначено</string>
-    <string name="compliance_check_in_progress">Перевірка відповідності в процесі</string>
+    <!-- Legal and Privacy Strings -->
+    <string name="data_protection">Захист даних</string>
+    <string name="privacy_settings">Налаштування конфіденційності</string>
+    <string name="consent_management">Управління згодою</string>
+    <string name="withdraw_consent">Відкликати згоду</string>
+    <string name="data_export">Експорт даних</string>
+    <string name="data_deletion">Видалення даних</string>
+    <string name="privacy_policy">Політика конфіденційності</string>
+    <string name="terms_of_service">Умови використання</string>
+    <string name="cookie_policy">Політика файлів cookie</string>
+    <string name="legal_notices">Правові повідомлення</string>
     
-    <!-- Emergency System Messages -->
-    <string name="emergency_system_test_successful">Тест системи надзвичайних ситуацій успішний\n• Медичний фахівець доступний\n• Відповідність підтверджена\n• Всі системи працюють</string>
-    <string name="emergency_system_test_completed">Тест системи надзвичайних ситуацій завершено\n⚠ Медичного фахівця не призначено\n• Базові функції надзвичайних ситуацій доступні\n• Розгляньте можливість додавання медичного фахівця</string>
-    <string name="emergency_system_test_failed">Тест системи надзвичайних ситуацій не вдався: %1$s</string>
-    <string name="emergency_services_activated">Служби екстреного реагування активовано</string>
-    <string name="emergency_activation_failed_message">Не вдалося активувати надзвичайну ситуацію: %1$s</string>
-    <string name="activating_emergency_response">Активація екстреного реагування...</string>
-    <string name="emergency_services_being_contacted">Зв\'язок зі службами екстреного реагування</string>
-    <string name="confirm_emergency">Підтвердити надзвичайну ситуацію</string>
-    <string name="you_selected">Ви вибрали: %1$s</string>
+    <!-- GDPR Rights -->
+    <string name="your_data_rights">Ваші права на дані</string>
+    <string name="right_to_access">Право на доступ</string>
+    <string name="right_to_rectification">Право на виправлення</string>
+    <string name="right_to_erasure">Право на видалення</string>
+    <string name="right_to_portability">Право на портативність даних</string>
+    <string name="right_to_restrict">Право на обмеження обробки</string>
+    <string name="right_to_object">Право на заперечення</string>
+    <string name="right_to_withdraw_consent">Право на відкликання згоди</string>
     
-    <!-- Unread Tile Messages -->
-    <string name="unread">Непрочитано</string>
-    <string name="permission_required">Потрібен дозвіл</string>
-    <string name="no_unread_notifications">Немає непрочитаних сповіщень</string>
-    <string name="you_have_missed_calls_or_messages">У вас є пропущені дзвінки або повідомлення.</string>
-    <string name="caregiver_not_available">Доглядальник недоступний.</string>
-    <string name="permission_required_to_read_notifications">Потрібен дозвіл для читання сповіщень</string>
+    <!-- Consent Types -->
+    <string name="essential_services_consent">Основні послуги</string>
+    <string name="emergency_services_consent">Служби екстреного реагування</string>
+    <string name="location_services_consent">Служби геолокації</string>
+    <string name="caregiver_integration_consent">Інтеграція опікуна</string>
+    <string name="health_data_consent">Обробка медичних даних</string>
+    <string name="analytics_consent">Аналітика та покращення</string>
+    <string name="marketing_consent">Маркетингові комунікації</string>
     
-    <!-- Location and Emergency Services -->
-    <string name="location_not_available">Місцезнаходження: Недоступно</string>
-    <string name="location_format">Місцезнаходження: %1$s</string>
-    <string name="lat_lon_format">Широта: %1$s, Довгота: %2$s%3$s</string>
-    <string name="accuracy_format"> (±%1$dм)</string>
-    <string name="emergency_services">Служби екстреного реагування</string>
+    <!-- Healthcare Compliance -->
+    <string name="healthcare_professional_compliance">Відповідність медичного фахівця</string>
+    <string name="clinical_governance">Клінічне управління</string>
+    <string name="medical_device_compliance">Відповідність медичних пристроїв</string>
+    <string name="elder_protection">Захист літніх людей</string>
+    <string name="professional_licensing">Професійне ліцензування</string>
+    <string name="clinical_supervision">Клінічний нагляд</string>
+    <string name="medical_liability">Медична відповідальність</string>
     
-    <!-- Healthcare Professional Notifications -->
-    <string name="all_notification_channels_failed">Всі канали сповіщень не працюють</string>
-    <string name="unknown_error">Невідома помилка</string>
-    <string name="email_sent_successfully">Електронну пошту успішно надіслано</string>
-    <string name="email_sending_failed">Не вдалося надіслати електронну пошту</string>
-    <string name="push_notification_sent_successfully">Push-сповіщення успішно надіслано</string>
-    <string name="push_notification_failed">Push-сповіщення не вдалося</string>
-    <string name="patient_emergency_immediate_response">Пацієнт %1$s: %2$s. Потрібна негайна відповідь.</string>
-    <string name="dr_healthcare_professional">Д-р Медичний фахівець</string>
+    <!-- Data Processing Information -->
+    <string name="data_controller">Контролер даних</string>
+    <string name="data_processor">Обробник даних</string>
+    <string name="lawful_basis">Правова основа</string>
+    <string name="processing_purpose">Мета обробки</string>
+    <string name="retention_period">Період зберігання</string>
+    <string name="data_recipients">Отримувачі даних</string>
+    <string name="international_transfers">Міжнародні передачі</string>
     
-    <!-- Medical Emergency Types and Descriptions -->
-    <string name="cardiac_emergency_response_description">Серцева надзвичайна ситуація - потрібна негайна медична допомога</string>
-    <string name="fall_emergency_response_description">Падіння з можливою травмою - потрібна медична оцінка</string>
-    <string name="medication_emergency_response_description">Надзвичайна ситуація, пов\'язана з ліками - потрібна професійна консультація</string>
-    <string name="cognitive_emergency_response_description">Когнітивна криза - потрібна спеціалізована підтримка</string>
-    <string name="general_medical_emergency_response_description">Загальне медичне занепокоєння - стандартне екстрене реагування</string>
+    <!-- Elderly User Protections -->
+    <string name="vulnerable_user_protections">Захист вразливих користувачів</string>
+    <string name="guardian_consent">Згода опікуна</string>
+    <string name="capacity_assessment">Оцінка дієздатності</string>
+    <string name="elder_abuse_prevention">Запобігання жорстокому поводженню з літніми людьми</string>
+    <string name="advocacy_services">Послуги захисту</string>
+    <string name="emergency_escape">Екстрена втеча</string>
     
-    <!-- Security and Authentication -->
-    <string name="biometric_not_available">Біометрична автентифікація недоступна на цьому пристрої</string>
-    <string name="biometric_currently_unavailable">Біометрична автентифікація наразі недоступна</string>
-    <string name="no_biometric_credentials">Немає зареєстрованих біометричних даних</string>
-    <string name="secure_mode_access">Доступ до безпечного режиму</string>
-    <string name="use_fingerprint_or_face">Використовуйте відбиток пальця або обличчя для доступу до цього режиму</string>
-    <string name="privacy_and_security_help">Це допомагає захистити вашу конфіденційність та безпеку</string>
-    <string name="use_pin_instead">Використовувати PIN замість цього</string>
-    <string name="authentication_failed_try_again">Автентифікація не вдалася. Спробуйте ще раз.</string>
+    <!-- Compliance Status -->
+    <string name="compliance_status">Статус відповідності</string>
+    <string name="gdpr_compliant">Відповідає GDPR</string>
+    <string name="hipaa_compliant">Відповідає HIPAA</string>
+    <string name="accessibility_compliant">Відповідає вимогам доступності</string>
+    <string name="regulatory_compliant">Регуляторна відповідність</string>
     
-    <!-- Emergency Escape and Monitoring -->
-    <string name="emergency_escape_activated">Екстрену втечу активовано. Моніторинг вимкнено.</string>
+    <!-- Contact Information -->
+    <string name="privacy_officer">Офіцер з конфіденційності</string>
+    <string name="data_protection_officer">Офіцер з захисту даних</string>
+    <string name="customer_support">Підтримка клієнтів</string>
+    <string name="legal_department">Юридичний відділ</string>
+    <string name="compliance_team">Команда відповідності</string>
     
-    <!-- App Selection and UI -->
-    <string name="add_app">Додати додаток</string>
-    <string name="tap_empty_tiles_to_add_apps">Торкніться порожніх плиток, щоб додати додатки</string>
-    
-    <!-- Loading and Status Messages -->
-    <string name="loading_message">Завантаження: %1$s</string>
-    <string name="error_message">Помилка: %1$s</string>
-    <string name="success_message">Успіх: %1$s</string>
-    
-    <!-- Compliance Dashboard -->
-    <string name="emergency_compliance_dashboard">Панель відповідності надзвичайних ситуацій</string>
-    <string name="system_status">Стан системи</string>
-    <string name="emergency_metrics">Метрики надзвичайних ситуацій</string>
-    <string name="healthcare_professionals">Медичні фахівці</string>
-    <string name="recent_events">Останні події</string>
-    <string name="compliance_alerts">Сповіщення про відповідність</string>
-    <string name="operational">Працює</string>
-    <string name="degraded">Погіршено</string>
-    <string name="total_emergencies">Загальна кількість надзвичайних ситуацій</string>
-    <string name="avg_response_time">Середній час відповіді</string>
-    <string name="success_rate">Рівень успіху</string>
-    <string name="available">Доступно</string>
-    <string name="unavailable">Недоступно</string>
-    <string name="no_recent_events">Немає останніх подій</string>
-    <string name="no_active_alerts">Немає активних сповіщень</string>
-    <string name="minutes_ago">%1$d хвилин тому</string>
-    <string name="hours_ago">%1$d годин тому</string>
-    <string name="days_ago">%1$d днів тому</string>
-    
-    <!-- Mode Names -->
-    <string name="mode_essential">Основний</string>
-    <string name="mode_comfort">Комфорт</string>
-    <string name="mode_connected">Підключений</string>
-    
-    <!-- Mode Descriptions -->
-    <string name="mode_essential_desc">Телефон, повідомлення, контакти - для користувачів з серйозними когнітивними порушеннями</string>
-    <string name="mode_comfort_desc">Телефон, повідомлення, камера, галерея - для звичайних літніх користувачів з творчою участю</string>
-    <string name="mode_connected_desc">Всі функції комфорту плюс погода та сімейне спілкування - для технічно грамотних літніх користувачів</string>
-    
-    <!-- Emergency SOS -->
-    <string name="emergency_sos">Екстрений SOS</string>
-    <string name="emergency_sos_desc">Натисніть і утримуйте для надзвичайної ситуації</string>
-    <string name="emergency_confirm">Підтвердити надзвичайну ситуацію</string>
-    <string name="emergency_cancel">Скасувати</string>
-    <string name="emergency_calling">Виклик служб екстреного реагування...</string>
-    <string name="emergency_notifying_caregivers">Повідомлення доглядальників...</string>
+    <!-- User-Friendly Explanations -->
+    <string name="privacy_simplified">Ми захищаємо вашу особисту інформацію</string>
+    <string name="consent_simplified">Ви вибираєте, що ми можемо робити з вашими даними</string>
+    <string name="rights_simplified">Ви можете переглядати, змінювати або видаляти свою інформацію в будь-який час</string>
+    <string name="security_simplified">Ваша інформація зберігається в безпеці та захищена</string>
+    <string name="emergency_sharing_simplified">Ми ділимося вашою інформацією лише для допомоги в надзвичайних ситуаціях</string>
 </resources>

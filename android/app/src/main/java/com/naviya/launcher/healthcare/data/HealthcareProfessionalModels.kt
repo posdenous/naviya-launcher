@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken
  */
 
 @Entity(tableName = "healthcare_professional_registrations")
-@TypeConverters(HealthcareProfessionalConverters::class)
 data class HealthcareProfessionalRegistration(
     @PrimaryKey
     val registrationId: String,
@@ -38,7 +37,6 @@ data class HealthcareProfessionalRegistration(
 )
 
 @Entity(tableName = "professional_installations")
-@TypeConverters(HealthcareProfessionalConverters::class)
 data class ProfessionalInstallation(
     @PrimaryKey
     val installationId: String,
@@ -63,7 +61,6 @@ data class ProfessionalInstallation(
 )
 
 @Entity(tableName = "clinical_oversight")
-@TypeConverters(HealthcareProfessionalConverters::class)
 data class ClinicalOversight(
     @PrimaryKey
     val oversightId: String,
@@ -86,7 +83,6 @@ data class ClinicalOversight(
 )
 
 @Entity(tableName = "clinical_assessments")
-@TypeConverters(HealthcareProfessionalConverters::class)
 data class ClinicalAssessment(
     @PrimaryKey
     val assessmentId: String,

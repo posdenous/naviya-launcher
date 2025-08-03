@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naviya.launcher.R
 import com.naviya.launcher.onboarding.*
-import com.naviya.launcher.ui.theme.NaviyaTheme
+import com.naviya.launcher.ui.theme.NaviyaLauncherTheme
 
 /**
  * Family-friendly onboarding screen with elderly-optimized UI
@@ -33,15 +33,15 @@ import com.naviya.launcher.ui.theme.NaviyaTheme
  */
 @Composable
 fun FamilyOnboardingScreen(
-    onOnboardingComplete: () -> Unit,
-    viewModel: FamilyOnboardingViewModel = hiltViewModel()
+    viewModel: FamilyOnboardingViewModel = hiltViewModel(),
+    onOnboardingComplete: () -> Unit
 ) {
     val currentStep by viewModel.currentStep.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
     val setupProgress by viewModel.setupProgress.collectAsStateWithLifecycle()
     
-    NaviyaTheme {
+    NaviyaLauncherTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -316,22 +316,24 @@ private fun EmergencyContactsStep(
         
         // Emergency contacts list
         contacts.forEachIndexed { index, contact ->
-            EmergencyContactCard(
-                contact = contact,
-                onContactChange = { updatedContact ->
-                    contacts = contacts.toMutableList().apply {
-                        set(index, updatedContact)
-                    }
-                },
-                onRemove = if (contacts.size > 1) {
-                    {
+            NaviyaLauncherTheme {
+                EmergencyContactCard(
+                    contact = contact,
+                    onContactChange = { updatedContact ->
                         contacts = contacts.toMutableList().apply {
-                            removeAt(index)
+                            set(index, updatedContact)
                         }
-                    }
-                } else null,
-                isPrimary = index == 0
-            )
+                    },
+                    onRemove = if (contacts.size > 1) {
+                        {
+                            contacts = contacts.toMutableList().apply {
+                                removeAt(index)
+                            }
+                        }
+                    } else null,
+                    isPrimary = index == 0
+                )
+            }
             
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -745,7 +747,7 @@ private fun LoadingOverlay() {
 @Preview(showBackground = true)
 @Composable
 private fun FamilyOnboardingScreenPreview() {
-    NaviyaTheme {
+    NaviyaLauncherTheme {
         FamilyOnboardingScreen(
             onOnboardingComplete = {}
         )
