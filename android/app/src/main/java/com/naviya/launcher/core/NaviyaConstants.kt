@@ -27,7 +27,12 @@ object NaviyaConstants {
         const val RECOMMENDED_TOUCH_TARGET_DP = 64
         const val MIN_FONT_SCALE = 1.6f
         const val RECOMMENDED_FONT_SCALE = 2.0f
-        const val MIN_ICON_SIZE_DP = 64
+        
+        // Large icon sizes for elderly users
+        const val MIN_ICON_SIZE_DP = 96          // Increased from 64dp
+        const val RECOMMENDED_ICON_SIZE_DP = 120  // New larger recommended size
+        const val LARGE_ICON_SIZE_DP = 144       // Extra large for main tiles
+        
         const val ANIMATION_DURATION_MS = 300L
         const val SLOW_ANIMATION_DURATION_MS = 500L
         const val HAPTIC_FEEDBACK_DURATION_MS = 50L

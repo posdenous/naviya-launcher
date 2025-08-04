@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,6 +31,7 @@ import com.naviya.launcher.layout.TileType
 import com.naviya.launcher.layout.SemanticTileLayout
 import com.naviya.launcher.emergency.MedicalEmergencyType
 import com.naviya.launcher.ui.theme.NaviyaLauncherTheme
+import com.naviya.launcher.core.NaviyaConstants
 
 /**
  * Test Launcher Activity - Minimal implementation for emulator testing
@@ -164,12 +166,12 @@ fun LauncherMainScreen(
             }
         }
         
-        // Emergency SOS Button
+        // Emergency SOS Button - Extra large for elderly accessibility
         Button(
             onClick = onEmergencyClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(96.dp)  // Increased height for better accessibility
                 .padding(bottom = 16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red,
@@ -179,12 +181,12 @@ fun LauncherMainScreen(
             Icon(
                 imageVector = Icons.Default.Warning,
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(NaviyaConstants.UI.RECOMMENDED_ICON_SIZE_DP.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = "EMERGENCY SOS",
-                fontSize = 18.sp,
+                fontSize = 24.sp,  // Increased font size
                 fontWeight = FontWeight.Bold
             )
         }
@@ -225,14 +227,14 @@ fun AppTileCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
+                .padding(16.dp),  // Increased padding for larger icons
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = getTileIcon(tileType),
                 contentDescription = null,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(NaviyaConstants.UI.LARGE_ICON_SIZE_DP.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -263,7 +265,7 @@ fun ModeSelectorScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
             Text(
                 text = "Select Launcher Mode",
@@ -363,7 +365,7 @@ fun TestEmergencyScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
             Text(
                 text = "Emergency SOS",
@@ -420,14 +422,14 @@ fun EmergencyTypeCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
+                .padding(16.dp),  // Increased padding for larger icons
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Warning,
                 contentDescription = null,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(NaviyaConstants.UI.RECOMMENDED_ICON_SIZE_DP.dp),
                 tint = if (emergencyType.priority == 1) Color.Red else MaterialTheme.colorScheme.secondary
             )
             Spacer(modifier = Modifier.height(8.dp))

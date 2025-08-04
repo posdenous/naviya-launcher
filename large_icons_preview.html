@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Launcher - Large Icons Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .view-toggle {
+            display: block;
+            width: 100%;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .view-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-1px);
+        }
+
+        .mode-selector {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid #1565C0;
+            background: white;
+            color: #1565C0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: #1565C0;
+            color: white;
+        }
+
+        .launcher-grid {
+            padding: 30px 20px;
+            display: grid;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .grid-essential {
+            grid-template-columns: 1fr;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .grid-comfort {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .grid-connected {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .app-tile {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: #1565C0;
+        }
+
+        .app-icon {
+            font-size: 144px; /* LARGE_ICON_SIZE_DP equivalent */
+            margin-bottom: 12px;
+            color: #1565C0;
+            line-height: 1;
+        }
+
+        .app-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #212121;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .emergency-button {
+            margin: 20px;
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 24px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(211,47,47,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 96px;
+        }
+
+        .emergency-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(211,47,47,0.4);
+        }
+
+        .emergency-icon {
+            font-size: 120px; /* RECOMMENDED_ICON_SIZE_DP equivalent */
+        }
+
+        .comparison {
+            margin: 40px 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .comparison h3 {
+            color: #1565C0;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .size-comparison {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .size-demo {
+            text-align: center;
+        }
+
+        .size-demo .label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .old-icon {
+            font-size: 48px;
+            color: #999;
+        }
+
+        .new-icon {
+            font-size: 144px;
+            color: #1565C0;
+        }
+
+        .benefits {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits li {
+            padding: 8px 0;
+            color: #333;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .benefits li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Caregiver Dashboard Styles */
+        .caregiver-dashboard {
+            padding: 20px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #1565C0;
+        }
+
+        .dashboard-card h3 {
+            color: #1565C0;
+            margin-bottom: 12px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online {
+            background: #4caf50;
+        }
+
+        .status-offline {
+            background: #f44336;
+        }
+
+        .status-warning {
+            background: #ff9800;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: #1565C0;
+            font-size: 16px;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .activity-time {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .alert-badge {
+            background: #f44336;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .caregiver-header {
+            background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" id="main-header">
+            <h1 id="header-title">Naviya Launcher</h1>
+            <p id="header-subtitle">Large Icons for Elderly Users</p>
+            <button class="view-toggle" onclick="toggleView()">👨‍⚕️ Switch to Caregiver View</button>
+        </div>
+
+        <div class="mode-selector">
+            <h3>Select Launcher Mode:</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn" onclick="switchMode('essential')">Essential</button>
+                <button class="mode-btn active" onclick="switchMode('comfort')">Comfort</button>
+                <button class="mode-btn" onclick="switchMode('connected')">Connected</button>
+            </div>
+        </div>
+
+        <!-- Essential Mode (1x3) -->
+        <div id="essential-grid" class="launcher-grid grid-essential hidden">
+            <div class="app-tile">
+                <div class="app-icon">📞</div>
+                <div class="app-label">Phone</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">💬</div>
+                <div class="app-label">Messages</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">👥</div>
+                <div class="app-label">Contacts</div>
+            </div>
+        </div>
+
+        <!-- Comfort Mode (2x2) -->
+        <div id="comfort-grid" class="launcher-grid grid-comfort">
+            <div class="app-tile">
+                <div class="app-icon">📞</div>
+                <div class="app-label">Phone</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">💬</div>
+                <div class="app-label">Messages</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">📷</div>
+                <div class="app-label">Camera</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🖼️</div>
+                <div class="app-label">Gallery</div>
+            </div>
+        </div>
+
+        <!-- Connected Mode (2x3) -->
+        <div id="connected-grid" class="launcher-grid grid-connected hidden">
+            <div class="app-tile">
+                <div class="app-icon">📞</div>
+                <div class="app-label">Phone</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">💬</div>
+                <div class="app-label">Messages</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">📷</div>
+                <div class="app-label">Camera</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🖼️</div>
+                <div class="app-label">Gallery</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">🌤️</div>
+                <div class="app-label">Weather</div>
+            </div>
+            <div class="app-tile">
+                <div class="app-icon">👨‍👩‍👧‍👦</div>
+                <div class="app-label">Family</div>
+            </div>
+        </div>
+
+        <button class="emergency-button">
+            <span class="emergency-icon">⚠️</span>
+            EMERGENCY SOS
+        </button>
+    </div>
+
+    <!-- Caregiver Dashboard -->
+    <div class="container hidden" id="caregiver-view">
+        <div class="header caregiver-header" id="caregiver-header">
+            <h1>Caregiver Dashboard</h1>
+            <p>Monitoring & Health Insights</p>
+            <button class="view-toggle" onclick="toggleView()">👴 Switch to Elderly View</button>
+        </div>
+        <div class="caregiver-dashboard">
+            <div class="dashboard-grid">
+                <!-- Device Status Card -->
+                <div class="dashboard-card">
+                    <h3>
+                        📱 Device Status
+                        <span class="status-indicator status-online"></span>
+                    </h3>
+                    <div class="metric">
+                        <span class="metric-label">Connection</span>
+                        <span class="metric-value">Online</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Battery</span>
+                        <span class="metric-value">87%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Last Seen</span>
+                        <span class="metric-value">2 min ago</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Location</span>
+                        <span class="metric-value">Home</span>
+                    </div>
+                </div>
+
+                <!-- Usage Statistics -->
+                <div class="dashboard-card">
+                    <h3>📊 Usage Today</h3>
+                    <div class="metric">
+                        <span class="metric-label">Phone Calls</span>
+                        <span class="metric-value">3 calls</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Messages</span>
+                        <span class="metric-value">7 messages</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Camera Used</span>
+                        <span class="metric-value">2 photos</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Active Time</span>
+                        <span class="metric-value">4.2 hours</span>
+                    </div>
+                </div>
+
+                <!-- Emergency Status -->
+                <div class="dashboard-card">
+                    <h3>
+                        🚨 Emergency System
+                        <span class="status-indicator status-online"></span>
+                    </h3>
+                    <div class="metric">
+                        <span class="metric-label">System Status</span>
+                        <span class="metric-value">Active</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Last Test</span>
+                        <span class="metric-value">3 days ago</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Response Time</span>
+                        <span class="metric-value">&lt; 30 sec</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Contacts</span>
+                        <span class="metric-value">3 active</span>
+                    </div>
+                </div>
+
+                <!-- Health Monitoring -->
+                <div class="dashboard-card">
+                    <h3>
+                        💊 Health & Wellness
+                        <span class="status-indicator status-warning"></span>
+                    </h3>
+                    <div class="metric">
+                        <span class="metric-label">Medication Reminder</span>
+                        <span class="metric-value">Due in 2h</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Activity Level</span>
+                        <span class="metric-value">Moderate</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Sleep Quality</span>
+                        <span class="metric-value">Good (7.5h)</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Alerts</span>
+                        <span class="alert-badge">1 pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Feed -->
+            <div class="dashboard-card">
+                <h3>📋 Recent Activity</h3>
+                <div class="activity-item">
+                    <div class="activity-icon">📞</div>
+                    <div class="activity-details">
+                        <div class="activity-title">Called Dr. Smith's Office</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">💬</div>
+                    <div class="activity-details">
+                        <div class="activity-title">Received message from Sarah</div>
+                        <div class="activity-time">4 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">📷</div>
+                    <div class="activity-details">
+                        <div class="activity-title">Took photo in garden</div>
+                        <div class="activity-time">6 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">🌤️</div>
+                    <div class="activity-details">
+                        <div class="activity-title">Checked weather forecast</div>
+                        <div class="activity-time">8 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">💊</div>
+                    <div class="activity-details">
+                        <div class="activity-title">Medication reminder acknowledged</div>
+                        <div class="activity-time">Yesterday, 8:00 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comparison">
+        <h3>Icon Size Improvements</h3>
+        <div class="size-comparison">
+            <div class="size-demo">
+                <div class="label">Old Size (48dp)</div>
+                <div class="old-icon">📞</div>
+            </div>
+            <div style="font-size: 24px; color: #1565C0;">→</div>
+            <div class="size-demo">
+                <div class="label">New Size (144dp)</div>
+                <div class="new-icon">📞</div>
+            </div>
+        </div>
+        
+        <h4 style="color: #1565C0; margin: 20px 0 12px 0;">Benefits for Elderly Users:</h4>
+        <ul class="benefits">
+            <li><strong>3x Larger Icons:</strong> Much easier to see and identify apps</li>
+            <li><strong>Better Touch Targets:</strong> Reduced accidental taps</li>
+            <li><strong>High Contrast:</strong> Clear visibility in all lighting conditions</li>
+            <li><strong>Reduced Eye Strain:</strong> Less squinting and focusing effort</li>
+            <li><strong>Confidence Building:</strong> Clear, recognizable interface elements</li>
+            <li><strong>Emergency Accessibility:</strong> Extra-large emergency button (120dp icon)</li>
+        </ul>
+    </div>
+
+    <script>
+        let currentView = 'elderly';
+
+        function toggleView() {
+            const elderlyView = document.querySelector('.container:not(#caregiver-view)');
+            const caregiverView = document.getElementById('caregiver-view');
+            const comparison = document.querySelector('.comparison');
+
+            if (currentView === 'elderly') {
+                // Switch to caregiver view
+                elderlyView.classList.add('hidden');
+                caregiverView.classList.remove('hidden');
+                comparison.classList.add('hidden');
+                
+                currentView = 'caregiver';
+            } else {
+                // Switch to elderly view
+                elderlyView.classList.remove('hidden');
+                caregiverView.classList.add('hidden');
+                comparison.classList.remove('hidden');
+                
+                currentView = 'elderly';
+            }
+        }
+
+        function switchMode(mode) {
+            // Hide all grids
+            document.getElementById('essential-grid').classList.add('hidden');
+            document.getElementById('comfort-grid').classList.add('hidden');
+            document.getElementById('connected-grid').classList.add('hidden');
+            
+            // Show selected grid
+            document.getElementById(mode + '-grid').classList.remove('hidden');
+            
+            // Update button states
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Add click animations
+        document.querySelectorAll('.app-tile').forEach(tile => {
+            tile.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        document.querySelector('.emergency-button').addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+                alert('Emergency SOS Activated!\n\nIn the real app, this would:\n• Contact emergency services\n• Notify caregivers\n• Share location\n• Log the emergency event');
+            }, 150);
+        });
+
+        // Simulate real-time updates for caregiver dashboard
+        function updateDashboard() {
+            if (currentView === 'caregiver') {
+                // Update battery level
+                const batteryElement = document.querySelector('.metric-value');
+                if (batteryElement && batteryElement.textContent.includes('%')) {
+                    const currentBattery = parseInt(batteryElement.textContent);
+                    const newBattery = Math.max(85, Math.min(90, currentBattery + (Math.random() - 0.5) * 2));
+                    batteryElement.textContent = Math.round(newBattery) + '%';
+                }
+                
+                // Update last seen time
+                const lastSeenElements = document.querySelectorAll('.metric-value');
+                if (lastSeenElements[2]) {
+                    const times = ['1 min ago', '2 min ago', '3 min ago', 'Just now'];
+                    lastSeenElements[2].textContent = times[Math.floor(Math.random() * times.length)];
+                }
+            }
+        }
+
+        // Update dashboard every 30 seconds
+        setInterval(updateDashboard, 30000);
+
+        // Add hover effects to dashboard cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const dashboardCards = document.querySelectorAll('.dashboard-card');
+            dashboardCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
