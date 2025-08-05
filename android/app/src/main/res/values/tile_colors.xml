@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Unread Tile Colors -->
+    <color name="tile_bg_inactive">#F5F5F5</color>
+    <color name="tile_bg_active">#E8F5E9</color>
+    <color name="tile_border_inactive">#BDBDBD</color>
+    <color name="tile_border_active">#4CAF50</color>
+    <color name="tile_text_inactive">#424242</color>
+    <color name="tile_text_active">#1B5E20</color>
+    <color name="tile_note_text">#757575</color>
+    <color name="tile_icon_tint">#424242</color>
+    <color name="badge_background">#F44336</color>
+</resources>

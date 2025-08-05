@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Unread Tile Strings -->
+    <string name="unread_tile_title">Unread</string>
+    <string name="unread_tile_icon_description">Unread communications icon</string>
+    <string name="unread_tile_caregiver_offline">Caregiver not available.</string>
+    <string name="unread_tile_reminder">You have missed calls or messages.</string>
+    <string name="unread_tile_no_permissions">Unable to access call log or messages.</string>
+</resources>

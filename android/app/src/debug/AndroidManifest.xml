@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <!-- Debug Test Activity for Emergency Data Retention Testing -->
+        <activity
+            android:name=".debug.EmergencyTestActivity"
+            android:exported="true"
+            android:label="Emergency Test"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Allow launching via adb -->
+            <intent-filter>
+                <action android:name="com.naviya.launcher.DEBUG_TEST" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Debug Test Activity for Unread Tile Testing -->
+        <activity
+            android:name=".debug.UnreadTileTestActivity"
+            android:exported="true"
+            android:label="Unread Tile Test"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Allow launching via adb -->
+            <intent-filter>
+                <action android:name="com.naviya.launcher.DEBUG_UNREAD_TILE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
