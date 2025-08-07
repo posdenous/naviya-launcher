@@ -94,8 +94,8 @@ class UnreadTileManager(private val context: Context) {
             unreadSmsCount = cursor?.count ?: 0
             Log.d(TAG, "Found $unreadSmsCount unread SMS messages")
             
-        } catch (SecurityException) {
-            Log.e(TAG, "Permission denied for reading SMS", SecurityException())
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Permission denied for reading SMS", e)
         } catch (e: Exception) {
             Log.e(TAG, "Error reading unread SMS", e)
         } finally {

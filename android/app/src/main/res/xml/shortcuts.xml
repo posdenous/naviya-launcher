@@ -24,4 +24,16 @@
             android:targetPackage="com.naviya.launcher"
             android:targetClass="com.naviya.launcher.ui.caregiver.CaregiverPairingActivity" />
     </shortcut>
+    
+    <shortcut
+        android:shortcutId="run_tests"
+        android:enabled="true"
+        android:icon="@drawable/ic_test"
+        android:shortcutShortLabel="@string/run_tests"
+        android:shortcutLongLabel="@string/run_unread_tile_tests">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.naviya.launcher"
+            android:targetClass="com.naviya.launcher.testing.TestingActivity" />
+    </shortcut>
 </shortcuts>

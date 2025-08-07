@@ -14,23 +14,23 @@ class NotificationConverter {
     private val gson = Gson()
     
     // UnreadSummary converter
-    @TypeConverter
+    // @TypeConverter
     fun fromUnreadSummary(value: UnreadSummary?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toUnreadSummary(value: String?): UnreadSummary? {
         return value?.let { gson.fromJson(it, UnreadSummary::class.java) }
     }
     
     // MissedCall List converter
-    @TypeConverter
+    // @TypeConverter
     fun fromMissedCallList(value: List<MissedCall>?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toMissedCallList(value: String?): List<MissedCall>? {
         return value?.let {
             val listType = object : TypeToken<List<MissedCall>>() {}.type
@@ -39,12 +39,12 @@ class NotificationConverter {
     }
     
     // UnreadSms List converter
-    @TypeConverter
+    // @TypeConverter
     fun fromUnreadSmsList(value: List<UnreadSms>?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toUnreadSmsList(value: String?): List<UnreadSms>? {
         return value?.let {
             val listType = object : TypeToken<List<UnreadSms>>() {}.type
@@ -53,67 +53,67 @@ class NotificationConverter {
     }
     
     // PriorityContacts converter
-    @TypeConverter
+    // @TypeConverter
     fun fromPriorityContacts(value: PriorityContacts?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toPriorityContacts(value: String?): PriorityContacts? {
         return value?.let { gson.fromJson(it, PriorityContacts::class.java) }
     }
     
     // TileDisplay converter
-    @TypeConverter
+    // @TypeConverter
     fun fromTileDisplay(value: TileDisplay?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toTileDisplay(value: String?): TileDisplay? {
         return value?.let { gson.fromJson(it, TileDisplay::class.java) }
     }
     
     // OfflineState converter
-    @TypeConverter
+    // @TypeConverter
     fun fromOfflineState(value: OfflineState?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toOfflineState(value: String?): OfflineState? {
         return value?.let { gson.fromJson(it, OfflineState::class.java) }
     }
     
     // CaregiverIntegration converter
-    @TypeConverter
+    // @TypeConverter
     fun fromCaregiverIntegration(value: CaregiverIntegration?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toCaregiverIntegration(value: String?): CaregiverIntegration? {
         return value?.let { gson.fromJson(it, CaregiverIntegration::class.java) }
     }
     
     // NotificationPrivacySettings converter
-    @TypeConverter
+    // @TypeConverter
     fun fromNotificationPrivacySettings(value: NotificationPrivacySettings?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toNotificationPrivacySettings(value: String?): NotificationPrivacySettings? {
         return value?.let { gson.fromJson(it, NotificationPrivacySettings::class.java) }
     }
     
     // PerformanceMetrics converter
-    @TypeConverter
+    // @TypeConverter
     fun fromPerformanceMetrics(value: PerformanceMetrics?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toPerformanceMetrics(value: String?): PerformanceMetrics? {
         return value?.let { gson.fromJson(it, PerformanceMetrics::class.java) }
     }

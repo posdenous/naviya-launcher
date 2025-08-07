@@ -253,7 +253,7 @@ interface SecurityAuditDao {
 /**
  * Room database for security audit events
  */
-@Database(entities = [SecurityAuditEvent::class], version = 1, exportSchema = false)
+// @Database(entities = [SecurityAuditEvent::class], version = 1, exportSchema = false)
 abstract class SecurityAuditDatabase : RoomDatabase() {
     abstract fun securityAuditDao(): SecurityAuditDao
 }

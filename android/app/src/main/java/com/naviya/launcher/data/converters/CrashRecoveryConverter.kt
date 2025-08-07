@@ -14,23 +14,23 @@ class CrashRecoveryConverter {
     private val gson = Gson()
     
     // CrashTracking converter
-    @TypeConverter
+    // @TypeConverter
     fun fromCrashTracking(value: CrashTracking?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toCrashTracking(value: String?): CrashTracking? {
         return value?.let { gson.fromJson(it, CrashTracking::class.java) }
     }
     
     // CrashRecord List converter
-    @TypeConverter
+    // @TypeConverter
     fun fromCrashRecordList(value: List<CrashRecord>?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toCrashRecordList(value: String?): List<CrashRecord>? {
         return value?.let {
             val listType = object : TypeToken<List<CrashRecord>>() {}.type
@@ -39,78 +39,78 @@ class CrashRecoveryConverter {
     }
     
     // RecoveryMode converter
-    @TypeConverter
+    // @TypeConverter
     fun fromRecoveryMode(value: RecoveryMode?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toRecoveryMode(value: String?): RecoveryMode? {
         return value?.let { gson.fromJson(it, RecoveryMode::class.java) }
     }
     
     // SafeTiles converter
-    @TypeConverter
+    // @TypeConverter
     fun fromSafeTiles(value: SafeTiles?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toSafeTiles(value: String?): SafeTiles? {
         return value?.let { gson.fromJson(it, SafeTiles::class.java) }
     }
     
     // RecoveryAssistance converter
-    @TypeConverter
+    // @TypeConverter
     fun fromRecoveryAssistance(value: RecoveryAssistance?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toRecoveryAssistance(value: String?): RecoveryAssistance? {
         return value?.let { gson.fromJson(it, RecoveryAssistance::class.java) }
     }
     
     // ExitConditions converter
-    @TypeConverter
+    // @TypeConverter
     fun fromExitConditions(value: ExitConditions?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toExitConditions(value: String?): ExitConditions? {
         return value?.let { gson.fromJson(it, ExitConditions::class.java) }
     }
     
     // PostRecovery converter
-    @TypeConverter
+    // @TypeConverter
     fun fromPostRecovery(value: PostRecovery?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toPostRecovery(value: String?): PostRecovery? {
         return value?.let { gson.fromJson(it, PostRecovery::class.java) }
     }
     
     // SystemIntegration converter
-    @TypeConverter
+    // @TypeConverter
     fun fromSystemIntegration(value: SystemIntegration?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toSystemIntegration(value: String?): SystemIntegration? {
         return value?.let { gson.fromJson(it, SystemIntegration::class.java) }
     }
     
     // RecoveryAnalytics converter
-    @TypeConverter
+    // @TypeConverter
     fun fromRecoveryAnalytics(value: RecoveryAnalytics?): String? {
         return gson.toJson(value)
     }
     
-    @TypeConverter
+    // @TypeConverter
     fun toRecoveryAnalytics(value: String?): RecoveryAnalytics? {
         return value?.let { gson.fromJson(it, RecoveryAnalytics::class.java) }
     }

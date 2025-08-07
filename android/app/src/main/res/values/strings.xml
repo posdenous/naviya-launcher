@@ -358,5 +358,16 @@
     <string name="hello_family_title">Hello Family!</string>
     <string name="family_setup_benefits_title">Family Setup Benefits</string>
     <string name="family_setup_benefits_content">Setting up together ensures everything works perfectly and gives everyone peace of mind.</string>
+    
+    <!-- Testing Activity Strings -->
+    <string name="testing_activity_title">Naviya Tests</string>
+    <string name="run_tests">Run Tests</string>
+    <string name="run_unread_tile_tests">Run Unread Tile Tests</string>
+    <string name="test_results">Test Results</string>
+    <string name="back_to_tests">Back to Tests</string>
+    <string name="test_passed">PASSED</string>
+    <string name="test_failed">FAILED</string>
+    <string name="unread_tile_test_description">Tests for unread SMS and missed calls tile functionality</string>
+    <string name="test_summary">%1$d tests passed, %2$d tests failed</string>
 
 </resources>

@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.9.22"
-    ext.hilt_version = "2.48.1"
+    ext.kotlin_version = "1.8.22" // Downgraded for Room compatibility
+    ext.hilt_version = "2.57"   // Updated to match plugin
     ext.nav_version = "2.7.6"
     ext.room_version = "2.6.1"
     ext.work_version = "2.9.0"
@@ -14,11 +14,11 @@ buildscript {
     }
     
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath 'com.android.tools.build:gradle:8.12.0' // Updated version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath 'com.google.gms:google-services:4.4.0'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.google.gms:google-services:4.4.3' // Updated version
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.5' // Updated version
         
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -26,10 +26,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.3.2' apply false
-    id 'com.android.library' version '8.3.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
-    id 'com.google.dagger.hilt.android' version '2.48.1' apply false
+    id 'com.android.application' version '8.12.0' apply false // Updated version
+    id 'com.android.library' version '8.12.0' apply false     // Updated version
+    id 'org.jetbrains.kotlin.android' version '1.8.22' apply false // Downgraded for Room compatibility
+    id 'com.google.dagger.hilt.android' version '2.57' apply false
+
 }
 
 // Repository configuration moved to settings.gradle
@@ -63,12 +64,12 @@ ext {
 }
 
 // Task to clean build directories
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete layout.buildDirectory
 }
 
 // Custom task for elderly user testing builds
-task buildElderlyTestVersion {
+tasks.register('buildElderlyTestVersion') {
     group = 'naviya'
     description = 'Build version optimized for elderly user testing'
     
@@ -83,7 +84,7 @@ task buildElderlyTestVersion {
 }
 
 // Custom task for caregiver demo builds
-task buildCaregiverDemo {
+tasks.register('buildCaregiverDemo') {
     group = 'naviya'
     description = 'Build demo version for caregiver presentations'
     
@@ -97,7 +98,7 @@ task buildCaregiverDemo {
 
 // Gradle configuration for consistent builds
 gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 }

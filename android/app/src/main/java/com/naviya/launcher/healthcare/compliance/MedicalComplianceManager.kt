@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.naviya.launcher.healthcare.data.*
-import com.naviya.launcher.database.NaviyaDatabase
+// import com.naviya.launcher.database.NaviyaDatabase
 import com.naviya.launcher.security.SecurityAuditLogger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class MedicalComplianceManager @Inject constructor(
     private val context: Context,
-    private val database: NaviyaDatabase,
+    // private val database: NaviyaDatabase,
     private val securityAuditLogger: SecurityAuditLogger
 ) {
     

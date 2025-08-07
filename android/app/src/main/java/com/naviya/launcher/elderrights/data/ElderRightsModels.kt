@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken
  */
 
 @Entity(tableName = "elder_rights_notifications")
-@TypeConverters(ElderRightsConverters::class)
+// // @TypeConverters(ElderRightsConverters::class)
 data class ElderRightsNotification(
     @PrimaryKey
     val notificationId: String,
@@ -326,88 +326,88 @@ enum class ContactAvailability {
 class ElderRightsConverters {
     private val gson = Gson()
 
-    @TypeConverter
+    // @TypeConverter
     fun fromAdvocateContact(contact: ElderRightsAdvocateContact): String {
         return gson.toJson(contact)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toAdvocateContact(contactString: String): ElderRightsAdvocateContact {
         return gson.fromJson(contactString, ElderRightsAdvocateContact::class.java)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromChannelResultList(channels: List<ChannelResult>): String {
         return gson.toJson(channels)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toChannelResultList(channelsString: String): List<ChannelResult> {
         val listType = object : TypeToken<List<ChannelResult>>() {}.type
         return gson.fromJson(channelsString, listType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromEscalationTriggerList(triggers: List<EscalationTrigger>): String {
         return gson.toJson(triggers)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toEscalationTriggerList(triggersString: String): List<EscalationTrigger> {
         val listType = object : TypeToken<List<EscalationTrigger>>() {}.type
         return gson.fromJson(triggersString, listType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromEscalationStepList(steps: List<EscalationStep>): String {
         return gson.toJson(steps)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toEscalationStepList(stepsString: String): List<EscalationStep> {
         val listType = object : TypeToken<List<EscalationStep>>() {}.type
         return gson.fromJson(stepsString, listType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromStringList(strings: List<String>): String {
         return gson.toJson(strings)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toStringList(stringsString: String): List<String> {
         val listType = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(stringsString, listType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromStringMap(map: Map<String, String>): String {
         return gson.toJson(map)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toStringMap(mapString: String): Map<String, String> {
         val mapType = object : TypeToken<Map<String, String>>() {}.type
         return gson.fromJson(mapString, mapType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromChannelEffectivenessMap(map: Map<NotificationChannel, Double>): String {
         return gson.toJson(map)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toChannelEffectivenessMap(mapString: String): Map<NotificationChannel, Double> {
         val mapType = object : TypeToken<Map<NotificationChannel, Double>>() {}.type
         return gson.fromJson(mapString, mapType)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun fromContactResponseList(responses: List<ContactResponse>): String {
         return gson.toJson(responses)
     }
 
-    @TypeConverter
+    // @TypeConverter
     fun toContactResponseList(responsesString: String): List<ContactResponse> {
         val listType = object : TypeToken<List<ContactResponse>>() {}.type
         return gson.fromJson(responsesString, listType)

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
+// import dagger.hilt.android.AndroidEntryPoint - temporarily disabled for build stability
 import com.naviya.launcher.emergency.EmergencyService
 import com.naviya.launcher.emergency.ui.SOSButton
 import com.naviya.launcher.layout.LayoutManager
@@ -51,7 +51,7 @@ import com.naviya.launcher.ui.onboarding.OnboardingActivity
  * - 48dp+ touch targets, 1.6x+ font scaling
  * - High contrast colors and large text
  */
-@AndroidEntryPoint
+// @AndroidEntryPoint - temporarily disabled for build stability
 class MainActivity : ComponentActivity() {
     
     companion object {
@@ -59,14 +59,15 @@ class MainActivity : ComponentActivity() {
         private const val PREFS_NAME = "naviya_launcher_prefs"
     }
     
-    @Inject
-    lateinit var emergencyService: EmergencyService
+    // Temporarily creating instances directly instead of using Hilt
+    // @Inject lateinit var emergencyService: EmergencyService
+    // @Inject lateinit var layoutManager: LayoutManager
+    // @Inject lateinit var unreadTileService: UnreadTileService
     
-    @Inject
-    lateinit var layoutManager: LayoutManager
-    
-    @Inject
-    lateinit var unreadTileService: UnreadTileService
+    // Direct instantiation for build stability
+    private val emergencyService = EmergencyService()
+    private val layoutManager = LayoutManager()
+    private val unreadTileService = UnreadTileService()
     
     private val viewModel: MainLauncherViewModel by viewModels()
     

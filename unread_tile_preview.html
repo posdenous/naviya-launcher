@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naviya Launcher - Unread Tile Preview</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #0066cc;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-top: 0;
+        }
+        
+        .mode-selector {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .mode-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .mode-button.active {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .mode-button:not(.active) {
+            background-color: #ddd;
+            color: #333;
+        }
+        
+        .launcher-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .essential-grid {
+            grid-template-columns: repeat(1, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+        
+        .comfort-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+        
+        .connected-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+        
+        .tile {
+            background-color: #e9e9e9;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            height: 120px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tile-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+        
+        .tile-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .unread-tile {
+            background-color: #f5f5f5;
+            border: 2px solid #0066cc;
+        }
+        
+        .unread-tile.has-unread {
+            background-color: #e6f0ff;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff3b30;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .reminder {
+            background-color: #ffe8e8;
+            border-left: 4px solid #ff3b30;
+            padding: 10px 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .reminder p {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .controls {
+            margin-top: 30px;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: #0066cc;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #004c99;
+        }
+        
+        .emergency-button {
+            background-color: #ff3b30;
+            color: white;
+            font-size: 18px;
+            padding: 15px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        
+        .emergency-button:hover {
+            background-color: #d9302a;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .status h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        
+        .status-item {
+            margin-bottom: 5px;
+        }
+        
+        .status-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 180px;
+        }
+        
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #0066cc;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Naviya Launcher</h1>
+            <p class="subtitle">Unread Tile Preview</p>
+        </header>
+        
+        <div class="mode-selector">
+            <button class="mode-button" onclick="setMode('essential')">ESSENTIAL</button>
+            <button class="mode-button active" onclick="setMode('comfort')">COMFORT</button>
+            <button class="mode-button" onclick="setMode('connected')">CONNECTED</button>
+        </div>
+        
+        <div id="reminder-container"></div>
+        
+        <div id="launcher-grid" class="launcher-grid comfort-grid">
+            <!-- Tiles will be generated by JavaScript -->
+        </div>
+        
+        <button class="emergency-button">
+            EMERGENCY SOS
+        </button>
+        
+        <div class="controls">
+            <h3>Unread Tile Controls</h3>
+            
+            <div class="toggle-container">
+                <span class="toggle-label">Caregiver Online:</span>
+                <label class="toggle">
+                    <input type="checkbox" id="caregiver-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <span class="control-label">Missed Calls:</span>
+                <div class="control-buttons">
+                    <button onclick="updateMissedCalls(-1)">-</button>
+                    <span id="missed-calls-count">0</span>
+                    <button onclick="updateMissedCalls(1)">+</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <span class="control-label">Unread SMS:</span>
+                <div class="control-buttons">
+                    <button onclick="updateUnreadSMS(-1)">-</button>
+                    <span id="unread-sms-count">0</span>
+                    <button onclick="updateUnreadSMS(1)">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status">
+            <h3>Unread Tile Status</h3>
+            <div class="status-item">
+                <span class="status-label">Total Unread:</span>
+                <span id="total-unread">0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Missed Calls:</span>
+                <span id="status-missed-calls">0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Unread SMS:</span>
+                <span id="status-unread-sms">0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Caregiver Status:</span>
+                <span id="caregiver-status">Online</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Working Mode:</span>
+                <span>Offline (using local call log and SMS inbox)</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tile configurations for different modes
+        const tiles = {
+            essential: [
+                { type: 'PHONE', icon: '📞', label: 'Phone' },
+                { type: 'UNREAD', icon: '✉️', label: 'Unread' },
+                { type: 'EMERGENCY', icon: '🚨', label: 'Emergency' }
+            ],
+            comfort: [
+                { type: 'PHONE', icon: '📞', label: 'Phone' },
+                { type: 'UNREAD', icon: '✉️', label: 'Unread' },
+                { type: 'CONTACTS', icon: '👤', label: 'Contacts' },
+                { type: 'EMERGENCY', icon: '🚨', label: 'Emergency' }
+            ],
+            connected: [
+                { type: 'PHONE', icon: '📞', label: 'Phone' },
+                { type: 'UNREAD', icon: '✉️', label: 'Unread' },
+                { type: 'CONTACTS', icon: '👤', label: 'Contacts' },
+                { type: 'CAMERA', icon: '📷', label: 'Camera' },
+                { type: 'GALLERY', icon: '🖼️', label: 'Gallery' },
+                { type: 'EMERGENCY', icon: '🚨', label: 'Emergency' }
+            ]
+        };
+        
+        // State variables
+        let currentMode = 'comfort';
+        let missedCalls = 0;
+        let unreadSMS = 0;
+        let caregiverOnline = true;
+        
+        // Initialize the launcher
+        function initLauncher() {
+            renderTiles();
+            updateUnreadTile();
+            
+            // Set up event listeners
+            document.getElementById('caregiver-toggle').addEventListener('change', function() {
+                caregiverOnline = this.checked;
+                updateUnreadTile();
+            });
+        }
+        
+        // Set the launcher mode
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update active button
+            document.querySelectorAll('.mode-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update grid class
+            const grid = document.getElementById('launcher-grid');
+            grid.className = `launcher-grid ${mode}-grid`;
+            
+            renderTiles();
+            updateUnreadTile();
+        }
+        
+        // Render tiles based on current mode
+        function renderTiles() {
+            const grid = document.getElementById('launcher-grid');
+            grid.innerHTML = '';
+            
+            tiles[currentMode].forEach(tile => {
+                const tileElement = document.createElement('div');
+                tileElement.className = `tile ${tile.type.toLowerCase()}-tile`;
+                if (tile.type === 'UNREAD') {
+                    tileElement.id = 'unread-tile';
+                }
+                
+                const iconElement = document.createElement('div');
+                iconElement.className = 'tile-icon';
+                iconElement.textContent = tile.icon;
+                
+                const labelElement = document.createElement('div');
+                labelElement.className = 'tile-label';
+                labelElement.textContent = tile.label;
+                
+                tileElement.appendChild(iconElement);
+                tileElement.appendChild(labelElement);
+                
+                grid.appendChild(tileElement);
+            });
+        }
+        
+        // Update missed calls count
+        function updateMissedCalls(change) {
+            missedCalls = Math.max(0, missedCalls + change);
+            document.getElementById('missed-calls-count').textContent = missedCalls;
+            document.getElementById('status-missed-calls').textContent = missedCalls;
+            updateUnreadTile();
+        }
+        
+        // Update unread SMS count
+        function updateUnreadSMS(change) {
+            unreadSMS = Math.max(0, unreadSMS + change);
+            document.getElementById('unread-sms-count').textContent = unreadSMS;
+            document.getElementById('status-unread-sms').textContent = unreadSMS;
+            updateUnreadTile();
+        }
+        
+        // Update the unread tile
+        function updateUnreadTile() {
+            const totalUnread = missedCalls + unreadSMS;
+            document.getElementById('total-unread').textContent = totalUnread;
+            
+            const unreadTile = document.getElementById('unread-tile');
+            if (unreadTile) {
+                // Clear previous elements
+                const badge = unreadTile.querySelector('.badge');
+                if (badge) badge.remove();
+                
+                const note = unreadTile.querySelector('.note');
+                if (note) note.remove();
+                
+                // Add badge if there are unread items
+                if (totalUnread > 0) {
+                    unreadTile.classList.add('has-unread');
+                    
+                    const badgeElement = document.createElement('div');
+                    badgeElement.className = 'badge';
+                    badgeElement.textContent = totalUnread;
+                    unreadTile.appendChild(badgeElement);
+                } else {
+                    unreadTile.classList.remove('has-unread');
+                }
+                
+                // Add caregiver note if offline
+                if (!caregiverOnline) {
+                    const noteElement = document.createElement('div');
+                    noteElement.className = 'note';
+                    noteElement.textContent = 'Caregiver not available.';
+                    unreadTile.appendChild(noteElement);
+                }
+            }
+            
+            // Update caregiver status display
+            document.getElementById('caregiver-status').textContent = caregiverOnline ? 'Online' : 'Offline';
+            
+            // Show or hide reminder
+            const reminderContainer = document.getElementById('reminder-container');
+            reminderContainer.innerHTML = '';
+            
+            if (totalUnread > 0) {
+                const reminder = document.createElement('div');
+                reminder.className = 'reminder';
+                reminder.innerHTML = '<p>You have missed calls or messages.</p>';
+                reminderContainer.appendChild(reminder);
+            }
+        }
+        
+        // Initialize the launcher when the page loads
+        window.onload = initLauncher;
+    </script>
+</body>
+</html>

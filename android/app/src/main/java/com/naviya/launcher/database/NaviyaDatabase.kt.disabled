@@ -1,0 +1,116 @@
+// File intentionally left blank to disable legacy database
+                        reason TEXT,
+                        userAge INTEGER,
+                        authenticationToken TEXT,
+                        ipAddress TEXT,
+                        deviceInfo TEXT
+                    )
+                """)
+                
+                // Create security events table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS security_events (
+                        eventId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        eventType TEXT NOT NULL,
+                        description TEXT NOT NULL,
+                        severity TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        requestedBy TEXT NOT NULL,
+                        resolved INTEGER NOT NULL,
+                        resolvedAt INTEGER,
+                        resolvedBy TEXT,
+                        metadata TEXT
+                    )
+                """)
+                
+                // Create authentication attempts table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS authentication_attempts (
+                        attemptId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        authType TEXT NOT NULL,
+                        success INTEGER NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        requestedBy TEXT NOT NULL,
+                        failureReason TEXT,
+                        ipAddress TEXT,
+                        deviceInfo TEXT
+                    )
+                """)
+                
+                // Create elderly consent log table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS elderly_consent_log (
+                        consentId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        consentType TEXT NOT NULL,
+                        consentGiven INTEGER NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        targetMode TEXT,
+                        witnessId TEXT,
+                        consentMethod TEXT NOT NULL,
+                        expiryTimestamp INTEGER,
+                        revokedAt INTEGER,
+                        revokedReason TEXT
+                    )
+                """)
+                
+                // Create system lockout log table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS system_lockout_log (
+                        lockoutId TEXT PRIMARY KEY NOT NULL,
+                        userId TEXT NOT NULL,
+                        lockoutReason TEXT NOT NULL,
+                        lockoutStartTime INTEGER NOT NULL,
+                        lockoutEndTime INTEGER,
+                        unlockMethod TEXT,
+                        elderRightsNotified INTEGER NOT NULL,
+                        caregiverNotified INTEGER NOT NULL
+                    )
+                """)
+                
+                // Create caregiver token validation table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS caregiver_token_validation (
+                        validationId TEXT PRIMARY KEY NOT NULL,
+                        caregiverId TEXT NOT NULL,
+                        tokenHash TEXT NOT NULL,
+                        isValid INTEGER NOT NULL,
+                        validationTimestamp INTEGER NOT NULL,
+                        expiryTimestamp INTEGER NOT NULL,
+                        revokedAt INTEGER,
+                        revokedReason TEXT
+                    )
+                """)
+                
+                // Create indexes for security audit tables
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_userId ON mode_switch_audit(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_timestamp ON mode_switch_audit(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_mode_switch_audit_requestedBy ON mode_switch_audit(requestedBy)")
+                
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_userId ON security_events(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_eventType ON security_events(eventType)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_timestamp ON security_events(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_security_events_resolved ON security_events(resolved)")
+                
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_userId ON authentication_attempts(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_timestamp ON authentication_attempts(timestamp)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_authentication_attempts_success ON authentication_attempts(success)")
+                
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_userId ON elderly_consent_log(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_consentType ON elderly_consent_log(consentType)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_elderly_consent_log_timestamp ON elderly_consent_log(timestamp)")
+                
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_userId ON system_lockout_log(userId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_system_lockout_log_lockoutStartTime ON system_lockout_log(lockoutStartTime)")
+                
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_caregiverId ON caregiver_token_validation(caregiverId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_isValid ON caregiver_token_validation(isValid)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_caregiver_token_validation_expiryTimestamp ON caregiver_token_validation(expiryTimestamp)")
+            }
+        }
+    }
+}
+
+

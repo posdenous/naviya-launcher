@@ -3,13 +3,25 @@ package com.naviya.launcher.emergency.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
+import androidx.room.Index
 import java.util.UUID
 
 /**
  * Emergency contact data model for elderly users
  * Follows Windsurf rules for data models and elderly accessibility
  */
-@Entity(tableName = "emergency_contacts")
+@Entity(
+    tableName = "emergency_contacts",
+    indices = [
+        Index(value = ["is_active"]),
+        Index(value = ["is_primary_caregiver"]),
+        Index(value = ["is_emergency_service"]),
+        Index(value = ["priority"]),
+        Index(value = ["is_active", "is_primary_caregiver"]),
+        Index(value = ["is_active", "is_emergency_service"]),
+        Index(value = ["is_active", "priority"])
+    ]
+)
 data class EmergencyContact(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
@@ -45,7 +57,10 @@ data class EmergencyContact(
     val lastContacted: Long? = null,
     
     @ColumnInfo(name = "is_active")
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    
+    @ColumnInfo(name = "deleted_at")
+    val deletedAt: Long? = null
 ) {
     companion object {
         // Default emergency services for different countries
@@ -100,7 +115,15 @@ data class EmergencyContact(
  * Emergency event log for tracking SOS activations
  * Required by Windsurf security rules for audit logging
  */
-@Entity(tableName = "emergency_events")
+@Entity(
+    tableName = "emergency_events",
+    indices = [
+        Index(value = ["timestamp"]),
+        Index(value = ["event_type"]),
+        Index(value = ["contact_id"]),
+        Index(value = ["event_type", "timestamp"])
+    ]
+)
 data class EmergencyEvent(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
@@ -133,7 +156,10 @@ data class EmergencyEvent(
     val notes: String? = null,
     
     @ColumnInfo(name = "was_successful")
-    val wasSuccessful: Boolean = true
+    val wasSuccessful: Boolean = true,
+    
+    @ColumnInfo(name = "deleted_at")
+    val deletedAt: Long? = null
 )
 
 enum class EmergencyEventType {

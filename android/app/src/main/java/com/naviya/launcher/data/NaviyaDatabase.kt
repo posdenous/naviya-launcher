@@ -3,9 +3,11 @@ package com.naviya.launcher.data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import android.content.Context
 import com.naviya.launcher.data.dao.*
 import com.naviya.launcher.data.models.*
+import com.naviya.launcher.emergency.data.EmergencyTypeConverters
 
 /**
  * Main Room database for Naviya Launcher
@@ -31,6 +33,7 @@ import com.naviya.launcher.data.models.*
     version = 1,
     exportSchema = false
 )
+// @TypeConverters(EmergencyTypeConverters::class)
 abstract class NaviyaDatabase : RoomDatabase() {
     
     // Include all DAOs

@@ -323,6 +323,18 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <!-- Testing Activity for in-app tests -->
+        <activity
+            android:name=".testing.TestingActivity"
+            android:exported="true"
+            android:label="Naviya Tests"
+            android:theme="@style/Theme.NaviyaLauncher">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
         <!-- App Shortcuts for emergency access -->
         <meta-data
             android:name="android.app.shortcuts"
